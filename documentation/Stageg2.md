@@ -7,23 +7,19 @@
 ## Section 0 — Define Project Objectives
 
 ### Project Purpose
-Exists to bridge the gap between pet owners and the veterinary ecosystem in one unified digital platform. Today, pet owners in the region struggle to find trusted veterinary care, discover reputable pet stores, or connect with animals in need of adoption — all in one place.  
-Raoof solves this by creating a seamless, Arabic-first platform that serves clinics, independent vets, pet stores, adopters, and animal welfare advocates equally.
+connect cat owners with licensed veterinarians through a fully virtual consultation platform. Today, pet owners struggle to access timely and trusted veterinary advice without visiting a physical clinic. We solves this by providing an online first experience where cat owners can book and attend video consultations with qualified vets.
 
-### Project Objectives
-- Connect pet owners with veterinary clinics and independent veterinarians — enabling easy appointment booking, profile browsing, and direct in-app messaging for consultations.  
-- Facilitate animal adoption — providing a structured, searchable listing of animals available for adoption, including breed, health status, vaccination records, and contact information for shelters or rescuers.  
-- Integrate pet stores and product marketplaces — allowing registered stores to showcase products and services, driving commerce and community engagement through the platform.  
-- Deliver verified discounts and promotional offers — partnering with clinics and stores to provide exclusive, time-limited deals, incentivizing platform adoption and repeat engagement.  
-- Build a trusted community layer — incorporating verified reviews, ratings, and community forums around animal welfare, enabling organic growth through word-of-mouth and social proof.  
-- Provide smart matching for adoption — using preference-based filters (species, age, size, temperament, location) to intelligently surface compatible adoption candidates, increasing successful adoption rates.
+MVP Objectives
+Enable user registration and login for two roles: Pet Owner and Veterinarian.
+Allow pet owners to manage their profile and cat information.
+Provide a video consultation feature connecting cat owners directly with veterinarians.
+Support online payment for consultation sessions within the platform.
+Deliver a simple, intuitive interface accessible to non-technical users.
 
-### Why This Project Matters
-- **Animal welfare:** Reduces the number of stray and abandoned animals through structured, visible adoption pathways.  
-- **Market gap:** No existing platform in the region offers a fully integrated vet-adoption-store ecosystem in one product.  
-- **Community impact:** Empowers independent vets and small clinics to compete digitally alongside larger chains.  
-- **Scalability:** The MVP architecture is designed to scale into subscription tiers for clinics, premium store listings, and analytics dashboards in future phases.
-
+Accessibility: Removes the need for in person clinic visits for routine consultations, saving time and reducing stress for both owners and animals.
+Market gap: No dedicated Arabic first virtual vet consultation platform currently exists for cat owners in the region.
+Veterinarian empowerment: Enables independent vets to offer remote services without the overhead of a physical clinic.
+Scalability: The MVP foundation can expand in future phases to include additional features and species.
 ---
 
 ## Section 1 — Stakeholders & Team Roles
@@ -37,13 +33,8 @@ Raoof solves this by creating a seamless, Arabic-first platform that serves clin
 | Internal | Project Manager                   | Planning & Delivery           | Tracks milestones, manages scope & risks |
 | Internal | QA / Tester                       | Quality Assurance             | Validates functionality, UX, & edge cases |
 | Internal | UX/UI Designer                    | Design & Prototyping          | Creates wireframes, design system & brand identity |
-| Internal | Instructors / Tutors              | Academic Supervisors          | Evaluate progress, provide guidance & feedback |
-| External | Veterinary Clinics                | Primary Service Partner       | Registered on platform; offer appointments & deals |
-| External | Independent Vets                  | Freelance Service Provider    | Home-visit & remote consultation services |
-| External | Pet Adopters                      | End User                      | Browse & adopt animals via platform listings |
-| External | Volunteers / Animal Rescue NGOs   | Welfare Partners              | Post rescue animals; coordinate adoption campaigns |
-| External | Pet Store Owners                  | Commerce Partner              | List products & services; benefit from platform traffic |
-| External | General Pet Owners                | Primary End User              | Book vets, buy products, explore adoption listings |
+| External |  Vets                             | Service Provider              | remote consultation services |
+| External | General Pet Owners                | Primary End User              | Book vets, buy products |
 
 ---
 
@@ -55,7 +46,7 @@ Raoof solves this by creating a seamless, Arabic-first platform that serves clin
 | Tech Lead / Architect    | Shadan Alkharji                      | Technical decision-making, system architecture, code review, integration oversight |
 | Frontend Developer       | Shadan Alkharji                      | React/Next.js UI, responsive design, API integration, accessibility compliance |
 | Backend Developer        | Shahad Alsaneea                      | REST API design, database modeling, auth system, payment & notifications |
-| UX/UI Designer           | Shadan Alkharji, Shahad Alsaneea     | User research, wireframes, prototype, brand identity & design system |
+| UX/UI Designer           | Shadan Alkharji                      | User research, wireframes, prototype, brand identity & design system |
 | QA Engineer              | Lina Alduaylij, Alanoud Alharthi     | Test planning, bug reporting, regression testing, UAT coordination |
 | Content / Community Lead | All Team Members                     | Adoption listing quality, partner onboarding support, awareness campaigns |
 
