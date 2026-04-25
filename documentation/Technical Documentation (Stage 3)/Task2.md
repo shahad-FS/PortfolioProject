@@ -174,6 +174,7 @@ CONSULTATION {
   int id PK
   string status
   datetime created_at
+  string session_url
   int pet_id FK
   int owner_id FK
   int vet_id FK
