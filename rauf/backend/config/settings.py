@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
 from pathlib import Path
+import drf_spectacular
 from dotenv import load_dotenv
 load_dotenv("../.env")
 
@@ -39,10 +40,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'accounts.apps.AccountsConfig',
+    'pets',
+    'consultations',
+    'payments',
+    'medical',
+    'video_sessions',
+    'rest_framework',
+    "rest_framework_simplejwt.token_blacklist",
+    'drf_spectacular', #لإنشاء وثائق API تلقائيًا
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,3 +133,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+AUTH_USER_MODEL = "accounts.User"
+
+
+#للتجربه فقط يطبع في terminal بدال ارسال ايميلات حقيقية
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = 'Rauf App <no-reply@raufapp.com>'
+
+#اعدادات Django REST Framework 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer', # لارجاع الردود بصيغة JSON
+        'rest_framework.renderers.BrowsableAPIRenderer', # لتمكين واجهة التصفح في المتصفح أثناء التطوير
+        
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', #لإنشاء وثائق API تلقائيًا
+
+     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication", #لتمكين التوثيق باستخدام JWT
+     ),
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Rauf API',
+    'DESCRIPTION': 'API for Pet Platform',
+    'VERSION': '1.0.0',
+}
