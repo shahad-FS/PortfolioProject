@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'video_sessions',
     'rest_framework',
     "rest_framework_simplejwt.token_blacklist",
-    'drf_spectacular', #لإنشاء وثائق API تلقائيًا
+    'drf_spectacular',  # لإنشاء وثائق API تلقائيًا
 ]
 
 MIDDLEWARE = [
@@ -141,7 +141,7 @@ INTERNAL_IPS = [
 AUTH_USER_MODEL = "accounts.User"
 
 
-#للتجربه فقط يطبع في terminal بدال ارسال ايميلات حقيقية
+# للتجربه فقط يطبع في terminal بدال ارسال ايميلات حقيقية
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -152,18 +152,21 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = 'Rauf App <no-reply@raufapp.com>'
 
-#اعدادات Django REST Framework 
+# اعدادات Django REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer', # لارجاع الردود بصيغة JSON
-        'rest_framework.renderers.BrowsableAPIRenderer', # لتمكين واجهة التصفح في المتصفح أثناء التطوير
-        
-    ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', #لإنشاء وثائق API تلقائيًا
+        'rest_framework.renderers.JSONRenderer',  # لارجاع الردود بصيغة JSON
+        # لتمكين واجهة التصفح في المتصفح أثناء التطوير
+        'rest_framework.renderers.BrowsableAPIRenderer',
 
-     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication", #لتمكين التوثيق باستخدام JWT
-     ),
+    ],
+    # لإنشاء وثائق API تلقائيًا
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        # لتمكين التوثيق باستخدام JWT
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 
@@ -171,4 +174,5 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Rauf API',
     'DESCRIPTION': 'API for Pet Platform',
     'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
