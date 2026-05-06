@@ -10,7 +10,7 @@ from core.services.email_service import EmailService
 
 class ConsultationCreateView(generics.CreateAPIView):
     """
-    🟢 Pet Owner يحجز Consultation
+    Pet Owner يحجز Consultation
     """
 
     serializer_class = ConsultationSerializer
@@ -23,18 +23,16 @@ class ConsultationCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         consultation = serializer.save(pet_owner=self.request.user)
 
-        # 📧 إرسال إيميل للـ Pet Owner
-        EmailService.send_email(
-            self.request.user.email,
-            "Booking Confirmed",
-            "Your consultation is booked."
+        # ايميل للـ Pet Owner
+        EmailService.send_consultation_confirmation(
+            self.request.user,
+            consultation
         )
 
-        # 📧 إرسال إيميل للـ Vet
-        EmailService.send_email(
-            consultation.vet.email,
-            "New Consultation Booked",
-            "You have a new consultation."
+        # إرسال إيميل للـ Vet
+        EmailService.send_vet_notification(
+            consultation.vet,
+            consultation
         )
 
 

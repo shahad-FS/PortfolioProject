@@ -45,9 +45,6 @@ class PetListCreateView(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-# ----------------------------
-
-
 class PetDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     GET:

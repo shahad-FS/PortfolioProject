@@ -24,10 +24,10 @@ class ConsultationSerializer(serializers.ModelSerializer):
             "created_at"
         ]
 
-        # 👇 هذه الحقول لا يدخلها المستخدم مباشرة
+        # هذه الحقول لا يدخلها المستخدم مباشرة
         read_only_fields = ["status", "created_at"]
 
-    # 🔍 Validation مهم جداً قبل إنشاء الحجز
+    # Validation مهم جداً قبل إنشاء الحجز
     def validate(self, data):
         """
         التحقق من صحة البيانات قبل إنشاء consultation
@@ -39,13 +39,13 @@ class ConsultationSerializer(serializers.ModelSerializer):
         pet = data.get("pet")
         vet = data.get("vet")
 
-        # 🐾 التأكد أن pet فعلاً تابع للـ pet_owner
+        # التأكد أن pet فعلاً تابع للـ pet_owner
         if pet.owner != user:
             raise serializers.ValidationError(
                 "You can only book consultations for your own pets."
             )
 
-        # 🩺 التأكد أن vet فعلاً vet
+        # التأكد أن vet فعلاً vet
         if vet.role != "vet":
             raise serializers.ValidationError(
                 "Selected user is not a vet."
