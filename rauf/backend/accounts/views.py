@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView
+from .models import User, VetProfile
+from .serializers import VetListSerializer, VetProfileSerializer
 from django.contrib.auth import authenticate
 
 from .serializers import RegisterSerializer, LoginSerializer, VetProfileSerializer, ProfileSerializer, PetOwnerProfileSerializer
@@ -14,12 +17,10 @@ from drf_spectacular.utils import extend_schema
 # Create your views here.
 
 
-
 @extend_schema(
     request=RegisterSerializer,
     responses={201: {"message": "User created"}}
 )
-
 class RegisterView(APIView):
     # هذا الـ endpoint مسؤول عن تسجيل المستخدم
 
@@ -52,8 +53,6 @@ class RegisterView(APIView):
 
         # إذا البيانات غير صحيحة يرجع الأخطاء
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
 
 
 class VerifyEmailView(APIView):
@@ -91,7 +90,8 @@ class VerifyEmailView(APIView):
             {"message": "Email verified successfully 🎉"},
             status=status.HTTP_200_OK
         )
-    
+
+
 @extend_schema(request=LoginSerializer)
 class LoginView(APIView):
     def post(self, request):
@@ -113,6 +113,7 @@ class LoginView(APIView):
             "access": str(refresh.access_token),
         })
 
+
 class LogoutView(APIView):
     def post(self, request):
         try:
@@ -122,7 +123,7 @@ class LogoutView(APIView):
             return Response({"message": "Logged out"})
         except:
             return Response({"error": "Invalid token"}, status=400)
-        
+
 
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
@@ -135,7 +136,8 @@ class UserProfileView(APIView):
         }
 
         if hasattr(user, "petownerprofile"):
-            data["pet_owner"] = PetOwnerProfileSerializer(user.petownerprofile).data
+            data["pet_owner"] = PetOwnerProfileSerializer(
+                user.petownerprofile).data
 
         if hasattr(user, "vetprofile"):
             data["vet"] = VetProfileSerializer(user.vetprofile).data
@@ -166,3 +168,49 @@ class UserProfileView(APIView):
                 vet_serializer.save()
 
         return Response({"message": "Profile updated"})
+
+
+class VetListView(ListAPIView):
+    """
+    API يعرض جميع الأطباء البيطريين
+    يستخدمه الـ Pet Owner عند الحجز
+    """
+
+    serializer_class = VetListSerializer
+
+    def get_queryset(self):
+        """
+        نرجع فقط المستخدمين الذين:
+        - role = vet
+        - is_verified = True
+        """
+
+        return User.objects.filter(
+            role="vet",
+            is_verified=True
+        ).select_related("vetprofile")
+
+
+class VetDetailView(RetrieveAPIView):
+    """
+    عرض تفاصيل طبيب واحد
+    """
+
+    queryset = User.objects.filter(role="vet")
+    serializer_class = VetListSerializer
+
+
+class VetProfileUpdateView(RetrieveUpdateAPIView):
+    """
+    الطبيب يعدل بياناته (license, specialization)
+    """
+
+    serializer_class = VetProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        """
+        نجيب VetProfile الخاص بالمستخدم الحالي
+        """
+
+        return VetProfile.objects.get(user=self.request.user)

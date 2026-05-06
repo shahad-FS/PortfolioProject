@@ -1,27 +1,28 @@
+from .models import User, VetProfile
 from rest_framework import serializers
 from .models import User, Profile, PetOwnerProfile, VetProfile
 
 
 # Serializer لتحويل بيانات المستخدم بين JSON و Python objects
-#استقبال بيانات تسجيل المستخدم و التحقق منها ثم انشاء المستخدم
+# استقبال بيانات تسجيل المستخدم و التحقق منها ثم انشاء المستخدم
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True, min_length=8)
 
     class Meta:
-        #تحديد model المرتبط ب Serializer
+        # تحديد model المرتبط ب Serializer
         model = User
-        #الحقول المسموح استقبالها من المستخدم
+        # الحقول المسموح استقبالها من المستخدم
         fields = ["email", "password", "role"]
 
     def validate_email(self, value):
         # تحقق هل الإيميل مستخدم مسبقًا
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already exists")
-        #يرجع الايميل اذا اجتاز الفحص
+        # يرجع الايميل اذا اجتاز الفحص
         return value
 
-    #التحقق من صحة الدور (role) الذي يختاره المستخدم
+    # التحقق من صحة الدور (role) الذي يختاره المستخدم
     def validate_role(self, value):
         allowed_roles = ["pet_owner", "vet", "admin"]
         if value not in allowed_roles:
@@ -35,7 +36,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             role=validated_data.get("role", "pet_owner"),
         )
         return user
-    
 
 
 class LoginSerializer(serializers.Serializer):
@@ -48,10 +48,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ["full_name", "phone"]
 
+
 class PetOwnerProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetOwnerProfile
         fields = []
+
 
 class VetProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,8 +62,40 @@ class VetProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ["is_approved"]
 
 
-
 class UserProfileSerializer(serializers.Serializer):
     profile = ProfileSerializer()
     pet_owner = PetOwnerProfileSerializer(required=False)
     vet = VetProfileSerializer(required=False)
+
+
+class VetListSerializer(serializers.ModelSerializer):
+
+    specialization = serializers.CharField(
+        source="vetprofile.specialization",
+        read_only=True
+    )
+
+    is_approved = serializers.BooleanField(
+        source="vetprofile.is_approved",
+        read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "specialization",
+            "is_approved"
+        ]
+
+
+class VetProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = VetProfile
+        fields = [
+            "license_number",
+            "specialization",
+            "is_approved"
+        ]
