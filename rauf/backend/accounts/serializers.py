@@ -90,12 +90,12 @@ class VetListSerializer(serializers.ModelSerializer):
         ]
 
 
-class VetProfileSerializer(serializers.ModelSerializer):
+# class VetProfileSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = VetProfile
-        fields = [
-            "license_number",
-            "specialization",
-            "is_approved"
-        ]
+#     class Meta:
+#         model = VetProfile
+#         fields = [
+#             "license_number",
+#             "specialization",
+#             "is_approved"
+#         ]

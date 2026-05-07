@@ -3,7 +3,7 @@ from .views import RegisterView, UserProfileView, VerifyEmailView, LoginView, Lo
 
 
 urlpatterns = [
-    # endpoint لتسجيل المستخدم
+
     path("register/", RegisterView.as_view(), name="register"),
     path("profile/", UserProfileView.as_view()),
     path("verify-email/<uuid:token>/", VerifyEmailView.as_view()),
