@@ -28,7 +28,11 @@ SECRET_KEY = 'django-insecure-6un($ztc452qw&6wgc!%!nqbz8@2kdjajg9lk$h@wdp#j=@-0^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "192.168.1.114",
+]
 
 
 # Application definition
@@ -51,11 +55,14 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     'drf_spectacular',  # لإنشاء وثائق API تلقائيًا
     'corsheaders',
+    "channels",
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -180,3 +187,28 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+ASGI_APPLICATION = "config.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer",
+#     },
+# }
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://192.168.1.114:5173",
+    "http://localhost:5173",
+]

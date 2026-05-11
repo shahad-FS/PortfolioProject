@@ -62,10 +62,29 @@ class VetProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ["is_approved"]
 
 
-class UserProfileSerializer(serializers.Serializer):
-    profile = ProfileSerializer()
-    pet_owner = PetOwnerProfileSerializer(required=False)
-    vet = VetProfileSerializer(required=False)
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    profile = ProfileSerializer(read_only=True)
+    pet_owner = PetOwnerProfileSerializer(
+        source="petownerprofile",
+        read_only=True
+    )
+
+    vet = VetProfileSerializer(
+        source="vetprofile",
+        read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "role",
+            "profile",
+            "pet_owner",
+            "vet",
+        ]
 
 
 class VetListSerializer(serializers.ModelSerializer):
@@ -80,13 +99,19 @@ class VetListSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    full_name = serializers.CharField(
+        source="profile.full_name",
+        read_only=True
+    )
+
     class Meta:
         model = User
         fields = [
             "id",
             "email",
             "specialization",
-            "is_approved"
+            "is_approved",
+            "full_name"
         ]
 
 

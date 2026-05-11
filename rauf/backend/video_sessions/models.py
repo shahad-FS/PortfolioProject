@@ -2,6 +2,8 @@ from django.db import models
 from consultations.models import Consultation
 
 # Create your models here.
+
+
 class VideoSession(models.Model):
 
     consultation = models.OneToOneField(
@@ -16,11 +18,11 @@ class VideoSession(models.Model):
     status = models.CharField(
         max_length=20,
         choices=[
-            ("created", "Created"),
+            ("waiting", "Waiting"),
             ("started", "Started"),
-            ("ended", "Ended")
+            ("ended", "Ended"),
         ],
-        default="created"
+        default="waiting"
     )
 
     started_at = models.DateTimeField(null=True, blank=True)

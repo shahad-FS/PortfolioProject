@@ -1,16 +1,20 @@
 from rest_framework import serializers
 from .models import Consultation
 from pets.models import Pet
+from medical.serializers import MedicalRecordSerializer
 
 
 class ConsultationSerializer(serializers.ModelSerializer):
-    """
-    Serializer خاص بحجز الاستشارات (Consultations)
+    medical_record = MedicalRecordSerializer(read_only=True)
+    pet_name = serializers.CharField(
+        source="pet.name",
+        read_only=True
+    )
 
-    الفكرة:
-    - Pet Owner يحجز Consultation
-    - يختار Vet + Pet + وقت الموعد
-    """
+    vet_name = serializers.CharField(
+        source="vet.username",
+        read_only=True
+    )
 
     class Meta:
         model = Consultation
@@ -18,10 +22,13 @@ class ConsultationSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "pet",
+            "pet_name",
             "vet",
+            "vet_name",
             "status",
             "scheduled_at",
-            "created_at"
+            "created_at",
+            "medical_record",
         ]
 
         # هذه الحقول لا يدخلها المستخدم مباشرة
