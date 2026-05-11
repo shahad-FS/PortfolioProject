@@ -9,7 +9,7 @@ from .models import User, VetProfile
 from .serializers import VetListSerializer, VetProfileSerializer
 from django.contrib.auth import authenticate
 
-from .serializers import RegisterSerializer, LoginSerializer, VetProfileSerializer, ProfileSerializer, PetOwnerProfileSerializer
+from .serializers import RegisterSerializer, LoginSerializer, VetProfileSerializer, ProfileSerializer, PetOwnerProfileSerializer, UserProfileSerializer
 from .models import EmailVerificationToken
 from core.services.email_service import EmailService
 from drf_spectacular.utils import extend_schema
@@ -129,45 +129,40 @@ class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+
+        serializer = UserProfileSerializer(request.user)
+
+        return Response(serializer.data)
+
+    def patch(self, request):
         user = request.user
 
-        data = {
-            "profile": ProfileSerializer(user.profile).data
-        }
-
-        if hasattr(user, "petownerprofile"):
-            data["pet_owner"] = PetOwnerProfileSerializer(
-                user.petownerprofile).data
-
-        if hasattr(user, "vetprofile"):
-            data["vet"] = VetProfileSerializer(user.vetprofile).data
-
-        return Response(data)
-
-    def put(self, request):
-        user = request.user
-
-        # تحديث Profile
         profile_serializer = ProfileSerializer(
             user.profile,
             data=request.data.get("profile", {}),
             partial=True
         )
 
-        if profile_serializer.is_valid():
-            profile_serializer.save()
+        profile_serializer.is_valid(raise_exception=True)
+        profile_serializer.save()
 
-        # تحديث Vet (إذا موجود)
         if hasattr(user, "vetprofile"):
+
             vet_serializer = VetProfileSerializer(
                 user.vetprofile,
                 data=request.data.get("vet", {}),
                 partial=True
             )
-            if vet_serializer.is_valid():
-                vet_serializer.save()
 
-        return Response({"message": "Profile updated"})
+            vet_serializer.is_valid(raise_exception=True)
+            vet_serializer.save()
+
+        updated_serializer = UserProfileSerializer(user)
+
+        return Response(
+            updated_serializer.data,
+            status=status.HTTP_200_OK
+        )
 
 
 class VetListView(ListAPIView):

@@ -7,7 +7,7 @@ class EmailService:
     @staticmethod
     def send_html_email(subject, to_email, text_content, html_content):
         """
-        دالة عامة لإرسال ايميل HTML + Text fallback
+        دالة عامة لإرسال ايميل HTML + Text 
         """
 
         email = EmailMultiAlternatives(
@@ -20,8 +20,7 @@ class EmailService:
         email.attach_alternative(html_content, "text/html")
         email.send()
 
-    # 1. Verification Email
-
+    # Verification Email
     @staticmethod
     def send_verification_email(user, token):
 
@@ -60,8 +59,8 @@ class EmailService:
         EmailService.send_html_email(
             subject, user.email, text_content, html_content)
 
-    # 2. Consultation Booking Email (Pet Owner)
 
+    # Consultation Booking Email (Pet Owner)
     @staticmethod
     def send_consultation_confirmation(user, consultation):
 
@@ -107,7 +106,8 @@ class EmailService:
         EmailService.send_html_email(
             subject, user.email, text_content, html_content)
 
-    # 3. Consultation Notification Email (Vet)
+
+    # Consultation Notification Email (Vet)
     @staticmethod
     def send_vet_notification(vet, consultation):
 

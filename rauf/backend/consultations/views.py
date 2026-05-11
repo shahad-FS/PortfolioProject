@@ -21,7 +21,7 @@ class ConsultationCreateView(generics.CreateAPIView):
     permission_classes = [IsPetOwner]
 
     def perform_create(self, serializer):
-        consultation = serializer.save(pet_owner=self.request.user)
+        consultation = serializer.save(owner=self.request.user)
 
         # ايميل للـ Pet Owner
         EmailService.send_consultation_confirmation(
@@ -42,7 +42,7 @@ class ConsultationCancelView(generics.UpdateAPIView):
     def post(self, request, *args, **kwargs):
         consultation = self.get_object()
 
-        if consultation.pet_owner != request.user:
+        if consultation.owner != request.user:
             return Response({"error": "Not allowed"}, status=403)
 
         consultation.status = "cancelled"
@@ -53,12 +53,17 @@ class ConsultationCancelView(generics.UpdateAPIView):
 
 class ConsultationVetUpdateView(generics.UpdateAPIView):
     permission_classes = [IsVet]
+    queryset = Consultation.objects.all()
 
     def post(self, request, *args, **kwargs):
         consultation = self.get_object()
 
+        # تأكد أن هذا الـ vet هو صاحب الموعد
         if consultation.vet != request.user:
-            return Response({"error": "Not your session"}, status=403)
+            return Response(
+                {"error": "Not your appointment"},
+                status=403
+            )
 
         action = request.data.get("action")
 
@@ -68,6 +73,34 @@ class ConsultationVetUpdateView(generics.UpdateAPIView):
         elif action == "end":
             consultation.status = "ended"
 
+        elif action == "cancel":
+            consultation.status = "cancelled"
+
+        else:
+            return Response(
+                {"error": "Invalid action"},
+                status=400
+            )
+
         consultation.save()
 
-        return Response({"message": f"Session {action}ed"})
+        return Response({
+            "message": f"Appointment {action}ed",
+            "status": consultation.status
+        })
+
+
+class MyAppointmentsView(generics.ListAPIView):
+    serializer_class = ConsultationSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.role == "vet":
+            return Consultation.objects.filter(
+                vet=user
+            ).order_by("-created_at")
+
+        return Consultation.objects.filter(
+            owner=user
+        ).order_by("-created_at")

@@ -23,6 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/accounts/", include("accounts.urls")),
     path("api/v1/pets/", include("pets.urls")),
+    path("api/v1/consultations/", include("consultations.urls")),
+    path("api/v1/medical/", include("medical.urls")),
+    path("api/v1/video_sessions/", include("video_sessions.urls")),
     # schema
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 
