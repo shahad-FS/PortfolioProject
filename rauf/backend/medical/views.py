@@ -14,8 +14,6 @@ from .serializers import (
 )
 
 
-# ================= MEDICAL RECORD =================
-
 class MedicalRecordCreateView(generics.CreateAPIView):
     serializer_class = MedicalRecordSerializer
 
@@ -52,14 +50,10 @@ class MedicalRecordByConsultationView(generics.RetrieveAPIView):
             })
 
 
-# ================= DIAGNOSIS =================
-
 class DiagnosisCreateView(generics.CreateAPIView):
     queryset = Diagnosis.objects.all()
     serializer_class = DiagnosisSerializer
 
-
-# ================= PRESCRIPTION =================
 
 class PrescriptionCreateView(generics.CreateAPIView):
     queryset = Prescription.objects.all()

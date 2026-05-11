@@ -9,7 +9,6 @@ from .views import (
 )
 
 urlpatterns = [
-    # ================= MEDICAL RECORD =================
     path(
         "medical-records/",
         MedicalRecordCreateView.as_view()
@@ -24,14 +23,10 @@ urlpatterns = [
         "medical-records/consultation/<int:consultation_id>/",
         MedicalRecordByConsultationView.as_view()
     ),
-
-    # ================= DIAGNOSIS =================
     path(
         "diagnoses/",
         DiagnosisCreateView.as_view()
     ),
-
-    # ================= PRESCRIPTIONS =================
     path(
         "prescriptions/",
         PrescriptionCreateView.as_view()

@@ -80,8 +80,6 @@ export default function Navbar() {
                     Profile
                   </Link>
 
-                  {/* ❌ تم حذف My Appointments */}
-
                   <button
                     onClick={logout}
                     className="w-full text-left px-3 py-2 rounded hover:bg-red-50 text-red-500"

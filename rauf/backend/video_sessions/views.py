@@ -80,7 +80,6 @@ def start_video_call(request, consultation_id):
         session.status = "started"
         session.save()
 
-        # ✅ IMPORTANT FIX
         channel_layer = get_channel_layer()
 
         async_to_sync(channel_layer.group_send)(

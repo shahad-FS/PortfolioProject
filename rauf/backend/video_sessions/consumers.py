@@ -96,7 +96,7 @@ class AppointmentsConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        # لو تحتاجين تستقبلين رسائل من الفرونت
+
         await self.send(text_data=json.dumps(data))
 
     async def video_started(self, event):
