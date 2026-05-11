@@ -28,11 +28,10 @@ SECRET_KEY = 'django-insecure-6un($ztc452qw&6wgc!%!nqbz8@2kdjajg9lk$h@wdp#j=@-0^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "192.168.1.114",
-]
+
+# force rebuild
+ALLOWED_HOSTS = ["*",
+                 ]
 
 
 # Application definition
@@ -103,6 +102,10 @@ DATABASES = {
         'PASSWORD': os.getenv("DB_PASSWORD"),
         'HOST': os.getenv("DB_HOST"),
         'PORT': os.getenv("DB_PORT"),
+        'OPTIONS': {
+            'sslmode': 'require',
+            'sslrootcert': '/app/certs/ca.pem',
+        }
     }
 }
 
@@ -186,29 +189,11 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-ASGI_APPLICATION = "config.asgi.application"
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "None"
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
-
-
-# CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels.layers.InMemoryChannelLayer",
-#     },
-# }
-
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://192.168.1.114:5173",
-    "http://localhost:5173",
-]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"

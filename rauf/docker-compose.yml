@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: rauf-backend
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./docker/certs:/app/certs
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: rauf-frontend
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    container_name: rauf-nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/dist:/usr/share/nginx/html
+      - ./docker/certs:/etc/nginx/certs
+
+    depends_on:
+      - backend
+      - frontend
