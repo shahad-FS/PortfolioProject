@@ -90,8 +90,11 @@ class ConsultationVetUpdateView(generics.UpdateAPIView):
         })
 
 
+from core.permissions.roles import IsVetOrPetOwner
+
 class MyAppointmentsView(generics.ListAPIView):
     serializer_class = ConsultationSerializer
+    permission_classes = [IsVetOrPetOwner]
 
     def get_queryset(self):
         user = self.request.user

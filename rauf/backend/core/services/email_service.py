@@ -24,7 +24,8 @@ class EmailService:
     @staticmethod
     def send_verification_email(user, token):
 
-        link = f"http://127.0.0.1:8000/api/v1/accounts/verify-email/{token}/"
+        link = f"https://rauf.local/api/v1/accounts/verify-email/{token}/"
+
 
         subject = "Welcome to Rauf App 🎉 - Verify your email"
 

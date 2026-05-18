@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -55,41 +56,28 @@ class RegisterView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
 class VerifyEmailView(APIView):
-
     def get(self, request, token):
-
         try:
-            # البحث عن التوكن
             token_obj = EmailVerificationToken.objects.get(token=token)
-
         except EmailVerificationToken.DoesNotExist:
-            return Response(
-                {"error": "Invalid token"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return HttpResponseRedirect("https://rauf.local/email-verified?status=invalid")
 
-        # التأكد أنه لم يُستخدم مسبقًا
         if token_obj.is_used:
-            return Response(
-                {"error": "Token already used"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return HttpResponseRedirect("https://rauf.local/email-verified?status=used")
 
-        # تفعيل المستخدم
         user = token_obj.user
         user.is_verified = True
         user.is_active = True
         user.save()
 
-        # منع إعادة استخدام التوكن
         token_obj.is_used = True
         token_obj.save()
 
-        return Response(
-            {"message": "Email verified successfully 🎉"},
-            status=status.HTTP_200_OK
-        )
+        return HttpResponseRedirect("https://rauf.local/email-verified")
+
 
 
 @extend_schema(request=LoginSerializer)
@@ -124,7 +112,7 @@ class LogoutView(APIView):
         except:
             return Response({"error": "Invalid token"}, status=400)
 
-
+@extend_schema(request=UserProfileSerializer)
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
 

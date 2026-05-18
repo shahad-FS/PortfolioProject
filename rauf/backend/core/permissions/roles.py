@@ -30,3 +30,7 @@ class IsAdmin(RolePermission):
 
     # فقط الأدمن مسموح له بالدخول
     allowed_roles = ["admin"]
+
+
+class IsVetOrPetOwner(RolePermission):
+    allowed_roles = ["vet", "pet_owner"]
