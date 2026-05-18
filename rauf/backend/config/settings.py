@@ -37,6 +37,8 @@ ALLOWED_HOSTS = ["*",
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    "channels",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,17 +46,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+
     'accounts.apps.AccountsConfig',
     'pets',
     'consultations',
     'payments',
     'medical',
     'video_sessions',
+
     'rest_framework',
     "rest_framework_simplejwt.token_blacklist",
     'drf_spectacular',  # لإنشاء وثائق API تلقائيًا
     'corsheaders',
-    "channels",
+    
 
 ]
 
@@ -148,6 +152,7 @@ STATIC_URL = 'static/'
 
 INTERNAL_IPS = [
     '127.0.0.1',
+    '10.61.15.55',
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -197,3 +202,55 @@ SESSION_COOKIE_SAMESITE = "None"
 
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
+
+
+ASGI_APPLICATION = "config.asgi.application"
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    "*",
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://localhost",
+    "https://127.0.0.1",
+    "https://*.ngrok-free.app",
+    "https://*.vercel.app",
+    "https://*.railway.app",
+    "https://*.onrender.com",
+    "https://raufapp.com",
+    "https://*.raufapp.com",
+    "https://10.61.14.0",
+    "https://rauf.local",
+    "https://192.168.1.114",
+
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+SECURE_SSL_REDIRECT = False  # في prod تكون True
+
+#channel Backing Store
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(
+                os.getenv("REDIS_HOST"),
+                os.getenv("REDIS_PORT")
+            )],
+        },
+    },
+}

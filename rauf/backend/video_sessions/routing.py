@@ -1,9 +1,7 @@
 from django.urls import re_path
-from .consumers import AppointmentsConsumer, VideoCallConsumer
+from .consumers import VideoCallConsumer
 
 websocket_urlpatterns = [
-    re_path(r"ws/video/(?P<consultation_id>\d+)/$",
-            VideoCallConsumer.as_asgi()),
-    re_path(r"ws/appointments/$", AppointmentsConsumer.as_asgi()),
-
+    re_path(
+        r"ws/video/(?P<session_id>[0-9a-f-]+)/$", VideoCallConsumer.as_asgi()),
 ]

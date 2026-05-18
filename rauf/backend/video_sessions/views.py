@@ -1,113 +1,163 @@
-from rest_framework import status
-from django.shortcuts import render
-
-# Create your views here.
 import uuid
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+
+from django.shortcuts import get_object_or_404
 
 from .models import VideoSession
 from consultations.models import Consultation
 from .serializers import VideoSessionSerializer
-from django.http import JsonResponse
+
+
+from core.permissions.roles import IsVet, IsPetOwner
+
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-from django.shortcuts import get_object_or_404
 
 
 class CreateVideoSessionView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsVet]
 
     def post(self, request, consultation_id):
+        consultation = get_object_or_404(Consultation, id=consultation_id)
 
-        consultation = Consultation.objects.get(id=consultation_id)
+        session = VideoSession.objects.filter(
+            consultation=consultation).first()
 
-        session, created = VideoSession.objects.get_or_create(
-            consultation=consultation,
-            defaults={
-                "session_id": str(uuid.uuid4()),
-                "join_url": f"/video-call/{consultation.id}/"
-            }
-        )
+        if not session:
+            return Response(
+                {"error": "Session not started yet"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        serializer = VideoSessionSerializer(session)
-
-        return Response(serializer.data)
+        return Response(VideoSessionSerializer(session).data)
 
 
-class StartVideoCallView(APIView):
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
+
+class StartVideoSession(APIView):
     def post(self, request, consultation_id):
+        consultation = get_object_or_404(
+            Consultation,
+            id=consultation_id
+        )
 
-        consultation = Consultation.objects.get(id=consultation_id)
-
+        # إنشاء أو جلب session موجودة
         session, created = VideoSession.objects.get_or_create(
             consultation=consultation,
             defaults={
-                "session_id": str(uuid.uuid4()),
-                "join_url": f"/video-call/{consultation.id}",
+                "status": "started",
+                "join_url": "/video-call/"
             }
         )
 
+        # تحديث البيانات
         session.status = "started"
+
+        join_url = f"/video-call/{session.session_id}/"
+
+        session.join_url = join_url
         session.save()
 
-        return Response({
-            "message": "Video call started",
-            "session_id": session.session_id,
-            "join_url": session.join_url,
-            "status": session.status,
-        })
-
-
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def start_video_call(request, consultation_id):
-    try:
-        consultation = Consultation.objects.get(id=consultation_id)
-
-        session, created = VideoSession.objects.get_or_create(
-            consultation=consultation,
-            defaults={
-                "session_id": str(uuid.uuid4()),
-                "join_url": f"/video-call/{consultation.id}",
-            }
-        )
-
-        session.status = "started"
-        session.save()
-
+        # إرسال event لكل المتصلين
         channel_layer = get_channel_layer()
 
         async_to_sync(channel_layer.group_send)(
-            "appointments_group",
+            "appointments",
             {
-                "type": "video_started",
-                "consultation_id": consultation.id,
-                "session_id": session.session_id,
-                "join_url": session.join_url,
-            }
+                "type": "broadcast",
+                "data": {
+                    "type": "video_started",
+                    "consultation_id": consultation.id,
+                    "session_id": str(session.session_id),
+                    "join_url": join_url,
+                },
+            },
         )
 
         return Response({
-            "message": "Video call started",
-            "session_id": session.session_id,
-            "consultation_id": consultation.id,
-            "join_url": session.join_url,
+            "session_id": str(session.session_id),
+            "join_url": join_url,
+            "status": "started"
         })
 
-    except Consultation.DoesNotExist:
-        return Response(
-            {"error": "Consultation not found"},
-            status=status.HTTP_404_NOT_FOUND
-        )
 
-    except Exception as e:
-        print("VIDEO SESSION ERROR:", str(e))
-        return Response(
-            {"error": str(e)},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
+class SendOfferView(APIView):
+    permission_classes = [IsAuthenticated, IsVet]
+
+    def post(self, request, session_id):
+        session = get_object_or_404(VideoSession, session_id=session_id)
+
+        session.offer = request.data.get("offer")
+        session.save()
+
+        return Response({"message": "Offer saved"})
+
+
+class SendAnswerView(APIView):
+    permission_classes = [IsAuthenticated, IsPetOwner]
+
+    def post(self, request, session_id):
+        session = get_object_or_404(VideoSession, session_id=session_id)
+
+        session.answer = request.data.get("answer")
+        session.save()
+
+        return Response({"message": "Answer saved"})
+
+
+class AddIceCandidateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, session_id):
+        session = get_object_or_404(VideoSession, session_id=session_id)
+
+        candidate = request.data.get("candidate")
+
+        if candidate:
+            session.ice_candidates.append(candidate)
+            session.save()
+
+        return Response({"message": "Candidate added"})
+
+
+class UpdateJoinStatusView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, session_id):
+        session = get_object_or_404(VideoSession, session_id=session_id)
+
+        role = request.data.get("role")
+
+        if role == "vet":
+            session.vet_joined = True
+        elif role == "owner":
+            session.owner_joined = True
+
+        session.save()
+
+        return Response({"message": "Join status updated"})
+
+
+class EndVideoCallView(APIView):
+    permission_classes = [IsAuthenticated, IsVet]
+
+    def post(self, request, session_id):
+        session = get_object_or_404(VideoSession, session_id=session_id)
+
+        session.status = "ended"
+        session.save()
+
+        return Response({"message": "Video call ended"})
+
+
+class GetVideoSessionView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, session_id):
+        session = get_object_or_404(VideoSession, session_id=session_id)
+        return Response(VideoSessionSerializer(session).data)
