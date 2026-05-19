@@ -4,7 +4,7 @@ from django.db import models
 from django.db import models
 from django.conf import settings
 from pets.models import Pet
-
+from accounts.models import VetProfile
 # Create your models here.
 
 
@@ -41,5 +41,19 @@ class Consultation(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    session_price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        
+        if not self.id:
+            try:
+                self.session_price = self.vet.vetprofile.session_price
+            except AttributeError:
+                
+                self.session_price = 100.00  
+                
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"Consultation {self.id}"
+        return f"Consultation {self.id} - Owner: {self.owner.email} with Vet: {self.vet.email}"

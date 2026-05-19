@@ -254,3 +254,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+#payments settings
+MOYASAR_SECRET_KEY = os.getenv('MOYASAR_SECRET_KEY')
