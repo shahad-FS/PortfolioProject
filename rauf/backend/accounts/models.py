@@ -126,6 +126,7 @@ class VetProfile(models.Model):
     license_number = models.CharField(max_length=100, blank=True, null=True)
     specialization = models.CharField(max_length=100, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
-
+    session_price = models.DecimalField(max_digits=10, decimal_places=2, default=100.00)
+    
     def __str__(self):
         return f"Vet - {self.user.email}"
