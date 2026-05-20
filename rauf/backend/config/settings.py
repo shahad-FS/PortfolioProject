@@ -153,6 +153,7 @@ STATIC_URL = 'static/'
 INTERNAL_IPS = [
     '127.0.0.1',
     '10.61.15.55',
+    '172.20.10.2',
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -224,6 +225,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://172.20.10.2/",
     "https://localhost",
     "https://127.0.0.1",
     "https://*.ngrok-free.app",
@@ -235,6 +237,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://10.61.14.0",
     "https://rauf.local",
     "https://192.168.1.114",
+    
 
 ]
 

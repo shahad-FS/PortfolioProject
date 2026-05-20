@@ -22,6 +22,19 @@ class ConsultationCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         consultation = serializer.save(owner=self.request.user)
+        # 1. نقوم بالوصول إلى الطبيب المختار قبل الحفظ النهائي لـ جلب سعره
+        vet_user = serializer.validated_data.get('vet')
+        
+        # 2. نسحب السعر من كائن الـ vet المرتبط بالطبيب (حسب بنية قاعدة البيانات لديكِ)
+        # إذا كان حقل السعر متواجد في الـ profile الفرعي للطبيب (Vet model) نصل إليه هكذا:
+        session_price = getattr(vet_user, 'vet', None).session_price if hasattr(vet_user, 'vet') else 100.00
+        
+        # 3. 🔥 نمرر السعر الفعلي للطبيب أثناء الحفظ ليخزن في جدول الاستشارة بدقة
+        # تأكدي إن اسم الحقل في موديل الـ Consultation هو 'price' أو 'session_price' وعدليه هنا بناءً عليه
+        consultation = serializer.save(
+            owner=self.request.user,
+            price=session_price  # 👈 أو session_price=session_price حسب اسم الحقل عندك في موديل الاستشارة
+        )
 
         # ايميل للـ Pet Owner
         EmailService.send_consultation_confirmation(

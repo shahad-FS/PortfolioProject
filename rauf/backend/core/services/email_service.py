@@ -24,7 +24,7 @@ class EmailService:
     @staticmethod
     def send_verification_email(user, token):
 
-        link = f"https://rauf.local/api/v1/accounts/verify-email/{token}/"
+        link = f"https://172.20.10.2/api/v1/accounts/verify-email/{token}/"
 
 
         subject = "Welcome to Rauf App 🎉 - Verify your email"
@@ -109,45 +109,46 @@ class EmailService:
 
 
     # Consultation Notification Email (Vet)
-    @staticmethod
-    def send_vet_notification(vet, consultation):
+    # @staticmethod
+    # def send_vet_notification(vet, consultation):
 
-        subject = "New Consultation Request"
+    #     subject = "New Consultation Request"
+        
 
-        text_content = f"""
-        Hi Doctor,
+    #     text_content = f"""
+    #     Hi Doctor,
 
-        You have a new consultation request.
+    #     You have a new consultation request.
 
-        Pet Owner: {consultation.pet_owner.email}
-        Pet ID: {consultation.pet.id}
-        """
+    #     Pet Owner: {consultation.pet_owner.email}
+    #     Pet ID: {consultation.pet.id}
+    #     """
 
-        html_content = f"""
-        <html>
-        <body style="font-family: Arial; background:#eef2f3; padding:20px;">
-            <div style="background:white; padding:20px; border-radius:10px;">
+    #     html_content = f"""
+    #     <html>
+    #     <body style="font-family: Arial; background:#eef2f3; padding:20px;">
+    #         <div style="background:white; padding:20px; border-radius:10px;">
 
-                <h2>New Consultation Request</h2>
+    #             <h2>New Consultation Request</h2>
 
-                <p>Hello Dr. <b>{vet.email}</b></p>
+    #             <p>Hello Dr. <b>{vet.email}</b></p>
 
-                <p>You have a new consultation request</p>
+    #             <p>You have a new consultation request</p>
 
-                <p><b>Pet Owner:</b> {consultation.pet_owner.email}</p>
-                <p><b>Pet ID:</b> {consultation.pet.id}</p>
+    #             <p><b>Pet Owner:</b> {consultation.pet_owner.email}</p>
+    #             <p><b>Pet ID:</b> {consultation.pet.id}</p>
 
-            </div>
-        </body>
-        </html>
-        """
+    #         </div>
+    #     </body>
+    #     </html>
+    #     """
 
-        EmailService.send_html_email(
-            subject,
-            vet.email,
-            text_content,
-            html_content
-        )
+    #     EmailService.send_html_email(
+    #         subject,
+    #         vet.email,
+    #         text_content,
+    #         html_content
+    #     )
 
     @staticmethod
     def send_vet_notification(vet, consultation):
@@ -159,7 +160,6 @@ class EmailService:
 
         pet_name = consultation.pet.name
 
-        pet_link = f"http://127.0.0.1:8000/api/v1/pets/{consultation.pet.id}/"
 
         date = consultation.scheduled_at
 
@@ -178,9 +178,6 @@ class EmailService:
                 <p><b>Pet:</b> {pet_name}</p>
                 <p><b>Date:</b> {date}</p>
 
-                <p>
-                    <a href="{pet_link}">View Pet Profile</a>
-                </p>
 
             </div>
         </body>

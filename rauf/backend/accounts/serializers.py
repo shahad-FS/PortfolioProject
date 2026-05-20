@@ -58,7 +58,7 @@ class PetOwnerProfileSerializer(serializers.ModelSerializer):
 class VetProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = VetProfile
-        fields = ["license_number", "specialization", "is_approved"]
+        fields = ["license_number", "specialization", "session_price"]
         read_only_fields = ["is_approved"]
 
 
@@ -94,14 +94,18 @@ class VetListSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
-    is_approved = serializers.BooleanField(
-        source="vetprofile.is_approved",
-        read_only=True
-    )
+    # is_approved = serializers.BooleanField(
+    #     source="vetprofile.is_approved",
+    #     read_only=True
+    # )
 
     full_name = serializers.CharField(
         source="profile.full_name",
         read_only=True
+    )
+
+    session_price = serializers.FloatField(
+        source = "vetprofile.session_price"
     )
 
     class Meta:
@@ -110,8 +114,9 @@ class VetListSerializer(serializers.ModelSerializer):
             "id",
             "email",
             "specialization",
-            "is_approved",
-            "full_name"
+            # "is_approved",
+            "full_name",
+            "session_price",
         ]
 
 

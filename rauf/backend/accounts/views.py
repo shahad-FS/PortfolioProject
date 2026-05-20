@@ -63,10 +63,10 @@ class VerifyEmailView(APIView):
         try:
             token_obj = EmailVerificationToken.objects.get(token=token)
         except EmailVerificationToken.DoesNotExist:
-            return HttpResponseRedirect("https://rauf.local/email-verified?status=invalid")
+            return HttpResponseRedirect("https://172.20.10.2/email-verified?status=invalid")
 
         if token_obj.is_used:
-            return HttpResponseRedirect("https://rauf.local/email-verified?status=used")
+            return HttpResponseRedirect("https://172.20.10.2/email-verified?status=used")
 
         user = token_obj.user
         user.is_verified = True
@@ -76,7 +76,7 @@ class VerifyEmailView(APIView):
         token_obj.is_used = True
         token_obj.save()
 
-        return HttpResponseRedirect("https://rauf.local/email-verified")
+        return HttpResponseRedirect("https://172.20.10.2/email-verified")
 
 
 
@@ -185,7 +185,7 @@ class VetDetailView(RetrieveAPIView):
 
 class VetProfileUpdateView(RetrieveUpdateAPIView):
     """
-    الطبيب يعدل بياناته (license, specialization)
+    الطبيب يعدل بياناته
     """
 
     serializer_class = VetProfileSerializer

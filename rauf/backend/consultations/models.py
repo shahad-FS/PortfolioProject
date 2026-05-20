@@ -48,9 +48,16 @@ class Consultation(models.Model):
         
         if not self.id:
             try:
-                self.session_price = self.vet.vetprofile.session_price
+                # 💡 المحاولة الأولى: إذا كانت العلاقة العكسية تدعى 'vet' كما يظهر بالـ Serializers
+                if hasattr(self.vet, 'vet'):
+                    self.session_price = self.vet.vet.session_price
+                # 💡 المحاولة الثانية: إذا كانت تدعى 'vetprofile'
+                elif hasattr(self.vet, 'vetprofile'):
+                    self.session_price = self.vet.vetprofile.session_price
+                else:
+                    # إذا لم يعثر على الملف الشخصي، نضع القيمة الافتراضية
+                    self.session_price = 100.00
             except AttributeError:
-                
                 self.session_price = 100.00  
                 
         super().save(*args, **kwargs)

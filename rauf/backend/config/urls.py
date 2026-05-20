@@ -28,7 +28,7 @@ urlpatterns = [
     path("api/v1/video_sessions/", include("video_sessions.urls")),
     path("api/v1/payments/", include("payments.urls")),
     # schema
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path(' ', SpectacularAPIView.as_view(), name='schema'),
 
     # swagger UI
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema')),

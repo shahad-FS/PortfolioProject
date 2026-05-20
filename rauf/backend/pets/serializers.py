@@ -5,10 +5,10 @@ from .models import Pet
 class PetSerializer(serializers.ModelSerializer):
     """
     Serializer لتحويل بيانات Pet:
-    - من Model → JSON (response)
-    - من JSON → Model (request)
+    - من Model الىت JSON (response)
+    - من JSON الى Model (request)
     """
-
+    age = serializers.SerializerMethodField()
     class Meta:
         model = Pet
         fields = "__all__"

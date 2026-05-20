@@ -31,12 +31,14 @@ class PetListCreateView(generics.ListCreateAPIView):
         if user.role == "pet_owner":
             return base_queryset.filter(owner=user)
 
-        return base_queryset
+        return base_queryset # يرجع الحيوان الخاص باليوزر هذا 
 
     def get_permissions(self):
         if self.request.method == "POST":
+            # بس صاحب الحيوان هو الي يسوي post
             permission_classes = [IsPetOwner]
         else:
+            # اذا كانت get 
             permission_classes = [IsPetOwner | IsVet | IsAdmin]
 
         return [permission() for permission in permission_classes]

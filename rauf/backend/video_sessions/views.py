@@ -35,8 +35,6 @@ class CreateVideoSessionView(APIView):
         return Response(VideoSessionSerializer(session).data)
 
 
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 
 
 class StartVideoSession(APIView):
