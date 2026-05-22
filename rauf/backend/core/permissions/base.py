@@ -15,13 +15,7 @@ class RolePermission(BasePermission):
     allowed_roles = []
 
     def has_permission(self, request, view):
-        """
-        هذه الدالة يتم استدعاؤها تلقائياً من Django REST Framework
-        قبل تنفيذ أي request على الـ API
 
-        وظيفتها:
-        التحقق هل المستخدم مسموح له يدخل هذا الـ endpoint أو لا
-        """
 
         return (
             # الشرط الأول:
@@ -30,8 +24,6 @@ class RolePermission(BasePermission):
 
             # الشرط الثاني:
             # role حق المستخدم لازم يكون موجود داخل قائمة الأدوار المسموح بها
-            # مثال: allowed_roles = ["vet"]
-            # يعني فقط الأطباء البيطريين يدخلون
             request.user.role in self.allowed_roles
         )
 

@@ -14,6 +14,7 @@ from pathlib import Path
 import drf_spectacular
 from dotenv import load_dotenv
 load_dotenv("../.env")
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ ALLOWED_HOSTS = ["*",
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'daphne',
     "channels",
     'django.contrib.admin',
@@ -72,7 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -187,6 +189,15 @@ REST_FRAMEWORK = {
     ),
 }
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),    
+    'ROTATE_REFRESH_TOKENS': True,                  # تحديث التوكنات بشكل دوري آمن
+    'BLACKLIST_AFTER_ROTATION': True,               # وضع التوكن المستهلك في القائمة السوداء للامان
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Rauf API',
@@ -211,9 +222,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_HEADERS = [
-    "*",
-]
+CORS_ALLOW_HEADERS = ['localhost', '127.0.0.1', '0.0.0.0', '*']
 
 CORS_ALLOW_METHODS = [
     "GET",
@@ -225,7 +234,11 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://172.20.10.2/",
+   "http://localhost:5173",
+    "http://127.0.0.1:5173",
+   "https://localhost:5173",
+    "https://127.0.0.1:5173",
+   "https://172.20.10.2/",
     "https://localhost",
     "https://127.0.0.1",
     "https://*.ngrok-free.app",
@@ -239,6 +252,12 @@ CSRF_TRUSTED_ORIGINS = [
     "https://192.168.1.114",
     
 
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://localhost:5173",
+    "https://127.0.0.1:5173",
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -261,3 +280,54 @@ CHANNEL_LAYERS = {
 
 #payments settings
 MOYASAR_SECRET_KEY = os.getenv('MOYASAR_SECRET_KEY')
+
+
+## addmin costumization 
+JAZZMIN_SETTINGS = {
+    "site_title": "Rauf Admin",
+    
+    "site_header": "Rauf Clinic",
+    
+    # "site_logo": "images/logo.png",
+    
+    "welcome_sign": "Welcome to Rauf Veterinary Clinic Management Portal",
+    
+    "copyright": "Rauf Vet Clinic Ltd",
+    
+    "search_model": "accounts.User",
+
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "accounts.User"},
+    ],
+    
+    "icons": {
+        "accounts.user": "fas fa-users",
+        "accounts.profile": "fas fa-user-id",
+        "pets.pet": "fas fa-dog",
+        "consultations.consultation": "fas fa-calendar-check",
+        "medical.medicalrecord": "fas fa-file-medical",
+        "payments.paymenttransaction": "fas fa-credit-card",
+        "video_sessions.videosession": "fas fa-video",
+    },
+    
+    "show_sidebar": True,
+    "navigation_expanded": True,
+}
+
+JAZZMIN_UI_TUNER = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark bg-dark", 
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_options": ["sidebar_fixed"],
+    "sidebar": "sidebar-dark-primary", 
+    "sidebar_nav_flat_style": True,
+}
+
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://localhost")

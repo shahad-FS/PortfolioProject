@@ -1,6 +1,4 @@
 from django.shortcuts import render
-
-
 from rest_framework import generics
 from rest_framework.permissions import SAFE_METHODS
 
@@ -14,31 +12,36 @@ from core.permissions.base import IsOwner
 class PetListCreateView(generics.ListCreateAPIView):
     """
     GET:
-        - pet_owner  يشوف pets حقته فقط
-        - vet / admin  يشوفون الكل
-
+        - pet_owner: يشوف pets حقته فقط
+        - vet: يشوف فقط الحيوانات اللي حاجزه عنده موعد
+        - admin: يشوف الكل
     POST:
         - فقط pet_owner
     """
-
     serializer_class = PetSerializer
 
     def get_queryset(self):
         user = self.request.user
+        
+        # حماية إضافية إذا كان الطلب غير مسجل دخول
+        if not user.is_authenticated:
+            return Pet.objects.none()
 
         base_queryset = Pet.objects.select_related("owner")
 
         if user.role == "pet_owner":
             return base_queryset.filter(owner=user)
 
-        return base_queryset # يرجع الحيوان الخاص باليوزر هذا 
+        if user.role == "vet":
+  
+            return base_queryset.filter(consultation__vet=user).distinct()
+
+        return base_queryset 
 
     def get_permissions(self):
         if self.request.method == "POST":
-            # بس صاحب الحيوان هو الي يسوي post
             permission_classes = [IsPetOwner]
         else:
-            # اذا كانت get 
             permission_classes = [IsPetOwner | IsVet | IsAdmin]
 
         return [permission() for permission in permission_classes]
@@ -50,21 +53,25 @@ class PetListCreateView(generics.ListCreateAPIView):
 class PetDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     GET:
-        - owner + vet + admin
-
+        - owner (حيواناته) + vet (المحجوزة عنده) + admin (الكل)
     UPDATE / DELETE:
         - فقط owner
     """
-
     serializer_class = PetSerializer
 
     def get_queryset(self):
         user = self.request.user
+        
+        if not user.is_authenticated:
+            return Pet.objects.none()
 
         base_queryset = Pet.objects.select_related("owner")
 
         if user.role == "pet_owner":
             return base_queryset.filter(owner=user)
+
+        if user.role == "vet":
+            return base_queryset.filter(consultations__vet=user).distinct()
 
         return base_queryset
 

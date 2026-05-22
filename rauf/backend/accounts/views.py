@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView
+from rest_framework_simplejwt.views import TokenRefreshView
 from .models import User, VetProfile
 from .serializers import VetListSerializer, VetProfileSerializer
 from django.contrib.auth import authenticate
@@ -14,7 +15,7 @@ from .serializers import RegisterSerializer, LoginSerializer, VetProfileSerializ
 from .models import EmailVerificationToken
 from core.services.email_service import EmailService
 from drf_spectacular.utils import extend_schema
-
+from django.conf import settings
 # Create your views here.
 
 
@@ -60,13 +61,14 @@ class RegisterView(APIView):
 
 class VerifyEmailView(APIView):
     def get(self, request, token):
+        frontend_url = settings.FRONTEND_URL.rstrip('/')
         try:
             token_obj = EmailVerificationToken.objects.get(token=token)
         except EmailVerificationToken.DoesNotExist:
-            return HttpResponseRedirect("https://172.20.10.2/email-verified?status=invalid")
+            return HttpResponseRedirect(f"{frontend_url}/email-verified?status=invalid")
 
         if token_obj.is_used:
-            return HttpResponseRedirect("https://172.20.10.2/email-verified?status=used")
+            return HttpResponseRedirect(f"{frontend_url}/email-verified?status=used")
 
         user = token_obj.user
         user.is_verified = True
@@ -76,7 +78,7 @@ class VerifyEmailView(APIView):
         token_obj.is_used = True
         token_obj.save()
 
-        return HttpResponseRedirect("https://172.20.10.2/email-verified")
+        return HttpResponseRedirect(f"{frontend_url}/email-verified")
 
 
 
@@ -93,6 +95,9 @@ class LoginView(APIView):
 
         if user is None:
             return Response({"error": "Invalid credentials"}, status=400)
+        
+        if not user.is_verified:
+            return Response({"error": "Please verify your email before logging in."}, status=403)
 
         refresh = RefreshToken.for_user(user)
 
@@ -109,8 +114,8 @@ class LogoutView(APIView):
             token = RefreshToken(refresh)
             token.blacklist()
             return Response({"message": "Logged out"})
-        except:
-            return Response({"error": "Invalid token"}, status=400)
+        except Exception as e:
+            return Response({"error": "Invalid token or already blacklisted"}, status=400)
 
 @extend_schema(request=UserProfileSerializer)
 class UserProfileView(APIView):
@@ -197,3 +202,7 @@ class VetProfileUpdateView(RetrieveUpdateAPIView):
         """
 
         return VetProfile.objects.get(user=self.request.user)
+
+
+class CustomTokenRefreshView(TokenRefreshView):
+    pass

@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework import serializers
 from .models import Consultation
 from pets.models import Pet
@@ -11,6 +12,9 @@ class ConsultationSerializer(serializers.ModelSerializer):
         source="pet.name",
         read_only=True
     )
+
+    pet_age = serializers.SerializerMethodField()
+
 
     vet_name = serializers.CharField(
         source="vet.profile.full_name", 
@@ -30,6 +34,7 @@ class ConsultationSerializer(serializers.ModelSerializer):
             "id",
             "pet",
             "pet_name",
+            'pet_age',
             "vet",
             "vet_name",
             "status",
@@ -41,10 +46,9 @@ class ConsultationSerializer(serializers.ModelSerializer):
 
         ]
 
-        # هذه الحقول لا يدخلها المستخدم مباشرة
         read_only_fields = ["status", "created_at"]
 
-
+    
     def validate(self, data):
         """
         التحقق من صحة البيانات قبل إنشاء consultation
@@ -56,16 +60,19 @@ class ConsultationSerializer(serializers.ModelSerializer):
         pet = data.get("pet")
         vet = data.get("vet")
 
-        # التأكد أن pet فعلاً تابع للـ pet_owner
         if pet.owner != user:
             raise serializers.ValidationError(
                 "You can only book consultations for your own pets."
             )
 
-        # التأكد أن vet فعلاً vet
         if vet.role != "vet":
             raise serializers.ValidationError(
                 "Selected user is not a vet."
             )
-
         return data
+
+    def get_pet_age(self, obj):
+        if obj.pet and obj.pet.birth_year:
+            current_year = datetime.now().year
+            return current_year - obj.pet.birth_year
+        return None

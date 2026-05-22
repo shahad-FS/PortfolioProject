@@ -4,7 +4,6 @@ from .models import User, Profile, PetOwnerProfile, VetProfile
 
 
 # Serializer لتحويل بيانات المستخدم بين JSON و Python objects
-# استقبال بيانات تسجيل المستخدم و التحقق منها ثم انشاء المستخدم
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True, min_length=8)
@@ -12,7 +11,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         # تحديد model المرتبط ب Serializer
         model = User
-        # الحقول المسموح استقبالها من المستخدم
         fields = ["email", "password", "role"]
 
     def validate_email(self, value):

@@ -3,8 +3,9 @@ from rest_framework import generics
 from rest_framework.response import Response
 from .models import Consultation
 from .serializers import ConsultationSerializer
+from rest_framework import status
 
-from core.permissions.roles import IsPetOwner, IsVet
+from core.permissions.roles import IsPetOwner, IsVet, IsVetOrPetOwner
 from core.services.email_service import EmailService
 
 
@@ -22,18 +23,13 @@ class ConsultationCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         consultation = serializer.save(owner=self.request.user)
-        # 1. نقوم بالوصول إلى الطبيب المختار قبل الحفظ النهائي لـ جلب سعره
         vet_user = serializer.validated_data.get('vet')
         
-        # 2. نسحب السعر من كائن الـ vet المرتبط بالطبيب (حسب بنية قاعدة البيانات لديكِ)
-        # إذا كان حقل السعر متواجد في الـ profile الفرعي للطبيب (Vet model) نصل إليه هكذا:
         session_price = getattr(vet_user, 'vet', None).session_price if hasattr(vet_user, 'vet') else 100.00
         
-        # 3. 🔥 نمرر السعر الفعلي للطبيب أثناء الحفظ ليخزن في جدول الاستشارة بدقة
-        # تأكدي إن اسم الحقل في موديل الـ Consultation هو 'price' أو 'session_price' وعدليه هنا بناءً عليه
         consultation = serializer.save(
             owner=self.request.user,
-            price=session_price  # 👈 أو session_price=session_price حسب اسم الحقل عندك في موديل الاستشارة
+            price=session_price  
         )
 
         # ايميل للـ Pet Owner
@@ -51,59 +47,64 @@ class ConsultationCreateView(generics.CreateAPIView):
 
 class ConsultationCancelView(generics.UpdateAPIView):
     permission_classes = [IsPetOwner]
+    serializer_class = ConsultationSerializer
+
+    queryset = Consultation.objects.all()
 
     def post(self, request, *args, **kwargs):
         consultation = self.get_object()
 
         if consultation.owner != request.user:
-            return Response({"error": "Not allowed"}, status=403)
+            return Response({"error": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
 
         consultation.status = "cancelled"
         consultation.save()
 
-        return Response({"message": "Cancelled"})
+        return Response({"message": "Cancelled", "status": consultation.status}, status=200)
 
 
 class ConsultationVetUpdateView(generics.UpdateAPIView):
     permission_classes = [IsVet]
+    serializer_class = ConsultationSerializer
     queryset = Consultation.objects.all()
 
+    def patch(self, request, *args, **kwargs):
+        return self.handle_update(request)
+
     def post(self, request, *args, **kwargs):
+        return self.handle_update(request)
+
+    def handle_update(self, request):
         consultation = self.get_object()
 
         # تأكد أن هذا الـ vet هو صاحب الموعد
         if consultation.vet != request.user:
             return Response(
                 {"error": "Not your appointment"},
-                status=403
+                status=status.HTTP_403_FORBIDDEN
             )
 
-        action = request.data.get("action")
+        action = request.data.get("action") or request.data.get("status")
 
-        if action == "start":
+        if action in ["start", "started"]:
             consultation.status = "started"
-
-        elif action == "end":
+        elif action in ["end", "ended"]:
             consultation.status = "ended"
-
-        elif action == "cancel":
+        elif action in ["cancel", "cancelled"]:
             consultation.status = "cancelled"
-
         else:
             return Response(
                 {"error": "Invalid action"},
-                status=400
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         consultation.save()
 
         return Response({
-            "message": f"Appointment {action}ed",
+            "message": f"Appointment updated to {consultation.status}",
             "status": consultation.status
-        })
+        }, status=status.HTTP_200_OK)
 
-
-from core.permissions.roles import IsVetOrPetOwner
 
 class MyAppointmentsView(generics.ListAPIView):
     serializer_class = ConsultationSerializer
@@ -112,11 +113,7 @@ class MyAppointmentsView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
 
-        if user.role == "vet":
-            return Consultation.objects.filter(
-                vet=user
-            ).order_by("-created_at")
+        if getattr(user, 'role', None) == "vet":
+            return Consultation.objects.filter(vet=user).order_by("-created_at")
 
-        return Consultation.objects.filter(
-            owner=user
-        ).order_by("-created_at")
+        return Consultation.objects.filter(owner=user).order_by("-created_at")

@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import PaymentTransaction
 from .serializers import PaymentIntentSerializer, PaymentVerificationSerializer
 from .services import MoyasarService
-from consultations.models import Consultation  # استدعاء موديل الجلسة الخاص بك
+from consultations.models import Consultation  
 
 class CreatePaymentIntentView(APIView):
     permission_classes = [IsAuthenticated]
@@ -26,7 +26,7 @@ class CreatePaymentIntentView(APIView):
         except Consultation.DoesNotExist:
             return Response({"error": "session not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # إنشاء نية الدفع في قاعدة البيانات
+        # إنشاء الدفع في قاعدة البيانات
         transaction = PaymentTransaction.objects.create(
             user=request.user,
             consultation=consultation,
@@ -56,7 +56,7 @@ class VerifyPaymentView(APIView):
         except PaymentTransaction.DoesNotExist:
             return Response({"error": "not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-        # التحقق من سيرفر ميسر مباشرة
+        # التحقق من سيرفر ميسر 
         moyasar_data = MoyasarService.verify_payment(payment_id)
 
         if moyasar_data and moyasar_data.get('status') == 'paid':
