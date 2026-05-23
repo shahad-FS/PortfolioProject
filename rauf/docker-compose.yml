@@ -3,26 +3,18 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-
     container_name: rauf-backend
-
     working_dir: /app
-
     command: daphne -b 0.0.0.0 -p 8000 backend.config.asgi:application
-
     volumes:
       - .:/app
-
     env_file:
       - .env
-
     environment:
       - DJANGO_SETTINGS_MODULE=backend.config.settings
       - PYTHONPATH=/app/backend
-
     depends_on:
       - redis
-
     networks:
       - appnet
 
@@ -35,10 +27,8 @@ services:
       - ./docker/nginx.conf:/etc/nginx/nginx.conf
       - ./frontend/dist:/usr/share/nginx/html:ro
       - ./docker/certs:/etc/nginx/certs
-
     depends_on:
       - backend
-
     networks:
       - appnet
 
@@ -47,6 +37,22 @@ services:
     container_name: rauf-redis
     ports:
       - "6379:6379"
+    networks:
+      - appnet
+
+  coturn:
+    image: coturn/coturn:latest
+    container_name: rauf-turn-server
+    restart: always
+    ports:
+      - "3478:3478"
+      - "3478:3478/udp"
+    env_file:
+      - .env
+    volumes:
+      - ./coturn/turnserver.conf:/etc/coturn/turnserver.conf
+
+    command: turnserver -u ${TURN_USER}:${TURN_PASSWORD}
     networks:
       - appnet
 

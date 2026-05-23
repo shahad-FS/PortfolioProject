@@ -3,7 +3,8 @@ from .views import (
     ConsultationCreateView,
     ConsultationCancelView,
     ConsultationVetUpdateView,
-    MyAppointmentsView
+    MyAppointmentsView,
+    
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
         "<int:pk>/vet-update/",
         ConsultationVetUpdateView.as_view()
     ),
+
 ]

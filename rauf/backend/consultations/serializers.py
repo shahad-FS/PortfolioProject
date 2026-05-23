@@ -1,3 +1,4 @@
+from datetime import datetime
 from rest_framework import serializers
 from .models import Consultation
 from pets.models import Pet
@@ -12,13 +13,19 @@ class ConsultationSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    pet_age = serializers.SerializerMethodField()
+
+
     vet_name = serializers.CharField(
-        source="vet.profile.full_name", # 💡 تعديل اختياري: لإرجاع الاسم الكامل للطبيب بدلاً من الـ username
+        source="vet.profile.full_name", 
         read_only=True
     )
 
-    # 🔥 إضافة حقل سعر الجلسة ديناميكياً
-    session_price = serializers.SerializerMethodField()
+
+    session_price = serializers.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        read_only=True)
 
     class Meta:
         model = Consultation
@@ -27,26 +34,21 @@ class ConsultationSerializer(serializers.ModelSerializer):
             "id",
             "pet",
             "pet_name",
+            'pet_age',
             "vet",
             "vet_name",
             "status",
             "scheduled_at",
             "created_at",
             "medical_record",
-            "session_price", # 🔥 إضافته هنا ليظهر في الـ JSON الراجع للـ React
+            "session_price",
+            "is_paid"
+
         ]
 
-        # هذه الحقول لا يدخلها المستخدم مباشرة
         read_only_fields = ["status", "created_at"]
 
-    # 💡 دالة جلب السعر من ملف الطبيب المرتبط بالاستشارة
-    def get_session_price(self, obj):
-        if obj.vet and hasattr(obj.vet, 'vet_profile'):
-            # تأكدي أن اسم الحقل في موديل الـ VetProfile هو session_price فعلاً
-            return str(obj.vet.vet_profile.session_price)
-        return "100.00" # سعر احتياطي افتراضي في حال لم يُحدد الطبيب سعراً
-
-    # Validation مهم جداً قبل إنشاء الحجز
+    
     def validate(self, data):
         """
         التحقق من صحة البيانات قبل إنشاء consultation
@@ -58,16 +60,19 @@ class ConsultationSerializer(serializers.ModelSerializer):
         pet = data.get("pet")
         vet = data.get("vet")
 
-        # التأكد أن pet فعلاً تابع للـ pet_owner
         if pet.owner != user:
             raise serializers.ValidationError(
                 "You can only book consultations for your own pets."
             )
 
-        # التأكد أن vet فعلاً vet
         if vet.role != "vet":
             raise serializers.ValidationError(
                 "Selected user is not a vet."
             )
-
         return data
+
+    def get_pet_age(self, obj):
+        if obj.pet and obj.pet.birth_year:
+            current_year = datetime.now().year
+            return current_year - obj.pet.birth_year
+        return None

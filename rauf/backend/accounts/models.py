@@ -74,7 +74,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 def default_expiry():
     return timezone.now() + timedelta(hours=24)
 
-
 class EmailVerificationToken(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,

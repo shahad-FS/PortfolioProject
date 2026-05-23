@@ -48,9 +48,13 @@ class Consultation(models.Model):
         
         if not self.id:
             try:
-                self.session_price = self.vet.vetprofile.session_price
+                if hasattr(self.vet, 'vet'):
+                    self.session_price = self.vet.vet.session_price
+                elif hasattr(self.vet, 'vetprofile'):
+                    self.session_price = self.vet.vetprofile.session_price
+                else:
+                    self.session_price = 100.00
             except AttributeError:
-                
                 self.session_price = 100.00  
                 
         super().save(*args, **kwargs)
