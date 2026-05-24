@@ -253,6 +253,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 SECURE_SSL_REDIRECT = False  # في prod تكون True
 
 #channel Backing Store
+REDIS_URL = os.environ.get("REDIS_URL")
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
