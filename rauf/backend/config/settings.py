@@ -31,7 +31,9 @@ DEBUG = True
 
 
 # force rebuild
-ALLOWED_HOSTS = ["*",
+ALLOWED_HOSTS = [
+    "*",
+    "portfolioproject-bdyu.onrender.com",
                  ]
 
 
@@ -237,30 +239,17 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-   "http://localhost:5173",
-    "http://127.0.0.1:5173",
-   "https://localhost:5173",
-    "https://127.0.0.1:5173",
-   "https://172.20.10.2/",
-    "https://localhost",
-    "https://127.0.0.1",
+    "https://portfolio-project-eight-olive.vercel.app",
     "https://*.ngrok-free.app",
     "https://*.vercel.app",
     "https://*.railway.app",
     "https://*.onrender.com",
-    "https://raufapp.com",
-    "https://*.raufapp.com",
-    "https://10.61.14.0",
-    "https://rauf.local",
-    "https://192.168.1.114",
+   
     
 
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://localhost:5173",
-    "https://127.0.0.1:5173",
+    "https://portfolio-project-eight-olive.vercel.app",
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
