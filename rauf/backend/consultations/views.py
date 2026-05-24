@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
@@ -8,7 +9,7 @@ from rest_framework import status
 from core.permissions.roles import IsPetOwner, IsVet, IsVetOrPetOwner
 from core.services.email_service import EmailService
 
-
+logger = logging.getLogger(__name__)
 class ConsultationCreateView(generics.CreateAPIView):
     """
     Pet Owner يحجز Consultation
@@ -37,15 +38,18 @@ class ConsultationCreateView(generics.CreateAPIView):
             owner=self.request.user,
             session_price=session_price
         )
-        EmailService.send_consultation_confirmation(
-            self.request.user,
-            consultation
-        )
+        try:
+            EmailService.send_consultation_confirmation(
+                self.request.user,
+                consultation
+            )
 
-        EmailService.send_vet_notification(
-            consultation.vet,
-            consultation
-        )
+            EmailService.send_vet_notification(
+                consultation.vet,
+                consultation
+            )
+        except Exception as e:
+            logger.error(f"Email notification failed for consultation {consultation.id}: {e}")
 
 
 class ConsultationCancelView(generics.UpdateAPIView):
