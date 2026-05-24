@@ -157,11 +157,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-    '10.61.15.55',
-    '172.20.10.2',
-]
+# INTERNAL_IPS = []
 
 AUTH_USER_MODEL = "accounts.User"
 
@@ -262,8 +258,8 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(
-                os.getenv("REDIS_HOST"),
-                os.getenv("REDIS_PORT")
+                os.getenv("REDIS_URL"),
+                # os.getenv("REDIS_PORT")
             )],
         },
     },
