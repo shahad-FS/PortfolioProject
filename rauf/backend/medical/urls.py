@@ -11,24 +11,29 @@ from .views import (
 urlpatterns = [
     path(
         "medical-records/",
-        MedicalRecordCreateView.as_view()
+        MedicalRecordCreateView.as_view(),
+        name="medical-records-list"
     ),
 
     path(
         "medical-records/<int:pk>/",
-        MedicalRecordDetailView.as_view()
+        MedicalRecordDetailView.as_view(),
+        name="medical-record-detail"
     ),
 
     path(
         "medical-records/consultation/<int:consultation_id>/",
-        MedicalRecordByConsultationView.as_view()
+        MedicalRecordByConsultationView.as_view(),
+        name="medical-record-by-consultation"
     ),
     path(
         "diagnoses/",
-        DiagnosisCreateView.as_view()
+        DiagnosisCreateView.as_view(),
+        name="diagnoses-list"
     ),
     path(
         "prescriptions/",
-        PrescriptionCreateView.as_view()
+        PrescriptionCreateView.as_view(),
+        name="prescriptions-list"
     ),
 ]

@@ -8,21 +8,21 @@ from .views import (
 )
 
 urlpatterns = [
-    path("book/", ConsultationCreateView.as_view()),
+    path("book/", ConsultationCreateView.as_view(), name="consultation-create"),
 
     path(
         "my-appointments/",
-        MyAppointmentsView.as_view()
+        MyAppointmentsView.as_view(), name="my-appointments"
     ),
 
     path(
         "<int:pk>/cancel/",
-        ConsultationCancelView.as_view()
+        ConsultationCancelView.as_view(), name="consultation-cancel"
     ),
 
     path(
         "<int:pk>/vet-update/",
-        ConsultationVetUpdateView.as_view()
+        ConsultationVetUpdateView.as_view(), name="consultation-vet-update"
     ),
 
 ]

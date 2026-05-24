@@ -42,10 +42,14 @@ const EmailVerified = () => {
                   color: "#319795",
                 }}
               >
-                {t("emailVerified.badge", "تم التفعيل بنجاح")}
+                {t("emailVerified.badge")}
               </div>
-              <div className="form-title" style={{ color: "#2f855a" }}>
-                {t("emailVerified.title", "تم التحقق من بريدك!")}
+              <div
+                className="form-title"
+                style={{ color: "#2f855a" }}
+                data-testid="verified-title"
+              >
+                {t("emailVerified.title")}
               </div>
             </div>
 
@@ -74,6 +78,7 @@ const EmailVerified = () => {
               >
                 <Link
                   to="/login"
+                  data-testid="login-link"
                   className="btn-primary"
                   style={{
                     textDecoration: "none",
@@ -86,6 +91,7 @@ const EmailVerified = () => {
 
                 <Link
                   to="/"
+                  data-testid="home-link"
                   className="btn-secondary"
                   style={{
                     textDecoration: "none",

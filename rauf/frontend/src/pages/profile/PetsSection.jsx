@@ -30,7 +30,7 @@ export default function PetsSection({
 
   const openMedical = (petId) => {
     const petAppointments = appointments.filter((app) => {
-      const idFromApp = app.pet?.id || app.pet;  
+      const idFromApp = app.pet?.id || app.pet;
       return String(idFromApp) === String(petId);
     });
 
@@ -56,21 +56,21 @@ export default function PetsSection({
       text: t("profile.pet.confirmDelete"),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#c62828", 
-      cancelButtonColor: "var(--border)", 
+      confirmButtonColor: "#c62828",
+      cancelButtonColor: "var(--border)",
       confirmButtonText: t("common.delete"),
       cancelButtonText: t("common.cancel"),
       background: "var(--white)",
       color: "var(--text)",
-      borderRadius: "16px", 
+      borderRadius: "16px",
       customClass: {
-        popup: "custom-swal-font", 
+        popup: "custom-swal-font",
       },
     }).then((result) => {
       if (result.isConfirmed) {
         deletePet(petId);
 
-        // رسالة نجاح 
+        // رسالة نجاح
         Swal.fire({
           title: t("profile.pet.deletedTitle"),
           text: t("profile.pet.deletedText"),
@@ -102,7 +102,7 @@ export default function PetsSection({
             <button
               className="btn-fill flex items-center justify-center"
               onClick={openAdd}
-              title={t("profile.pet.addTooltip")} 
+              title={t("profile.pet.addTooltip")}
               style={{
                 width: "45px",
                 height: "45px",
@@ -176,14 +176,12 @@ export default function PetsSection({
                         🎂 {t("profile.pet.age")}:{" "}
                         {pet.age
                           ? i18n.language === "ar"
-                            ? 
-                              Number(pet.age) === 1
+                            ? Number(pet.age) === 1
                               ? "سنة"
                               : Number(pet.age) === 2
                                 ? "سنتين"
                                 : `${pet.age} سنوات`
-                            : 
-                              Number(pet.age) === 1
+                            : Number(pet.age) === 1
                               ? "1 Year"
                               : `${pet.age} Years`
                           : "—"}
@@ -243,6 +241,7 @@ export default function PetsSection({
                     {/* زر الحذفف */}
                     <button
                       onClick={() => handleDeleteClick(pet.id)}
+                      aria-label={t("common.delete")}
                       style={{
                         padding: "6px 10px",
                         borderRadius: "8px",

@@ -22,23 +22,26 @@ class ConsultationCreateView(generics.CreateAPIView):
     permission_classes = [IsPetOwner]
 
     def perform_create(self, serializer):
-        consultation = serializer.save(owner=self.request.user)
         vet_user = serializer.validated_data.get('vet')
         
-        session_price = getattr(vet_user, 'vet', None).session_price if hasattr(vet_user, 'vet') else 100.00
-        
+        if hasattr(vet_user, 'vetprofile'):
+            session_price = vet_user.vetprofile.session_price
+        elif hasattr(vet_user, 'profile'):
+            session_price = vet_user.profile.session_price
+        elif hasattr(vet_user, 'vet'):
+            session_price = vet_user.vet.session_price
+        else:
+            session_price = 100.00
+
         consultation = serializer.save(
             owner=self.request.user,
-            price=session_price  
+            session_price=session_price
         )
-
-        # ايميل للـ Pet Owner
         EmailService.send_consultation_confirmation(
             self.request.user,
             consultation
         )
 
-        # إرسال إيميل للـ Vet
         EmailService.send_vet_notification(
             consultation.vet,
             consultation
@@ -77,7 +80,6 @@ class ConsultationVetUpdateView(generics.UpdateAPIView):
     def handle_update(self, request):
         consultation = self.get_object()
 
-        # تأكد أن هذا الـ vet هو صاحب الموعد
         if consultation.vet != request.user:
             return Response(
                 {"error": "Not your appointment"},

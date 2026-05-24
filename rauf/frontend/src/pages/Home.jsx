@@ -46,7 +46,10 @@ export default function Home() {
   };
 
   const VetSkeleton = () => (
-    <div className="doctor-card border rounded-2xl p-6 animate-pulse bg-white flex flex-col items-center text-center shadow-sm">
+    <div
+      className="doctor-card border rounded-2xl p-6 animate-pulse bg-white flex flex-col items-center text-center shadow-sm"
+      data-testid="vet-skeleton"
+    >
       <div className="h-14 w-14 bg-gray-200 rounded-full mb-4 animate-pulse"></div>
       <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
       <div className="h-3 bg-gray-100 rounded w-1/2 mb-4"></div>
@@ -137,9 +140,15 @@ export default function Home() {
           {/* اللودنق حقت تحميل كارد الاطباء*/}
           <div className="doctors-grid">
             {loading
-              ? Array.from({ length: 3 }).map((_, i) => <VetSkeleton key={i} />)
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <VetSkeleton key={i} data-testid="vet-skeleton" />
+                ))
               : vets.map((vet) => (
-                  <div className="doctor-card" key={vet.id}>
+                  <div
+                    className="doctor-card"
+                    key={vet.id}
+                    data-testid="vet-card"
+                  >
                     <div className="doctor-avatar">👩‍⚕️</div>
 
                     <h3 className="doctor-name">{vet.full_name}</h3>
@@ -166,6 +175,7 @@ export default function Home() {
                     <button
                       onClick={() => handleBook(vet.id)}
                       className="btn-book"
+                      data-testid={`book-btn-${vet.id}`}
                     >
                       {t("home.vets.bookBtn")}
                     </button>

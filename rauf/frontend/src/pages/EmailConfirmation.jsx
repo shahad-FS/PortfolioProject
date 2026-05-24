@@ -36,7 +36,9 @@ const EmailConfirmation = () => {
               <div className="tag-badge" style={{ margin: "0 auto 12px" }}>
                 📧 {t("confirmEmail.badge")}
               </div>
-              <div className="form-title">{t("confirmEmail.title")}</div>
+              <div className="form-title" data-testid="confirmation-title">
+                {t("confirmEmail.title")}
+              </div>
             </div>
 
             <div
@@ -46,6 +48,7 @@ const EmailConfirmation = () => {
               <p
                 className="text-gray-600 mb-6"
                 style={{ lineHeight: "1.6", color: "#4a5568" }}
+                data-testid="confirmation-message"
               >
                 {t("confirmEmail.message")}
               </p>

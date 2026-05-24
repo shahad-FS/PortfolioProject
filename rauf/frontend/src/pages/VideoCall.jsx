@@ -30,8 +30,11 @@ export default function VideoCall({ sessionIdOverride }) {
 
   ///@@@ هنا ال wss
   const envBaseURL =
-    import.meta.env.VITE_API_BASE_URL || "https://localhost:8000";
-  const cleanHost = envBaseURL.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    import.meta.env.VITE_WSS_BASE_URL || "wss://localhost:8000";
+  // const cleanHost = envBaseURL.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
+  const turnHost = import.meta.env.VITE_TURN_HOST || "localhost";
+
   useEffect(() => {
     initDeviceAndConnect();
 
@@ -75,11 +78,22 @@ export default function VideoCall({ sessionIdOverride }) {
 
       const pc = new RTCPeerConnection({
         iceServers: [
-          { urls: "stun:stun.l.google.com:19302" },
           {
-            urls: `turn:${cleanHost.split(":")[0]}:3478`,
-            username: import.meta.env.VITE_TURN_USER,
-            credential: import.meta.env.VITE_TURN_PASSWORD,
+            urls: [
+              "stun:stun.l.google.com:19302",
+              "stun:stun1.l.google.com:19302",
+              "stun:stun2.l.google.com:19302",
+            ],
+          },
+
+          {
+            urls: [
+              "turn:openrelay.metered.ca:80",
+              "turn:openrelay.metered.ca:443",
+              "turn:openrelay.metered.ca:80?transport=tcp",
+            ],
+            username: "openrelayproject",
+            credential: "openrelayproject",
           },
         ],
       });
@@ -132,7 +146,7 @@ export default function VideoCall({ sessionIdOverride }) {
         }
       };
 
-      const socket = new WebSocket(`wss://${cleanHost}/ws/video/${sessionId}/`);
+      const socket = new WebSocket(`${envBaseURL}/ws/video/${sessionId}/`);
       socketRef.current = socket;
 
       socket.onopen = () => {
@@ -258,6 +272,7 @@ export default function VideoCall({ sessionIdOverride }) {
 
   const endCall = () => {
     console.log("❌ Ending call...");
+    console.log("pcRef.current exists?", !!pcRef.current);
 
     // نسكرWebSocket
     socketRef.current?.close();

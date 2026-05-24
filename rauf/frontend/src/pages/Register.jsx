@@ -128,6 +128,7 @@ const Register = () => {
                   <span className="input-icon">📧</span>
                   <input
                     name="email"
+                    data-testid="email-input"
                     placeholder="examplr@email.com"
                     onChange={handleChange}
                     className="form-input"
@@ -154,6 +155,7 @@ const Register = () => {
                   <input
                     type="password"
                     name="password"
+                    data-testid="password-input"
                     placeholder={t("register.form.passwordLabel")}
                     onChange={handleChange}
                     className="form-input has-left-icon"

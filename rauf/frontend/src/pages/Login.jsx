@@ -123,10 +123,11 @@ const Login = () => {
             </div>
 
             <form onSubmit={handleSubmit}>
-              {/* رسالة الخطأ العامة إن وجدت */}
+              {/* رسالة الخطأ */}
               {error && (
                 <div
                   className="alert alert-error text-red-500 text-sm mb-4 text-right"
+                  data-testid="login-error"
                   style={{
                     padding: "10px",
                     backgroundColor: "#fff5f5",

@@ -50,25 +50,25 @@ class ConsultationSerializer(serializers.ModelSerializer):
 
     
     def validate(self, data):
-        """
-        التحقق من صحة البيانات قبل إنشاء consultation
-        """
-
         request = self.context.get("request")
         user = request.user
-
         pet = data.get("pet")
         vet = data.get("vet")
 
         if pet.owner != user:
-            raise serializers.ValidationError(
-                "You can only book consultations for your own pets."
-            )
+            raise serializers.ValidationError("You can only book consultations for your own pets.")
 
         if vet.role != "vet":
-            raise serializers.ValidationError(
-                "Selected user is not a vet."
-            )
+            raise serializers.ValidationError("Selected user is not a vet.")
+
+        from accounts.models import VetProfile
+        profile = VetProfile.objects.filter(user=vet).first()
+        print(f"DEBUG: Found profile {profile} with price {profile.session_price if profile else 'None'}")
+        
+        if not profile or profile.session_price <= 0:
+            raise serializers.ValidationError({
+                "session_price": "Cannot book a consultation with a vet who has an invalid or zero session price."
+            })
         return data
 
     def get_pet_age(self, obj):

@@ -1,12 +1,9 @@
-/* 1. استيراد خط كاريو المريح للعين من جوجل */
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap");
 
-/* 2. استدعاء محركات تايلوند الأساسية */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 3. تصفير الهوامش وقانون الحجم الذكي */
 *,
 *::before,
 *::after {
@@ -15,7 +12,6 @@
   padding: 0;
 }
 
-/* 4. حقن لوحة الألوان الدافئة في جذع الموقع */
 :root {
   --primary: #d97940;
   --primary-hover: #c2632b;
@@ -77,9 +73,9 @@ a {
 
 .btn-secondary {
   padding: 8px 20px;
-  background: transparent; /* خلفية شفافة */
-  color: var(--primary); /* لون النص نفس اللون الأساسي */
-  border: 1.5px solid var(--primary); /* إطار بنفس لون البراند الأساسي */
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
   border-radius: 30px;
   font-size: 13px;
   font-weight: 700;
@@ -91,16 +87,14 @@ a {
   justify-content: center;
   gap: 8px;
   margin-top: 4px;
-  text-decoration: none; /* لإزالة الخط السفلي إذا كان وسم <Link> */
+  text-decoration: none;
 }
-
-/* تأثير الـ Hover للـ Outline */
 .btn-secondary:hover:not(:disabled) {
-  background: var(--primary-light); /* يتحول لون الخلفية إلى الفاتح */
-  border-color: var(--primary-light); /* يتحول الإطار أيضاً لنفس اللون الفاتح */
-  color: var(--white); /* يقلب لون النص للأبيض ليكون واضحاً */
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  color: var(--white);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(240, 160, 106, 0.25); /* توهج خفيف يناسب اللون الفاتح */
+  box-shadow: 0 4px 16px rgba(240, 160, 106, 0.25);
 }
 
 .btn-secondary:disabled {
@@ -115,52 +109,44 @@ a {
 .react-datepicker__portal,
 .react-datepicker-popper {
   z-index: 9999 !important;
-  margin-top: 14px !important; /* قفز الكالندر فوق أي عنصر آخر */
+  margin-top: 14px !important;
 }
 
-/* 2️⃣ لون اليوم المختار يدوياً والوقت المختار */
 .react-datepicker__day--selected,
 .react-datepicker__time-list-item--selected {
   background-color: var(--primary) !important;
   color: var(--white) !important;
 }
 
-/* 3️⃣ التخلص من التحديد الأزرق الافتراضي لليوم الحالي (الذي يظهر في الصورة) وتحويله للون موقعك الفاتح */
 .react-datepicker__day--keyboard-selected,
 .react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
-  background-color: var(
-    --primary-light
-  ) !important; /* لون البراند الفاتح المريح للعين */
+  background-color: var(--primary-light) !important;
   color: var(--white) !important;
   border-radius: 0.3rem;
 }
 
-/* 4️⃣ تأثير الـ Hover (عند تمرير الماوس فوق الأيام أو الأوقات) */
 .react-datepicker__day:hover,
 .react-datepicker__time-list-item:hover {
   background-color: var(--primary-light) !important;
   color: var(--white) !important;
 }
 
-/* 5️⃣ رأس الكالندر (أيام الأسبوع والشهور) */
 .react-datepicker__header {
   background-color: var(--primary-pale) !important;
   border-bottom: 1px solid var(--border) !important;
   margin-top: -12px;
 }
 
-/* 6️⃣ تعديل الخط الهيكلي للكالندر ليطابق خط الموقع (Cairo) وتدوير الحواف */
 .react-datepicker {
   font-family: "Cairo", sans-serif !important;
   border: 1px solid var(--border) !important;
   border-radius: 12px !important;
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); /* إضافة ظل خفيف ليبرز الكالندر عن الخلفية */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
-/* تنسيق إضافي لترتيب جهة وقت الاختيار ليصبح متناسقاً */
 .react-datepicker__time-container {
   border-left: 1px solid var(--border) !important;
 }
