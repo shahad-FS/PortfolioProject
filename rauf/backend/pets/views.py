@@ -23,7 +23,6 @@ class PetListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         
-        # حماية إضافية إذا كان الطلب غير مسجل دخول
         if not user.is_authenticated:
             return Pet.objects.none()
 

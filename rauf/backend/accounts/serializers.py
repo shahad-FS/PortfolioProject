@@ -58,6 +58,11 @@ class VetProfileSerializer(serializers.ModelSerializer):
         model = VetProfile
         fields = ["license_number", "specialization", "session_price"]
         read_only_fields = ["is_approved"]
+    
+    def validate_session_price(self, value):
+        if value <= 0:
+            raise serializers.ValidationError("session_price should be grater than zero.")
+        return value
 
 
 class UserProfileSerializer(serializers.ModelSerializer):

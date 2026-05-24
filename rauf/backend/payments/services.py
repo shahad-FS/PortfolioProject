@@ -5,9 +5,7 @@ from requests.auth import HTTPBasicAuth
 class MoyasarService:
     @staticmethod
     def verify_payment(payment_id):
-        """
-        التحقق من حالة العملية مباشرة من سيرفر ميسر
-        """
+        
         url = f"https://api.moyasar.com/v1/payments/{payment_id}"
         
         

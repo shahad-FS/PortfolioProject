@@ -15,12 +15,12 @@ export default function AppointmentsSection({
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const socketRef = useRef(null);
-
+  const envBaseURL = import.meta.env.VITE_WSS_BASE_URL;
   // ================= SOCKET =================
   useEffect(() => {
     if (socketRef.current) return;
 
-    const socket = new WebSocket(`wss://172.20.10.2/ws/appointments/`);
+    const socket = new WebSocket(`${envBaseURL}/ws/appointments/`);
 
     socketRef.current = socket;
 
@@ -249,7 +249,6 @@ export default function AppointmentsSection({
                   <p style={{ color: "var(--text)", fontSize: "0.85rem" }}>
                     🎂 {t("profile.pet.age")}:{" "}
                     {(() => {
-                      // قراءة الحقل القادم جاهزاً ومحسوباً من الباكيند
                       const age = app.pet_age;
 
                       if (age === undefined || age === null || isNaN(age)) {

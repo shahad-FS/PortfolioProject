@@ -26,9 +26,9 @@ class CreatePaymentIntentView(APIView):
         except Consultation.DoesNotExist:
             return Response({"error": "session not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # إنشاء الدفع في قاعدة البيانات
+        
         transaction = PaymentTransaction.objects.create(
-            user=request.user,
+            owner=request.user,
             consultation=consultation,
             amount=final_price,
             status='initiated'
@@ -52,15 +52,15 @@ class VerifyPaymentView(APIView):
         transaction_id = serializer.validated_data['transaction_id']
 
         try:
-            transaction = PaymentTransaction.objects.get(id=transaction_id, user=request.user)
+            transaction = PaymentTransaction.objects.get(id=transaction_id, owner=request.user)
         except PaymentTransaction.DoesNotExist:
             return Response({"error": "not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-        # التحقق من سيرفر ميسر 
+        
         moyasar_data = MoyasarService.verify_payment(payment_id)
 
         if moyasar_data and moyasar_data.get('status') == 'paid':
-            # تجديث الفاتوره
+            
             transaction.moyasar_payment_id = payment_id
             transaction.status = 'paid'
             transaction.save()

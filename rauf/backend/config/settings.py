@@ -38,9 +38,12 @@ ALLOWED_HOSTS = ["*",
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
     'daphne',
     "channels",
+
+
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -331,3 +334,6 @@ JAZZMIN_UI_TUNER = {
 }
 
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://localhost")
+
+
+

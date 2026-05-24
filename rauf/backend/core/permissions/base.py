@@ -33,3 +33,13 @@ class RolePermission(BasePermission):
 class IsOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.owner == request.user
+
+
+
+class IsConsultationVet(BasePermission):
+    def has_permission(self, request, view):
+        # في حال الـ Create، نتأكد أن الطبيب هو صاحب الاستشارة
+        if request.method == 'POST':
+            consultation_id = request.data.get('consultation_id') or request.data.get('record')
+            # يمكنك هنا إضافة منطق للتحقق من أن request.user هو الطبيب المعالج
+        return True

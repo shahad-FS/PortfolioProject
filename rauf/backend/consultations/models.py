@@ -45,16 +45,16 @@ class Consultation(models.Model):
     is_paid = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        
         if not self.id:
             try:
-                if hasattr(self.vet, 'vet'):
-                    self.session_price = self.vet.vet.session_price
-                elif hasattr(self.vet, 'vetprofile'):
-                    self.session_price = self.vet.vetprofile.session_price
+                from accounts.models import VetProfile 
+                profile = VetProfile.objects.filter(user=self.vet).first()
+                
+                if profile and profile.session_price and profile.session_price > 0:
+                    self.session_price = profile.session_price
                 else:
-                    self.session_price = 100.00
-            except AttributeError:
+                    self.session_price = 100.00  
+            except Exception:
                 self.session_price = 100.00  
                 
         super().save(*args, **kwargs)

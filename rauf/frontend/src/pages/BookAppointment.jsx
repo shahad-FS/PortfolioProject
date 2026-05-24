@@ -33,7 +33,6 @@ export default function BookAppointment() {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  // ================= FETCH =================
   useEffect(() => {
     if (userRole === "vet") return;
     fetchPets();
@@ -70,7 +69,6 @@ export default function BookAppointment() {
     }
   };
 
-  // ================= HANDLE =================
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -78,7 +76,6 @@ export default function BookAppointment() {
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => s - 1);
 
-  // ================= SUBMIT =================
   const handleSubmit = async () => {
     setLoading(true);
     setMessage("");
@@ -86,7 +83,6 @@ export default function BookAppointment() {
     try {
       const res = await api.post("consultations/book/", formData);
 
-      // الاي دي حق الموعد و السغر
       const newConsultationId = res.data.id;
       const newPrice =
         res.data.price || res.data.session_price || res.data.vet?.session_price;
@@ -112,7 +108,7 @@ export default function BookAppointment() {
       setLoading(false);
     }
   };
-  //الواجهة الي تظهر للطبيب
+
   if (userRole === "vet") {
     return (
       <div
@@ -259,7 +255,6 @@ export default function BookAppointment() {
     );
   }
 
-  // ================= واجهة الخطوات الأساسية =================
   return (
     <div
       className="page"
@@ -377,6 +372,7 @@ export default function BookAppointment() {
               <div className="input-wrap">
                 <span className="input-icon">🐶</span>
                 <select
+                  id="pet-select"
                   name="pet"
                   value={formData.pet}
                   onChange={handleChange}
@@ -457,7 +453,6 @@ export default function BookAppointment() {
                 {t("booking.step3.label")} <span className="required">*</span>
               </label>
 
-              {/* الضغط على الحاوية بالكامل سيجبر الكالندر على الانبثاق فوراً */}
               <div
                 className="input-wrap"
                 onClick={() =>
@@ -473,18 +468,17 @@ export default function BookAppointment() {
                       : null
                   }
                   onChange={(date) => {
-                    // تحويل التاريخ لصيغة تناسب الباكيند عند الاختيار
                     setFormData({
                       ...formData,
                       scheduled_at: date ? date.toISOString() : "",
                     });
                   }}
-                  showTimeSelect // تفعيل اختيار الوقت
+                  showTimeSelect
                   timeFormat="HH:mm"
-                  timeIntervals={15} // الفاصل الزمني بين الدقائق
+                  timeIntervals={15}
                   timeCaption="الوقت"
-                  dateFormat="yyyy-MM-dd h:mm aa" // صيغة العرض للمستخدم
-                  className="form-input" // يرث نفس تنسيقات حقولكِ
+                  dateFormat="yyyy-MM-dd h:mm aa"
+                  className="form-input"
                   placeholderText={t("booking.step3.label")}
                   required
                 />

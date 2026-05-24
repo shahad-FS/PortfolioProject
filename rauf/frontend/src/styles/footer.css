@@ -1,5 +1,3 @@
-/* src/styles/footer.css */
-
 .footer {
   background: #2a1a0e;
   padding: 60px 5% 20px;
@@ -9,20 +7,18 @@
   box-sizing: border-box;
 }
 
-/* 🌍 تعديل الـ Grid ليدعم الانعكاس التلقائي مع اتجاه المستند */
 .footer-inner {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   display: grid;
-  /* التعديل السحري: استخدام auto-fit أو المراعاة الكاملة للاتجاهين */
+
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 48px;
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* لتوسيع مساحة عمود الشعار ليعطي فخامة أكبر */
 .footer-inner > div:first-child {
   grid-column: span 1;
 }
@@ -38,7 +34,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  text-align: start; /* يمين في العربي، يسار في الإنجليزي */
+  text-align: start;
 }
 
 .footer-brand .logo img {
@@ -88,7 +84,7 @@
   font-weight: 800;
   color: #fff;
   margin-bottom: 20px;
-  text-align: start; /* يمين في العربي، يسار في الإنجليزي */
+  text-align: start;
 }
 
 .footer-links {
@@ -149,17 +145,16 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* تضمن دفع الحقوق لطرف والروابط لطرف تلقائياً */
+  justify-content: space-between;
   font-size: 13px;
   color: #8c7b6e;
   flex-wrap: wrap;
   gap: 16px;
 }
 
-/* ✨ تعديل الكلاس ليطابق المكون المستقل الجديد تماماً */
 .footer-bottom-container .footer-bottom-links {
   display: flex;
-  gap: 32px; /* المسافة المعتمدة بين الروابط */
+  gap: 32px;
 }
 
 .footer-bottom-links a {

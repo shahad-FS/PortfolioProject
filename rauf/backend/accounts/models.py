@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.conf import settings
 import uuid
 from django.utils import timezone
+from django.core.validators import MinValueValidator
+from decimal import Decimal
 
 
 # مسؤول عن انشاء المستخدمين العاديين والمشرفين
@@ -125,7 +127,7 @@ class VetProfile(models.Model):
     license_number = models.CharField(max_length=100, blank=True, null=True)
     specialization = models.CharField(max_length=100, blank=True, null=True)
     is_approved = models.BooleanField(default=False)
-    session_price = models.DecimalField(max_digits=10, decimal_places=2, default=100.00)
+    session_price = models.DecimalField(max_digits=10, decimal_places=2, default=100.00, validators=[MinValueValidator(Decimal('0.01'))])
     
     def __str__(self):
         return f"Vet - {self.user.email}"

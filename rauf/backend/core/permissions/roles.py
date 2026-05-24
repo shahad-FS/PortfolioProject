@@ -32,3 +32,9 @@ class IsAdmin(RolePermission):
 
 class IsVetOrPetOwner(RolePermission):
     allowed_roles = ["vet", "pet_owner"]
+
+
+class IsConsultationVet(IsVet): 
+    def has_object_permission(self, request, view, obj):
+        # obj هنا هو الـ MedicalRecord
+        return obj.consultation.vet == request.user
