@@ -126,7 +126,7 @@ Backend APIs were validated using automated unit tests (pytest).
 
 ### Test Execution Results
 
-![Backend Pytest Results](documentation/pytestBackend.png)
+![Backend Pytest Results](pytestBackend.png)
 
 **Key Results:**
 - Authentication APIs passed successfully  
@@ -142,7 +142,7 @@ Frontend components were tested using Vitest and manual UI validation.
 
 ### Test Execution Results
 
-![Frontend Vitest Results](documentation/vitestFrontend.png)
+![Frontend Vitest Results](vitestFrontend.png)
 
 **Key Results:**
 - UI components rendered correctly  
