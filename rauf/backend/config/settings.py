@@ -40,6 +40,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'daphne',
     "channels",
 
@@ -64,15 +65,15 @@ INSTALLED_APPS = [
     'rest_framework',
     "rest_framework_simplejwt.token_blacklist",
     'drf_spectacular',  # لإنشاء وثائق API تلقائيًا
-    'corsheaders',
+    
     
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
