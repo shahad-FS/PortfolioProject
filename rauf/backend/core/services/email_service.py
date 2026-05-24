@@ -1,6 +1,8 @@
+import logging
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 
+logger = logging.getLogger(__name__)
 
 class EmailService:
 
@@ -9,16 +11,18 @@ class EmailService:
         """
         دالة عامة لإرسال ايميل HTML + Text 
         """
+        try:
+            email = EmailMultiAlternatives(
+                subject,
+                text_content,
+                settings.DEFAULT_FROM_EMAIL,
+                [to_email]
+            )
 
-        email = EmailMultiAlternatives(
-            subject,
-            text_content,
-            settings.DEFAULT_FROM_EMAIL,
-            [to_email]
-        )
-
-        email.attach_alternative(html_content, "text/html")
-        email.send()
+            email.attach_alternative(html_content, "text/html")
+            email.send(fail_silently=False)
+        except Exception as e:
+            logger.error(f"Failed to send email to {to_email}: {str(e)}")
 
     # Verification Email
     @staticmethod
