@@ -320,4 +320,3 @@ JAZZMIN_UI_TUNER = {
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://localhost")
 
 
-
