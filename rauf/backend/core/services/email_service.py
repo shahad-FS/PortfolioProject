@@ -27,9 +27,12 @@ class EmailService:
     # Verification Email
     @staticmethod
     def send_verification_email(user, token):
+
+        print(f"DEBUG: FRONTEND_URL is {settings.FRONTEND_URL}")
         frontend_url = settings.FRONTEND_URL.rstrip('/')
 
-        link = f"{frontend_url}//verify-email/{token}/"
+        base = "https://rauf.live"
+        link = f"{base}/verify-email/{token}"
 
         subject = "Welcome to Rauf App 🎉 - Verify your email"
 
