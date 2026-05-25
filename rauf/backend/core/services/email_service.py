@@ -88,21 +88,52 @@ class EmailService:
         """
 
         html_content = f"""
+        <!DOCTYPE html>
         <html>
-        <body style="font-family:Arial; background:#f9f9f9; padding:20px;">
-            <div style="background:white; padding:20px; border-radius:10px;">
+        <body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">
+            <tr>
+                <td align="center">
+                <table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:10px;padding:20px;">
+                    <tr>
+                    <td style="font-size:20px;font-weight:bold;padding-bottom:10px;">
+                        🎉 Welcome to Rauf App
+                    </td>
+                    </tr>
 
-                <h2>Consultation Confirmed</h2>
+                    <tr>
+                    <td style="font-size:14px;padding-bottom:10px;">
+                        Hi <b>{user.email}</b>,
+                    </td>
+                    </tr>
 
-                <p>Hi <b>{user.profile.full_name if hasattr(user, "profile") else user.email}</b>,</p>
+                    <tr>
+                    <td style="font-size:14px;padding-bottom:20px;">
+                        Please verify your email by clicking the button below:
+                    </td>
+                    </tr>
 
-                <p>Your appointment has been successfully booked 🎉</p>
+                    <tr>
+                    <td align="center">
+                        <a href="{link}" 
+                        style="display:inline-block;padding:12px 24px;background:#4CAF50;color:#ffffff;
+                                text-decoration:none;border-radius:5px;font-size:16px;">
+                        Verify Email
+                        </a>
+                    </td>
+                    </tr>
 
-                <p><b>Vet:</b> {vet_name}</p>
-                <p><b>Pet:</b> {pet_name}</p>
-                <p><b>Date:</b> {date}</p>
+                    <tr>
+                    <td style="font-size:12px;color:#777;padding-top:20px;">
+                        If the button doesn't work, copy and paste this link into your browser:<br>
+                        <span style="color:#4CAF50;">{link}</span>
+                    </td>
+                    </tr>
 
-            </div>
+                </table>
+                </td>
+            </tr>
+            </table>
         </body>
         </html>
         """
