@@ -32,8 +32,8 @@ class EmailService:
        
 
         base = "https://rauf.live"
-        link = f"{base}/verify-email/{token}"
-
+        # link = f"{base}/verify-email/{token}"
+        link = token
         print("DEBUG TOKEN:", token)
         print("DEBUG LINK:", link)
 
