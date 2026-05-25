@@ -34,6 +34,11 @@ class EmailService:
         base = "https://rauf.live"
         link = f"{base}/verify-email/{token}"
 
+        print("DEBUG TOKEN:", token)
+        print("DEBUG LINK:", link)
+
+
+
         subject = "Welcome to Rauf App 🎉 - Verify your email"
 
         text_content = f"""
