@@ -172,6 +172,13 @@
     "message": "We’ve sent you a verification link. Please check your inbox and click the link to activate your account and start your journey with us.",
     "spamNote": "Didn’t receive the email? Check your spam folder or try again later."
   },
+  "vierifyHandler": {
+    "activating": "Activating your account...",
+    "pleaseWait": "Please wait, we are verifying your activation link.",
+    "errorTitle": "An error occurred",
+    "errorDesc": "Sorry, the link is invalid or expired. Please request a new one.",
+    "backHome": "Back to Home"
+  },
   "emailVerified": {
     "badge": "Success 🎉",
     "title": "Email Verified!",
