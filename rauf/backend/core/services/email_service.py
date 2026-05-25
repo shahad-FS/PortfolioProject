@@ -51,7 +51,7 @@ class EmailService:
                 <p>Hi <b>{user.email}</b></p>
                 <p>Please verify your email:</p>
 
-                <a href="{link}"
+                <a href="{{link}}"
                    style="padding:10px 20px;
                    background:#4CAF50;
                    color:white;
