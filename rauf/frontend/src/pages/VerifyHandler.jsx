@@ -24,7 +24,7 @@ const VerifyHandler = () => {
       });
   }, [token]);
 
-  if (loading) return <div>جاري التفعيل...</div>;
+  if (loading) return <div>جاري التفعيل....</div>;
   if (error) return <div>حدث خطأ أثناء التفعيل، حاول لاحقاً.</div>;
 
   return <EmailVerified />;
