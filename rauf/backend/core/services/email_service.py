@@ -51,19 +51,14 @@ class EmailService:
                 <p>Hi <b>{user.email}</b></p>
                 <p>Please verify your email:</p>
 
-                <a href="{link}" style="padding:10px 20px;
-                    background:#4CAF50;
-                    color:white;
-                    text-decoration:none;
-                    border-radius:5px;">
-                    Verify Email
-                </a>
-
+                <a href="{link}" style="padding:10px 20px;background:#4CAF50;color:white;text-decoration:none;border-radius:5px;">Verify Email</a>
 
             </div>
         </body>
         </html>
         """
+
+
 
         EmailService.send_html_email(
             subject, user.email, text_content, html_content)
