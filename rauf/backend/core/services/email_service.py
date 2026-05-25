@@ -44,50 +44,6 @@ class EmailService:
         """
 
         html_content = f"""
-        <html>
-        <body style="font-family: Arial; background:#f4f4f4; padding:20px;">
-            <div style="background:white; padding:20px; border-radius:10px;">
-                <h2>🎉 Welcome to Rauf App</h2>
-                <p>Hi <b>{user.email}</b></p>
-                <p>Please verify your email:</p>
-
-                <a href="{link}" style="padding:10px 20px;background:#4CAF50;color:white;text-decoration:none;border-radius:5px;">Verify Email</a>
-
-            </div>
-        </body>
-        </html>
-        """
-
-
-
-        EmailService.send_html_email(
-            subject, user.email, text_content, html_content)
-
-
-    # Consultation Booking Email (Pet Owner)
-    @staticmethod
-    def send_consultation_confirmation(user, consultation):
-
-        subject = "Consultation Confirmed Successfully"
-
-        vet_name = consultation.vet.profile.full_name if hasattr(
-            consultation.vet, "profile") else consultation.vet.email
-
-        pet_name = consultation.pet.name
-
-        date = consultation.scheduled_at
-
-        text_content = f"""
-        Hi {user.email},
-
-        Your consultation is confirmed.
-
-        Vet: {vet_name}
-        Pet: {pet_name}
-        Date: {date}
-        """
-
-        html_content = f"""
         <!DOCTYPE html>
         <html>
         <body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial;">
@@ -134,6 +90,56 @@ class EmailService:
                 </td>
             </tr>
             </table>
+        </body>
+        </html>
+        """
+
+
+
+
+        EmailService.send_html_email(
+            subject, user.email, text_content, html_content)
+
+
+    # Consultation Booking Email (Pet Owner)
+    @staticmethod
+    def send_consultation_confirmation(user, consultation):
+
+        subject = "Consultation Confirmed Successfully"
+
+        vet_name = consultation.vet.profile.full_name if hasattr(
+            consultation.vet, "profile") else consultation.vet.email
+
+        pet_name = consultation.pet.name
+
+        date = consultation.scheduled_at
+
+        text_content = f"""
+        Hi {user.email},
+
+        Your consultation is confirmed.
+
+        Vet: {vet_name}
+        Pet: {pet_name}
+        Date: {date}
+        """
+
+        html_content = f"""
+        <html>
+        <body style="font-family:Arial; background:#f9f9f9; padding:20px;">
+            <div style="background:white; padding:20px; border-radius:10px;">
+
+                <h2>Consultation Confirmed</h2>
+
+                <p>Hi <b>{user.profile.full_name if hasattr(user, "profile") else user.email}</b>,</p>
+
+                <p>Your appointment has been successfully booked 🎉</p>
+
+                <p><b>Vet:</b> {vet_name}</p>
+                <p><b>Pet:</b> {pet_name}</p>
+                <p><b>Date:</b> {date}</p>
+
+            </div>
         </body>
         </html>
         """
