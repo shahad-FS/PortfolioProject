@@ -15,7 +15,7 @@ const Profile = lazy(() => import("./pages/profile/Profile"));
 const BookAppointment = lazy(() => import("./pages/BookAppointment"));
 const VideoCall = lazy(() => import("./pages/VideoCall"));
 const EmailConfirmation = lazy(() => import("./pages/EmailConfirmation"));
-const EmailVerified = lazy(() => import("./pages/EmailVerified"));
+const VerifyHandler = lazy(() => import("./pages/VerifyHandler"));
 
 function App() {
   const { i18n } = useTranslation();
@@ -40,7 +40,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/check-email" element={<EmailConfirmation />} />
-          <Route path="/email-verified" element={<EmailVerified />} />
+          <Route path="/email-verified" element={<VerifyHandler />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/profile" element={<Profile />} />
