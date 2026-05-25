@@ -27,3 +27,4 @@ const VerifyHandler = () => {
 
   return <EmailVerified />;
 };
+export default VerifyHandler;
