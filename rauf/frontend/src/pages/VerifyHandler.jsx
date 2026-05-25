@@ -10,9 +10,7 @@ const VerifyHandler = () => {
 
   useEffect(() => {
     api
-      .get(
-        `https://portfolioproject-bdyu.onrender.com/api/v1/accounts/verify-email/${token}/`,
-      )
+      .get(`accounts/verify-email/${token}/`)
       .then((res) => {
         console.log("Success:", res.data);
         setLoading(false);
