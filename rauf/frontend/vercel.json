@@ -5,6 +5,10 @@
       "destination": "https://portfolioproject-bdyu.onrender.com/api/:path*"
     },
     {
+      "source": "/verify-email/:token",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
