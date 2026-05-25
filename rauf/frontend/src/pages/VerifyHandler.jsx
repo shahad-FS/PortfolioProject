@@ -23,24 +23,32 @@ const VerifyHandler = () => {
 
   if (loading)
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center p-6">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-        <h2 className="text-2xl font-bold text-gray-800">{t("activating")}</h2>
-        <p className="text-gray-500 mt-2">{t("pleaseWait")}</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--bg)] text-center p-6">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[var(--primary)] mb-4"></div>
+        <h2 className="text-2xl font-bold text-[var(--text)]">
+          {t("vierifyHandler.activating")}
+        </h2>
+        <p className="text-[var(--text-muted)] mt-2">
+          {t("vierifyHandler.pleaseWait")}
+        </p>
       </div>
     );
 
   if (error)
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-red-50 text-center p-6">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--bg)] text-center p-6">
         <div className="text-6xl mb-4">⚠️</div>
-        <h2 className="text-2xl font-bold text-red-600">{t("errorTitle")}</h2>
-        <p className="text-gray-600 mt-2 max-w-md">{t("errorDesc")}</p>
+        <h2 className="text-2xl font-bold text-red-600">
+          {t("vierifyHandler.errorTitle")}
+        </h2>
+        <p className="text-[var(--text-muted)] mt-2 max-w-md">
+          {t("vierifyHandler.errorDesc")}
+        </p>
         <button
           onClick={() => navigate("/")}
-          className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="mt-6 px-6 py-2 bg-[var(--primary)] text-white rounded-[30px] hover:bg-[#c2632b] transition-all duration-200 font-bold"
         >
-          {t("backHome")}
+          {t("vierifyHandler.backHome")}
         </button>
       </div>
     );
