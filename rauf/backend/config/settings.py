@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'daphne',
     "channels",
 
-
+    "anymail",
     'jazzmin',
 
     'django.contrib.admin',
@@ -166,13 +166,20 @@ AUTH_USER_MODEL = "accounts.User"
 # للتجربه فقط يطبع في terminal بدال ارسال ايميلات حقيقية
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = 'Rauf App <no-reply@raufapp.com>'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# EMAIL_HOST = os.getenv("EMAIL_HOST")
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+# DEFAULT_FROM_EMAIL = 'Rauf App <no-reply@raufapp.com>'
+
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
+ANYMAIL = {
+    "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
+}
 
 # اعدادات Django REST Framework
 REST_FRAMEWORK = {
@@ -236,6 +243,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://rauf.live"
     "https://portfolio-project-eight-olive.vercel.app",
     "https://*.ngrok-free.app",
     "https://*.vercel.app",
@@ -246,6 +254,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 ]
 CORS_ALLOWED_ORIGINS = [
+    "https://rauf.live",
     "https://portfolio-project-eight-olive.vercel.app",
 ]
 
@@ -317,6 +326,6 @@ JAZZMIN_UI_TUNER = {
     "sidebar_nav_flat_style": True,
 }
 
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://localhost")
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://rauf.live")
 
 

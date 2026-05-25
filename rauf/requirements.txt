@@ -18,6 +18,7 @@ django-debug-toolbar==6.3.0
 django-jazzmin==3.0.4
 djangorestframework==3.17.1
 djangorestframework_simplejwt==5.5.1
+django-anymail==15.0
 drf-spectacular==0.29.0
 hyperlink==21.0.0
 idna==3.13
