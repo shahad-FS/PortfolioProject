@@ -176,7 +176,7 @@ AUTH_USER_MODEL = "accounts.User"
 # DEFAULT_FROM_EMAIL = 'Rauf App <no-reply@raufapp.com>'
 
 EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@rauf.live")
 ANYMAIL = {
     "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
 }
