@@ -7,12 +7,11 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView, RetrieveAPIView, RetrieveUpdateAPIView
 from rest_framework_simplejwt.views import TokenRefreshView
-from .models import User, VetProfile
-from .serializers import VetListSerializer, VetProfileSerializer
+from .models import User, VetProfile, EmailVerificationToken
+
 from django.contrib.auth import authenticate
 
-from .serializers import RegisterSerializer, LoginSerializer, VetProfileSerializer, ProfileSerializer, PetOwnerProfileSerializer, UserProfileSerializer
-from .models import EmailVerificationToken
+from .serializers import VetListSerializer, RegisterSerializer, LoginSerializer, VetProfileSerializer, ProfileSerializer, PetOwnerProfileSerializer, UserProfileSerializer
 from core.services.email_service import EmailService
 from drf_spectacular.utils import extend_schema
 from django.conf import settings
@@ -43,9 +42,9 @@ class RegisterView(APIView):
 
             # إنشاء token للتحقق من الإيميل
             token_obj = EmailVerificationToken.objects.create(user=user)
-
+            verification_url = f"{settings.FRONTEND_URL}/verify-email/{token_obj.token}"
             # إرسال إيميل التحقق
-            EmailService.send_verification_email(user, token_obj.token)
+            EmailService.send_verification_email(user, verification_url)
 
             # إرجاع رسالة نجاح
             return Response(
@@ -61,14 +60,13 @@ class RegisterView(APIView):
 
 class VerifyEmailView(APIView):
     def get(self, request, token):
-        frontend_url = settings.FRONTEND_URL.rstrip('/')
         try:
             token_obj = EmailVerificationToken.objects.get(token=token)
         except EmailVerificationToken.DoesNotExist:
-            return HttpResponseRedirect(f"{frontend_url}/email-verified?status=invalid")
+            return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
 
         if token_obj.is_used:
-            return HttpResponseRedirect(f"{frontend_url}/email-verified?status=used")
+            return Response({"error": "Token already used"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = token_obj.user
         user.is_verified = True
@@ -78,7 +76,8 @@ class VerifyEmailView(APIView):
         token_obj.is_used = True
         token_obj.save()
 
-        return HttpResponseRedirect(f"{frontend_url}/email-verified")
+        # إرجاع نجاح، والـ React هو من سيعرض صفحة النجاح
+        return Response({"message": "Email verified successfully"}, status=status.HTTP_200_OK)
 
 
 
