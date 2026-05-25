@@ -40,7 +40,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/check-email" element={<EmailConfirmation />} />
-          <Route path="/email-verified" element={<VerifyHandler />} />
+          <Route path="/verify-email/:token" element={<VerifyHandler />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/profile" element={<Profile />} />

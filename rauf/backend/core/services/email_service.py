@@ -29,7 +29,7 @@ class EmailService:
     def send_verification_email(user, token):
 
         print(f"DEBUG: FRONTEND_URL is {settings.FRONTEND_URL}")
-        frontend_url = settings.FRONTEND_URL.rstrip('/')
+       
 
         base = "https://rauf.live"
         link = f"{base}/verify-email/{token}"
