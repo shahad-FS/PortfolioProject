@@ -51,14 +51,15 @@ class EmailService:
                 <p>Hi <b>{user.email}</b></p>
                 <p>Please verify your email:</p>
 
-                <a href="{{link}}"
-                   style="padding:10px 20px;
-                   background:#4CAF50;
-                   color:white;
-                   text-decoration:none;
-                   border-radius:5px;">
-                   Verify Email
+                <a href="{link}" style="padding:10px 20px;
+                    background:#4CAF50;
+                    color:white;
+                    text-decoration:none;
+                    border-radius:5px;">
+                    Verify Email
                 </a>
+
+
             </div>
         </body>
         </html>
