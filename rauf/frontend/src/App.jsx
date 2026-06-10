@@ -5,8 +5,7 @@ import { useTranslation } from "react-i18next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./styles/index.css";
-const TermsAndConditions = lazy(() =>
-  import("./pages/TermsAndConditions")
+
 );
 // lazy pages
 const Login = lazy(() => import("./pages/Login"));
@@ -18,6 +17,9 @@ const BookAppointment = lazy(() => import("./pages/BookAppointment"));
 const VideoCall = lazy(() => import("./pages/VideoCall"));
 const EmailConfirmation = lazy(() => import("./pages/EmailConfirmation"));
 const VerifyHandler = lazy(() => import("./pages/VerifyHandler"));
+const TermsAndConditions = lazy(() =>
+  import("./pages/TermsAndConditions")
+);
 
 function App() {
   const { i18n } = useTranslation();
