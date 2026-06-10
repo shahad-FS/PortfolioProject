@@ -337,7 +337,9 @@
       "license": "Medical License Number",
       "specialization": "Medical Specialization",
       "specializationPlaceholder": "e.g. Felines & Canines, Birds, General",
-      "sessionPrice": "Consultation Session Price"
+      "sessionPrice": "Consultation Session Price",
+      "bio": "Short Bio",
+      "bioPlaceholder": "A brief description of your experience and expertise (Optional)"
     }
   },
   "pets": {

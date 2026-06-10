@@ -6,7 +6,7 @@ class PaymentIntentSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentTransaction
         fields = ['id', 'amount', 'currency', 'status', 'consultation_id']
-        read_only_fields = ['id', 'currency', 'status', 'consultation_id']
+        read_only_fields = ['id', 'currency', 'status']
 
     def validate_amount(self, value):
         if value <= 0:

@@ -1,8 +1,7 @@
-import { useState } from "react";
 import api from "../api/axios";
 
 export const useMedical = () => {
-  const [loading, setLoading] = useState(false);
+
 
   //  GET by consultation
   const fetchMedicalByConsultation = async (consultationId) => {
@@ -34,7 +33,6 @@ export const useMedical = () => {
   };
 
   return {
-    loading,
     fetchMedicalByConsultation,
     createMedical,
     updateMedical,

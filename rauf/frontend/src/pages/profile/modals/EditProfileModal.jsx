@@ -19,6 +19,8 @@ export default function EditProfileModal({
   const [sessionPrice, setSessionPrice] = useState(
     profile.session_price || "100.00",
   );
+  const [bio, setBio] = useState(profile.bio || "");
+  const [isApproved, setIsApproved] = useState(profile.is_approved || false);
 
   const handleSave = async () => {
     const data = {
@@ -33,6 +35,8 @@ export default function EditProfileModal({
         license_number: license,
         specialization: specialization,
         session_price: sessionPrice,
+        is_approved: isApproved,
+        bio: bio,
       };
     }
 
@@ -147,6 +151,22 @@ export default function EditProfileModal({
                   className="w-full px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] bg-gray-50/30"
                   value={specialization}
                   onChange={(e) => setSpecialization(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label
+                  className="block text-sm font-bold mb-1.5"
+                  style={{ color: "var(--text)" }}
+                >
+                  {t("profile.edit.bio")}
+                </label>
+                <textarea
+                  style={inputStyle}
+                  className="w-full px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] bg-gray-50/30 min-h-[100px] resize-none"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder={t("profile.edit.bioPlaceholder")}
                 />
               </div>
 

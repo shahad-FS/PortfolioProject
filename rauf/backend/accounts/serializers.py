@@ -1,4 +1,3 @@
-from .models import User, VetProfile
 from rest_framework import serializers
 from .models import User, Profile, PetOwnerProfile, VetProfile
 
@@ -56,7 +55,7 @@ class PetOwnerProfileSerializer(serializers.ModelSerializer):
 class VetProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = VetProfile
-        fields = ["license_number", "specialization", "session_price"]
+        fields = ["license_number", "specialization", "session_price", "is_approved", "bio"]
         read_only_fields = ["is_approved"]
     
     def validate_session_price(self, value):
@@ -64,20 +63,21 @@ class VetProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("session_price should be grater than zero.")
         return value
 
+    def update(self, instance, validated_data):
+        print("DEBUG: Serializer received bio:", validated_data.get('bio'))
+        return super().update(instance, validated_data)
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
-    profile = ProfileSerializer(read_only=True)
+    profile = ProfileSerializer(required=False)
     pet_owner = PetOwnerProfileSerializer(
         source="petownerprofile",
-        read_only=True
+        required=False 
     )
-
     vet = VetProfileSerializer(
         source="vetprofile",
-        read_only=True
+        required=False
     )
-
     class Meta:
         model = User
         fields = [
@@ -86,8 +86,31 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "role",
             "profile",
             "pet_owner",
-            "vet",
+            "vet", 
         ]
+
+    def update(self, instance, validated_data):
+       
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+
+        
+        profile_data = validated_data.get('profile', {})
+        if profile_data: 
+            profile = instance.profile
+            profile.full_name = profile_data.get('full_name', profile.full_name)
+            profile.phone = profile_data.get('phone', profile.phone)
+            profile.save()
+
+        
+        vet_data = validated_data.get('vetprofile') 
+        if vet_data and hasattr(instance, 'vetprofile'):
+            vet_profile = instance.vetprofile
+            for attr, value in vet_data.items():
+                setattr(vet_profile, attr, value)
+            vet_profile.save()
+
+        return instance
 
 
 class VetListSerializer(serializers.ModelSerializer):
@@ -97,10 +120,10 @@ class VetListSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
-    # is_approved = serializers.BooleanField(
-    #     source="vetprofile.is_approved",
-    #     read_only=True
-    # )
+    is_approved = serializers.BooleanField(
+        source="vetprofile.is_approved",
+        read_only=True
+    )
 
     full_name = serializers.CharField(
         source="profile.full_name",
@@ -111,15 +134,20 @@ class VetListSerializer(serializers.ModelSerializer):
         source = "vetprofile.session_price"
     )
 
+    bio = serializers.CharField(
+        source = "vetprofile.bio"
+    )
+
     class Meta:
         model = User
         fields = [
             "id",
             "email",
             "specialization",
-            # "is_approved",
+            "is_approved",
             "full_name",
             "session_price",
+            "bio"
         ]
 
 

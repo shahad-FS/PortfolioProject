@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "channels",
 
     "anymail",
-    'jazzmin',
+    # 'jazzmin',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -156,7 +156,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
+
+STATIC_ROOT = '/staticfiles'
+
+STATIC_URL = '/static/'
 
 # INTERNAL_IPS = []
 
@@ -279,52 +283,52 @@ MOYASAR_SECRET_KEY = os.getenv('MOYASAR_SECRET_KEY')
 
 
 ## addmin costumization 
-JAZZMIN_SETTINGS = {
-    "site_title": "Rauf Admin",
+# JAZZMIN_SETTINGS = {
+#     "site_title": "Rauf Admin",
     
-    "site_header": "Rauf Clinic",
+#     "site_header": "Rauf Clinic",
     
-    # "site_logo": "images/logo.png",
+#     # "site_logo": "images/logo.png",
     
-    "welcome_sign": "Welcome to Rauf Veterinary Clinic Management Portal",
+#     "welcome_sign": "Welcome to Rauf Veterinary Clinic Management Portal",
     
-    "copyright": "Rauf Vet Clinic Ltd",
+#     "copyright": "Rauf Vet Clinic Ltd",
     
-    "search_model": "accounts.User",
+#     "search_model": "accounts.User",
 
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"model": "accounts.User"},
-    ],
+#     "topmenu_links": [
+#         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+#         {"model": "accounts.User"},
+#     ],
     
-    "icons": {
-        "accounts.user": "fas fa-users",
-        "accounts.profile": "fas fa-user-id",
-        "pets.pet": "fas fa-dog",
-        "consultations.consultation": "fas fa-calendar-check",
-        "medical.medicalrecord": "fas fa-file-medical",
-        "payments.paymenttransaction": "fas fa-credit-card",
-        "video_sessions.videosession": "fas fa-video",
-    },
+#     "icons": {
+#         "accounts.user": "fas fa-users",
+#         "accounts.profile": "fas fa-user-id",
+#         "pets.pet": "fas fa-dog",
+#         "consultations.consultation": "fas fa-calendar-check",
+#         "medical.medicalrecord": "fas fa-file-medical",
+#         "payments.paymenttransaction": "fas fa-credit-card",
+#         "video_sessions.videosession": "fas fa-video",
+#     },
     
-    "show_sidebar": True,
-    "navigation_expanded": True,
-}
+#     "show_sidebar": True,
+#     "navigation_expanded": True,
+# }
 
-JAZZMIN_UI_TUNER = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-dark",
-    "accent": "accent-primary",
-    "navbar": "navbar-dark bg-dark", 
-    "no_navbar_border": False,
-    "navbar_fixed": True,
-    "layout_options": ["sidebar_fixed"],
-    "sidebar": "sidebar-dark-primary", 
-    "sidebar_nav_flat_style": True,
-}
+# JAZZMIN_UI_TUNER = {
+#     "navbar_small_text": False,
+#     "footer_small_text": False,
+#     "body_small_text": False,
+#     "brand_small_text": False,
+#     "brand_colour": "navbar-dark",
+#     "accent": "accent-primary",
+#     "navbar": "navbar-dark bg-dark", 
+#     "no_navbar_border": False,
+#     "navbar_fixed": True,
+#     "layout_options": ["sidebar_fixed"],
+#     "sidebar": "sidebar-dark-primary", 
+#     "sidebar_nav_flat_style": True,
+# }
 
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://rauf.live")
 

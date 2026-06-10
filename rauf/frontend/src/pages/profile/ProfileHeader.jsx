@@ -108,6 +108,27 @@ export default function ProfileHeader({
                 }}
               />
 
+              {/* حقل النبذة التعريفية (Bio) */}
+              <p
+                style={{
+                  color: "var(--text)",
+                  fontSize: "0.9rem",
+                  fontWeight: "600",
+                  marginTop: "10px",
+                }}
+              >
+                📝 {t("auth.completeProfile.bio")}:{" "}
+                <span
+                  style={{
+                    fontWeight: "normal",
+                    display: "block",
+                    marginTop: "4px",
+                  }}
+                >
+                  {profile.bio}
+                </span>
+              </p>
+
               {/* حالة الاعتماد  */}
               <p
                 style={{
@@ -118,20 +139,13 @@ export default function ProfileHeader({
               >
                 ✨ {t("profile.header.status")}:{" "}
                 <span
-                  style={{
-                    color: profile.is_approved ? "#2e7d32" : "#b78103",
-                    backgroundColor: profile.is_approved
-                      ? "#e8f5e9"
-                      : "#fffde7",
-                    padding: "2px 8px",
-                    borderRadius: "6px",
-                    fontSize: "0.85rem",
-                    fontWeight: "bold",
-                    display: "inline-block",
-                    marginInlineStart: "5px",
-                  }}
+                  className={`px-2 py-0.5 rounded-md text-xs font-bold inline-block mx-1.5 ${
+                    profile.is_approved === true
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
                 >
-                  {profile.is_approved
+                  {profile.is_approved === true
                     ? t("profile.header.approved")
                     : t("profile.header.pending")}
                 </span>

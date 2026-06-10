@@ -127,34 +127,11 @@ class UserProfileView(APIView):
         return Response(serializer.data)
 
     def patch(self, request):
-        user = request.user
-
-        profile_serializer = ProfileSerializer(
-            user.profile,
-            data=request.data.get("profile", {}),
-            partial=True
-        )
-
-        profile_serializer.is_valid(raise_exception=True)
-        profile_serializer.save()
-
-        if hasattr(user, "vetprofile"):
-
-            vet_serializer = VetProfileSerializer(
-                user.vetprofile,
-                data=request.data.get("vet", {}),
-                partial=True
-            )
-
-            vet_serializer.is_valid(raise_exception=True)
-            vet_serializer.save()
-
-        updated_serializer = UserProfileSerializer(user)
-
-        return Response(
-            updated_serializer.data,
-            status=status.HTTP_200_OK
-        )
+        serializer = UserProfileSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class VetListView(ListAPIView):

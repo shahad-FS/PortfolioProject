@@ -70,7 +70,14 @@ export default function BookAppointment() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === "pet" && value === "ADD_PET_REDIRECT") {
+      navigate("/profile");
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const nextStep = () => setStep((s) => s + 1);
@@ -283,7 +290,7 @@ export default function BookAppointment() {
           <div className="form-title">{t("booking.title")}</div>
         </div>
 
-        {/* مؤشر الخطوات المرن */}
+        {/* مؤشر الخطوات  */}
         <div
           style={{
             display: "flex",
@@ -380,17 +387,32 @@ export default function BookAppointment() {
                   style={{ appearance: "none", cursor: "pointer" }}
                 >
                   <option value="">{t("booking.step1.placeholder")}</option>
-                  {pets.map((pet) => (
-                    <option key={pet.id} value={pet.id}>
-                      {pet.name}
+
+                  {/* التحقق الشرطي: إذا لم يضف أي حيوان يظهر خيار التوجيه */}
+                  {pets.length === 0 ? (
+                    <option
+                      value="ADD_PET_REDIRECT"
+                      style={{ color: "var(--primary)", fontWeight: "bold" }}
+                    >
+                      ➕{" "}
+                      {t(
+                        "booking.step1.add_pet_option",
+                        "أضف حيوان أليف (اذهب للملف الشخصي)",
+                      )}
                     </option>
-                  ))}
+                  ) : (
+                    pets.map((pet) => (
+                      <option key={pet.id} value={pet.id}>
+                        {pet.name}
+                      </option>
+                    ))
+                  )}
                 </select>
               </div>
             </div>
             <button
               onClick={nextStep}
-              disabled={!formData.pet}
+              disabled={!formData.pet || formData.pet === "ADD_PET_REDIRECT"}
               className="btn-fill"
               style={{ marginTop: "25px" }}
             >

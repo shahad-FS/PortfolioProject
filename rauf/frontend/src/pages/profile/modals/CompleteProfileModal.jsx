@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-export default function CompleteProfileModal({ role, onSubmit }) {
+export default function CompleteProfileModal({
+  role,
+  onSubmit,
+  completeProfile,
+}) {
   const { t, i18n } = useTranslation();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [license, setLicense] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [sessionPrice, setSessionPrice] = useState("100.00");
+  const [bio, setBio] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const data = {
       profile: {
         full_name: fullName,
@@ -21,11 +26,19 @@ export default function CompleteProfileModal({ role, onSubmit }) {
         license_number: license,
         specialization: specialization,
         session_price: sessionPrice,
+        bio: bio,
       };
     }
+    console.log("Data to be sent:", data);
+    if (typeof completeProfile === "function") {
+      await completeProfile(data);
+    }
 
-    onSubmit(data);
+    if (onSubmit) {
+      onSubmit(data);
+    }
   };
+
   const isRtl = i18n.language === "ar";
 
   const inputStyle = {
@@ -136,6 +149,22 @@ export default function CompleteProfileModal({ role, onSubmit }) {
                   placeholder={t(
                     "auth.completeProfile.specializationPlaceholder",
                   )}
+                />
+              </div>
+
+              <div>
+                <label
+                  className="block text-sm font-bold mb-1.5"
+                  style={{ color: "var(--text)" }}
+                >
+                  {t("auth.completeProfile.bio")}{" "}
+                </label>
+                <textarea
+                  style={inputStyle}
+                  className="w-full px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/20 focus:border-[var(--primary)] bg-gray-50/30 min-h-[100px] resize-none"
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder={t("auth.completeProfile.bioPlaceholder")}
                 />
               </div>
 
