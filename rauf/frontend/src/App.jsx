@@ -48,6 +48,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/book-appointment" element={<BookAppointment />} />
           <Route path="/video-call/:sessionId" element={<VideoCall />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
         </Routes>
       </Suspense>
       <Footer />
