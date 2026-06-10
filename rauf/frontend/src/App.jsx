@@ -5,7 +5,9 @@ import { useTranslation } from "react-i18next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./styles/index.css";
-
+const TermsAndConditions = lazy(() =>
+  import("./pages/TermsAndConditions")
+);
 // lazy pages
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
