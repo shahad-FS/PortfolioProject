@@ -62,6 +62,7 @@ export default function BookAppointment() {
           );
         } finally {
           setLoading(false);
+          setIsVerifyingPayment(false);
         }
       };
 
