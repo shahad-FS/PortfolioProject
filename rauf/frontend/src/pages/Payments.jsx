@@ -48,6 +48,7 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
         },
         methods: ["creditcard", "mada"],
 
+        callback_url: window.location.origin + "/payment-callback",
         // callback_url: window.location.href,
 
         on_completed: async (payment) => {
