@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import PaymentTransaction
 from .serializers import PaymentIntentSerializer, PaymentVerificationSerializer
 from .services import MoyasarService
@@ -9,10 +9,10 @@ from consultations.models import Consultation
 from core.services.email_service import EmailService
 import logging
 import re
-from rest_framework.permissions import AllowAny
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from django.db import transaction
 
 logger = logging.getLogger(__name__)
 
@@ -64,59 +64,62 @@ class VerifyPaymentView(APIView):
         if not moyasar_data or moyasar_data.get('status') != 'paid':
             return Response({"status": "failed", "message": "Payment not paid on Moyasar"}, status=status.HTTP_400_BAD_REQUEST)
 
-        transaction = None
-        if transaction_id:
-            try:
-                transaction = PaymentTransaction.objects.get(id=transaction_id, owner=request.user)
-            except PaymentTransaction.DoesNotExist:
-                pass
-
-
-        if not transaction:
-            description = moyasar_data.get('description', '') 
-            match = re.search(r'#(\d+)', description)
+        with transaction.atomic():
+            transaction_obj = None
             
-            if match:
-                consultation_id = match.group(1)
-                transaction = PaymentTransaction.objects.filter(
-                    consultation_id=consultation_id, 
-                    owner=request.user
-                ).order_by('-created_at').first()
-
-        if not transaction:
-            description = moyasar_data.get('description', '')
-            match = re.search(r'#(\d+)', description)
-            if match:
+            if transaction_id:
                 try:
-                    consultation = Consultation.objects.get(id=match.group(1), owner=request.user)
-                    amount_in_riyal = float(moyasar_data.get('amount', 0)) / 100.0
-                    
-                    transaction = PaymentTransaction.objects.create(
-                        owner=request.user,
-                        consultation=consultation,
-                        amount=amount_in_riyal,
-                        status='initiated'
-                    )
-                except Consultation.DoesNotExist:
-                    return Response({"error": "Consultation not found for this payment description"}, status=status.HTTP_404_NOT_FOUND)
-            else:
-                return Response({"error": "Transaction not found and description cannot be parsed"}, status=status.HTTP_404_NOT_FOUND)
+                    transaction_obj = PaymentTransaction.objects.select_for_update().get(id=transaction_id, owner=request.user)
+                except PaymentTransaction.DoesNotExist:
+                    pass
 
-        transaction.moyasar_payment_id = payment_id
-        transaction.status = 'paid'
-        transaction.save()
+            if not transaction_obj:
+                description = moyasar_data.get('description', '') 
+                match = re.search(r'#(\d+)', description)
+                
+                if match:
+                    consultation_id = match.group(1)
+                    transaction_obj = PaymentTransaction.objects.select_for_update().filter(
+                        consultation_id=consultation_id, 
+                        owner=request.user
+                    ).order_by('-created_at').first()
 
-        consultation = transaction.consultation
-        consultation.is_paid = True
-        consultation.save()
+            if not transaction_obj:
+                description = moyasar_data.get('description', '')
+                match = re.search(r'#(\d+)', description)
+                if match:
+                    try:
+                        consultation = Consultation.objects.get(id=match.group(1), owner=request.user)
+                        amount_in_riyal = float(moyasar_data.get('amount', 0)) / 100.0
+                        
+                        transaction_obj = PaymentTransaction.objects.create(
+                            owner=request.user,
+                            consultation=consultation,
+                            amount=amount_in_riyal,
+                            status='initiated'
+                        )
+                    except Consultation.DoesNotExist:
+                        return Response({"error": "Consultation not found for this payment description"}, status=status.HTTP_404_NOT_FOUND)
+                else:
+                    return Response({"error": "Transaction not found and description cannot be parsed"}, status=status.HTTP_404_NOT_FOUND)
 
-        try:
-            EmailService.send_consultation_confirmation(transaction.owner, consultation)
-            EmailService.send_vet_notification(consultation.vet, consultation)
-        except Exception as e:
-            logger.error(f"Email notification failed after payment for consultation {consultation.id}: {e}")
+            if transaction_obj.status != 'paid':
+                transaction_obj.moyasar_payment_id = payment_id
+                transaction_obj.status = 'paid'
+                transaction_obj.save()
+
+                consultation = transaction_obj.consultation
+                consultation.is_paid = True
+                consultation.save()
+
+                try:
+                    EmailService.send_consultation_confirmation(transaction_obj.owner, consultation)
+                    EmailService.send_vet_notification(consultation.vet, consultation)
+                except Exception as e:
+                    logger.error(f"Email notification failed after payment for consultation {consultation.id}: {e}")
 
         return Response({"status": "success", "message": "payment verified and emails sent"}, status=status.HTTP_200_OK)
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class MoyasarWebhookView(APIView):
@@ -146,30 +149,33 @@ class MoyasarWebhookView(APIView):
                     consultation_id = match.group(1)
                     
                     try:
-                        transaction = PaymentTransaction.objects.filter(
-                            consultation_id=consultation_id
-                        ).order_by('-created_at').first()
+                        with transaction.atomic():
+                            transaction_obj = PaymentTransaction.objects.select_for_update().filter(
+                                consultation_id=consultation_id
+                            ).order_by('-created_at').first()
 
-                        if transaction:
-                            if transaction.status != 'paid':
-                                transaction.moyasar_payment_id = payment_id
-                                transaction.status = 'paid'
-                                transaction.save()
+                            if transaction_obj:
+                                if transaction_obj.status != 'paid':
+                                    transaction_obj.moyasar_payment_id = payment_id
+                                    transaction_obj.status = 'paid'
+                                    transaction_obj.save()
 
-                                consultation = transaction.consultation
-                                consultation.is_paid = True
-                                consultation.save()
+                                    consultation = transaction_obj.consultation
+                                    consultation.is_paid = True
+                                    consultation.save()
 
-                                try:
-                                    EmailService.send_consultation_confirmation(transaction.owner, consultation)
-                                    EmailService.send_vet_notification(consultation.vet, consultation)
-                                except Exception as e:
-                                    logger.error(f"Webhook Email failed for consultation {consultation.id}: {e}")
+                                    try:
+                                        EmailService.send_consultation_confirmation(transaction_obj.owner, consultation)
+                                        EmailService.send_vet_notification(consultation.vet, consultation)
+                                    except Exception as e:
+                                        logger.error(f"Webhook Email failed for consultation {consultation.id}: {e}")
+                                    
+                                    logger.info(f"Webhook successfully processed payment {payment_id} for consultation {consultation_id}")
+                                else:
+                                    logger.info(f"Webhook received, but transaction {transaction_obj.id} was already marked as PAID by frontend verify.")
+                            else:
+                                logger.error(f"Webhook Error: PaymentTransaction not found for consultation #{consultation_id}")
                                 
-                                logger.info(f"Webhook successfully processed payment {payment_id} for consultation {consultation_id}")
-                        else:
-                            logger.error(f"Webhook Error: PaymentTransaction not found for consultation #{consultation_id}")
-                            
                     except Exception as e:
                         logger.error(f"Error executing webhook core logic: {e}")
         
