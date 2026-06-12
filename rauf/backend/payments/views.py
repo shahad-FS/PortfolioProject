@@ -150,6 +150,12 @@ class MoyasarWebhookView(APIView):
                     
                     try:
                         with transaction.atomic():
+                            try:
+                                consultation = Consultation.objects.get(id=consultation_id)
+                            except Consultation.DoesNotExist:
+                                logger.error(f"Webhook Critical Error: Consultation #{consultation_id} not found in DB.")
+                                return Response({"status": "received"}, status=status.HTTP_200_OK)
+
                             transaction_obj = PaymentTransaction.objects.select_for_update().filter(
                                 consultation_id=consultation_id
                             ).order_by('-created_at').first()
@@ -160,23 +166,40 @@ class MoyasarWebhookView(APIView):
                                     transaction_obj.status = 'paid'
                                     transaction_obj.save()
 
-                                    consultation = transaction_obj.consultation
                                     consultation.is_paid = True
                                     consultation.save()
 
-                                    try:
-                                        EmailService.send_consultation_confirmation(transaction_obj.owner, consultation)
-                                        EmailService.send_vet_notification(consultation.vet, consultation)
-                                    except Exception as e:
-                                        logger.error(f"Webhook Email failed for consultation {consultation.id}: {e}")
-                                    
-                                    logger.info(f"Webhook successfully processed payment {payment_id} for consultation {consultation_id}")
+                                    self._send_emails(transaction_obj, consultation)
+                                    logger.info(f"Webhook successfully processed payment {payment_id} for existing transaction.")
                                 else:
-                                    logger.info(f"Webhook received, but transaction {transaction_obj.id} was already marked as PAID by frontend verify.")
+                                    logger.info(f"Webhook received, but transaction {transaction_obj.id} was already marked as PAID.")
+                            
                             else:
-                                logger.error(f"Webhook Error: PaymentTransaction not found for consultation #{consultation_id}")
+                                logger.info(f"Webhook: Transaction not found for consultation #{consultation_id}. Auto-creating transaction...")
+                                amount_in_riyal = float(payment_data.get('amount', 0)) / 100.0
+                                
+                                transaction_obj = PaymentTransaction.objects.create(
+                                    owner=consultation.owner,
+                                    consultation=consultation,
+                                    amount=amount_in_riyal,
+                                    moyasar_payment_id=payment_id,
+                                    status='paid'
+                                )
+
+                                consultation.is_paid = True
+                                consultation.save()
+
+                                self._send_emails(transaction_obj, consultation)
+                                logger.info(f"Webhook auto-created and paid transaction for consultation #{consultation_id}")
                                 
                     except Exception as e:
                         logger.error(f"Error executing webhook core logic: {e}")
         
         return Response({"status": "received"}, status=status.HTTP_200_OK)
+
+    def _send_emails(self, transaction_obj, consultation):
+        try:
+            EmailService.send_consultation_confirmation(transaction_obj.owner, consultation)
+            EmailService.send_vet_notification(consultation.vet, consultation)
+        except Exception as e:
+            logger.error(f"Webhook Email failed for consultation {consultation.id}: {e}")
