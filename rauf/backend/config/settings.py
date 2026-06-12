@@ -282,7 +282,7 @@ CHANNEL_LAYERS = {
 
 #payments settings
 MOYASAR_SECRET_KEY = os.getenv('MOYASAR_SECRET_KEY')
-
+MOYASAR_WEBHOOK_SECRET = os.getenv('MOYASAR_WEBHOOK_SECRET')
 
 ## addmin costumization 
 # JAZZMIN_SETTINGS = {

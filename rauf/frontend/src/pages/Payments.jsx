@@ -64,10 +64,6 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
     } else {
       setError("Moyasar library failed to load. Please refresh the page.");
     }
-
-    return () => {
-      isInitialized.current = false;
-    };
   }, [consultationId, amount]);
 
   const handleVerification = async (paymentId) => {

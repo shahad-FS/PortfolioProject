@@ -16,4 +16,4 @@ class PaymentIntentSerializer(serializers.ModelSerializer):
 
 class PaymentVerificationSerializer(serializers.Serializer):
     payment_id = serializers.CharField(required=True, max_length=100)
-    transaction_id = serializers.IntegerField(required=True)
+    transaction_id = serializers.IntegerField(required=False, allow_null=True)

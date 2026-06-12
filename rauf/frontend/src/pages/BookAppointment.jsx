@@ -46,8 +46,24 @@ export default function BookAppointment() {
     const paymentId = searchParams.get("id");
     const paymentStatus = searchParams.get("status");
     if (paymentId && paymentStatus === "paid") {
-      setSuccess(true);
-      navigate("/profile");
+      const verifyReturnedPayment = async () => {
+        try {
+          setLoading(true);
+          await api.post("payments/verify/", {
+            payment_id: paymentId,
+          });
+          setSuccess(true);
+        } catch (err) {
+          console.error("Verification failed after redirect:", err);
+          setMessage(
+            "Payment succeeded but failed to update database. Please contact support.",
+          );
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      verifyReturnedPayment();
     }
   }, [searchParams]);
 
