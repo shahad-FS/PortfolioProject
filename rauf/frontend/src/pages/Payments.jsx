@@ -69,20 +69,27 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
   }, [consultationId, amount]);
 
   const handleVerification = async (paymentId) => {
+    if (!consultationId) {
+      console.error("❌ Error: consultationId is missing or undefined!");
+      setError("Cannot verify payment because Consultation ID is missing.");
+      return;
+    }
     setLoadingVerify(true);
     setError("");
     try {
-      const intentRes = await api.post("/payments/create-intent/", {
+      const intentRes = await api.post("payments/create-intent/", {
         consultation_id: consultationId,
       });
       const transactionId = intentRes.data.transaction_id;
+      console.log("Intent Created, Transaction ID:", transactionId);
 
-      const verifyRes = await api.post("/payments/verify/", {
+      const verifyRes = await api.post("payments/verify/", {
         payment_id: paymentId,
         transaction_id: transactionId,
       });
 
       if (verifyRes.data.status === "success") {
+        console.log("Payment verified successfully on backend!");
         onPaymentSuccess();
       } else {
         setError("Payment verification failed on server.");
@@ -90,7 +97,12 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
       }
     } catch (err) {
       console.error(err);
-      setError("Something went wrong while verifying your payment ❌");
+      console.error("Detailed Error in handleVerification:", err);
+      if (err.response) {
+        console.error("Server Response Data:", err.response.data);
+        console.error("Server Response Status:", err.response.status);
+      }
+      setError("Something went wrong while verifying your payment");
       isInitialized.current = false;
     } finally {
       setLoadingVerify(false);
