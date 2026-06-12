@@ -115,7 +115,7 @@ class LoginView(APIView):
         return Response({
             "refresh": str(refresh),
             "access": str(refresh.access_token),
-        }status=status.HTTP_200_OK)
+        }, status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView):
