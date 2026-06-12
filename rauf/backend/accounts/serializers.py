@@ -13,11 +13,33 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ["email", "password", "role"]
 
     def validate_email(self, value):
-        # تحقق هل الإيميل مستخدم مسبقًا
+        value = value.lower().strip()
+        
+       
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already exists")
-        # يرجع الايميل اذا اجتاز الفحص
+            
+        
+        parts = value.split('@')
+        if len(parts) != 2:
+            raise serializers.ValidationError("Invalid email format.")
+            
+        domain = parts[-1]
+        domain_parts = domain.split('.')
+
+        if len(domain_parts) < 2 or len(domain_parts[0]) <= 2:
+            raise serializers.ValidationError("Please provide a valid official email address.")
+        
+        extension = domain_parts[-1]
+        allowed_extensions = ['com', 'net', 'org', 'edu', 'gov', 'io', 'co','sa']
+
+        if extension not in allowed_extensions:
+            raise serializers.ValidationError(f"Emails with .{extension} extensions are not allowed.")
+        
         return value
+        
+
+        
 
     # التحقق من صحة الدور (role) الذي يختاره المستخدم
     def validate_role(self, value):

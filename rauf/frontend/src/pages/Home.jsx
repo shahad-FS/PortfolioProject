@@ -172,6 +172,8 @@ export default function Home() {
                       {vet.specialization || t("home.vets.defaultSpecialty")}
                     </p>
 
+                    <p className="doctor-specialty">{vet.bio}</p>
+
                     <button
                       onClick={() => handleBook(vet.id)}
                       className="btn-book"

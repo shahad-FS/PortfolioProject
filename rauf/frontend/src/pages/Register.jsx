@@ -46,6 +46,11 @@ const Register = () => {
     });
   };
 
+  const renderError = (fieldError) => {
+    if (!fieldError) return null;
+    return Array.isArray(fieldError) ? fieldError[0] : fieldError;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -136,10 +141,15 @@ const Register = () => {
                 </div>
                 {errors.email && (
                   <p
-                    className="text-red-500 text-sm mb-4 dynamic-error"
-                    style={{ marginTop: "1px", fontSize: "12px" }}
+                    className="text-red-500 text-xs dynamic-error"
+                    style={{
+                      color: "#ef4444",
+                      fontSize: "12px",
+                      marginTop: "4px",
+                      textAlign: "start",
+                    }}
                   >
-                    ⚠️{errors.email}
+                    ⚠️ {renderError(errors.email)}
                   </p>
                 )}
               </div>
@@ -166,7 +176,7 @@ const Register = () => {
                     className="text-red-500 text-sm mb-4 dynamic-error"
                     style={{ marginTop: "1px", fontSize: "12px" }}
                   >
-                    ⚠️{errors.password}
+                    ⚠️{renderError(errors.password)}
                   </p>
                 )}
               </div>
@@ -265,7 +275,7 @@ const Register = () => {
                     fontSize: "12px",
                   }}
                 >
-                  ⚠️ {errors.terms}
+                  ⚠️ {renderError(errors.terms)}
                 </p>
               )}
               {/* SUBMIT BUTTON */}

@@ -14,7 +14,7 @@ class MedicalViewsTests(APITestCase):
         self.pet = Pet.objects.create(owner=self.owner, name="زعتر", type="rabbit", birth_year=2024)
         self.consultation = Consultation.objects.create(pet=self.pet, owner=self.owner, vet=self.vet)
         
-        self.create_url = reverse("medical-records-list") # تأكد من تسمية الـ name في الـ urls
+        self.create_url = reverse("medical-records-list") 
         self.client.force_authenticate(user=self.vet)
 
     def test_create_medical_record_by_vet(self):
