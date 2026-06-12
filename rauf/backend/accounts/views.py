@@ -15,8 +15,10 @@ from .serializers import VetListSerializer, RegisterSerializer, LoginSerializer,
 from core.services.email_service import EmailService
 from drf_spectacular.utils import extend_schema
 from django.conf import settings
-# Create your views here.
+from django.contrib.auth import get_user_model
 
+
+User = get_user_model()
 
 @extend_schema(
     request=RegisterSerializer,
@@ -90,20 +92,30 @@ class LoginView(APIView):
         email = serializer.validated_data["email"]
         password = serializer.validated_data["password"]
 
+        if not User.objects.filter(email=email).exists():
+            return Response(
+                {"detail": "Account does not exist."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+
         user = authenticate(email=email, password=password)
 
         if user is None:
-            return Response({"error": "Invalid credentials"}, status=400)
+            return Response({"detail": "Incorrect email or password."}, status=status.HTTP_400_BAD_REQUEST)
         
-        if not user.is_verified:
-            return Response({"error": "Please verify your email before logging in."}, status=403)
+        if not user.is_active or not user.is_verified:
+            return Response(
+                {"detail": "Please verify your email address before logging in."}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
 
         refresh = RefreshToken.for_user(user)
 
         return Response({
             "refresh": str(refresh),
             "access": str(refresh.access_token),
-        })
+        }status=status.HTTP_200_OK)
 
 
 class LogoutView(APIView):

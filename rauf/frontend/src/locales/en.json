@@ -163,7 +163,12 @@
     "errors": {
       "emailRequired": "Email is required",
       "passwordRequired": "Password is required",
-      "termsRequired": "You must agree to the Terms & Conditions and Privacy Policy"
+      "termsRequired": "You must agree to the Terms & Conditions and Privacy Policy",
+      "email_already_exists": "This email already exists",
+      "invalid_email_format": "Invalid email format.",
+      "invalid_official_email": "Please provide a valid official email address.",
+      "extension_not_allowed": "This email extension is not allowed.",
+      "passwordTooShort": "Ensure this field has at least 8 characters."
     }
   },
   "confirmEmail": {

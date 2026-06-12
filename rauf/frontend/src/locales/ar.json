@@ -161,9 +161,14 @@
       "loadingBtn": "إنشاء حساب..."
     },
     "errors": {
-      "emailRequired": "البريد الإلكتروني مطلوب",
-      "passwordRequired": "كلمة المرور مطلوبة",
-      "termsRequired": "يجب الموافقة على الشروط والأحكام وسياسة الخصوصية"
+      "emailRequired": "البريد الإلكتروني حقل مطلوب",
+      "passwordRequired": "كلمة المرور حقل مطلوب",
+      "termsRequired": "يجب الموافقة على الشروط والأحكام وسياسة الخصوصية",
+      "email_already_exists": "هذا البريد الإلكتروني مسجل مسبقاً لدينا",
+      "invalid_email_format": "صيغة البريد الإلكتروني غير صحيحة.",
+      "invalid_official_email": "يرجى إدخال بريد إلكتروني رسمي وصحيح.",
+      "extension_not_allowed": "امتداد البريد الإلكتروني هذا غير مدعوم في منصتنا.",
+      "passwordTooShort": "يجب أن تحتوي كلمة المرور على 8 خانات على الأقل."
     }
   },
   "confirmEmail": {

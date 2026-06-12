@@ -48,7 +48,26 @@ const Register = () => {
 
   const renderError = (fieldError) => {
     if (!fieldError) return null;
-    return Array.isArray(fieldError) ? fieldError[0] : fieldError;
+
+    const rawError = Array.isArray(fieldError) ? fieldError[0] : fieldError;
+
+    const backendErrorMap = {
+      "Email already exists": "email_already_exists",
+      "Invalid email format.": "invalid_email_format",
+      "Please provide a valid official email address.":
+        "invalid_official_email",
+      "Ensure this field has at least 8 characters.": "passwordTooShort",
+    };
+
+    if (rawError.includes("extensions are not allowed")) {
+      return t("register.errors.extension_not_allowed");
+    }
+
+    if (backendErrorMap[rawError]) {
+      return t(`register.errors.${backendErrorMap[rawError]}`);
+    }
+
+    return rawError;
   };
 
   const handleSubmit = async (e) => {
@@ -168,7 +187,7 @@ const Register = () => {
                     data-testid="password-input"
                     placeholder={t("register.form.passwordLabel")}
                     onChange={handleChange}
-                    className="form-input has-left-icon"
+                    className="form-input"
                   />
                 </div>
                 {errors.password && (

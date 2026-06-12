@@ -7,7 +7,7 @@ import "../styles/auth.css";
 import logoImg from "../assets/logoImg.png";
 
 const Login = () => {
-  const { t } = useTranslation();
+  const { t, i18next } = useTranslation();
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -20,6 +20,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [dots, setDots] = useState("");
   const [mounted, setMounted] = useState(true);
+  const isRtl = i18next?.language === "ar";
 
   // Cleanup when component unmounts
   useEffect(() => {
@@ -54,15 +55,19 @@ const Login = () => {
 
       if (err.response) {
         const data = err.response.data;
+        const serverMessage = data.detail || data.error;
 
-        if (data.detail === "Email not verified") {
+        if (
+          serverMessage ===
+          "Please verify your email address before logging in."
+        ) {
           setError(t("login.errors.emailNotVerified"));
-        } else if (data.detail === "Invalid credentials") {
+        } else if (serverMessage === "Incorrect email or password.") {
           setError(t("login.errors.invalidCredentials"));
-        } else if (data.detail === "User not found") {
+        } else if (serverMessage === "Account does not exist.") {
           setError(t("login.errors.userNotFound"));
         } else {
-          setError(data.detail || t("login.errors.failed"));
+          setError(serverMessage || t("login.errors.failed"));
         }
       } else {
         setError(t("login.errors.network"));
@@ -133,6 +138,7 @@ const Login = () => {
                     backgroundColor: "#fff5f5",
                     borderRadius: "8px",
                     border: "1px solid var(--error)",
+                    textAlign: isRtl ? "right" : "left",
                   }}
                 >
                   ⚠️ {error}
