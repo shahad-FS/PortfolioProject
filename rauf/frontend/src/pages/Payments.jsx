@@ -12,12 +12,15 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
   const containerRef = useRef(null);
   const [loadingVerify, setLoadingVerify] = useState(false);
   const [error, setError] = useState("");
+  const isInitialized = useRef(false);
 
   useEffect(() => {
     if (!consultationId || !amount || Number(amount) === 0) {
       console.log("Waiting for real amount...", { consultationId, amount });
       return;
     }
+
+    if (isInitialized.current) return;
 
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
@@ -31,6 +34,7 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
 
     //Moyasar
     if (typeof Moyasar !== "undefined") {
+      isInitialized.current = true;
       Moyasar.init({
         element: containerRef.current,
         publishable_api_key: "pk_test_waK9Y8Eg3pSCqVT8gGJSwCXHvXhZ77KzH1jgb9TC",
@@ -44,12 +48,13 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
         },
         methods: ["creditcard", "mada"],
 
-        callback_url: window.location.href,
+        // callback_url: window.location.href,
 
         on_completed: async (payment) => {
           if (payment.status === "paid") {
             await handleVerification(payment.id);
           } else {
+            isInitialized.current = false;
             setError(`Payment status is ${payment.status}. Please try again.`);
           }
         },
@@ -57,6 +62,10 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
     } else {
       setError("Moyasar library failed to load. Please refresh the page.");
     }
+
+    return () => {
+      isInitialized.current = false;
+    };
   }, [consultationId, amount]);
 
   const handleVerification = async (paymentId) => {
@@ -77,10 +86,12 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
         onPaymentSuccess();
       } else {
         setError("Payment verification failed on server.");
+        isInitialized.current = false;
       }
     } catch (err) {
       console.error(err);
       setError("Something went wrong while verifying your payment ❌");
+      isInitialized.current = false;
     } finally {
       setLoadingVerify(false);
     }

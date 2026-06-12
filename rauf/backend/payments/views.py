@@ -5,7 +5,11 @@ from rest_framework.permissions import IsAuthenticated
 from .models import PaymentTransaction
 from .serializers import PaymentIntentSerializer, PaymentVerificationSerializer
 from .services import MoyasarService
-from consultations.models import Consultation  
+from consultations.models import Consultation
+from core.services.email_service import EmailService
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CreatePaymentIntentView(APIView):
     permission_classes = [IsAuthenticated]
@@ -70,9 +74,22 @@ class VerifyPaymentView(APIView):
             consultation.is_paid = True
             consultation.save()
 
-            return Response({"status": "success", "message": "payment viarefied"}, status=status.HTTP_200_OK)
+            try:
+                EmailService.send_consultation_confirmation(
+                    transaction.owner,
+                    consultation
+                )
+
+                EmailService.send_vet_notification(
+                    consultation.vet,
+                    consultation
+                )
+            except Exception as e:
+                logger.error(f"Email notification failed after payment for consultation {consultation.id}: {e}")
+
+            return Response({"status": "success", "message": "payment verified and emails sent"}, status=status.HTTP_200_OK)
         
         else:
             transaction.status = 'failed'
             transaction.save()
-            return Response({"status": "failed", "message": "faild"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "failed", "message": "failed"}, status=status.HTTP_400_BAD_REQUEST)

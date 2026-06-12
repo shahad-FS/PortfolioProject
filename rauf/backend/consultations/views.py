@@ -38,18 +38,6 @@ class ConsultationCreateView(generics.CreateAPIView):
             owner=self.request.user,
             session_price=session_price
         )
-        try:
-            EmailService.send_consultation_confirmation(
-                self.request.user,
-                consultation
-            )
-
-            EmailService.send_vet_notification(
-                consultation.vet,
-                consultation
-            )
-        except Exception as e:
-            logger.error(f"Email notification failed for consultation {consultation.id}: {e}")
 
 
 class ConsultationCancelView(generics.UpdateAPIView):
