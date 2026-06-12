@@ -15,7 +15,8 @@ export default function Profile() {
 
   const { pets, deletePet, createPet, updatePet } = usePets();
 
-  const { appointments, updateStatus, setAppointments } = useAppointments();
+  const { appointments, updateStatus, setAppointments, hideAppointmentFromUI } =
+    useAppointments();
 
   const location = useLocation();
   const isVideoPage = location.pathname.startsWith("/video-call");
@@ -66,6 +67,7 @@ export default function Profile() {
             role={role}
             appointments={appointments}
             updateStatus={updateStatus}
+            hideAppointmentFromUI={hideAppointmentFromUI}
             setAppointments={setAppointments}
           />
         </>

@@ -7,7 +7,9 @@ from .serializers import ConsultationSerializer
 from rest_framework import status
 
 from core.permissions.roles import IsPetOwner, IsVet, IsVetOrPetOwner
-from core.services.email_service import EmailService
+
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 logger = logging.getLogger(__name__)
 class ConsultationCreateView(generics.CreateAPIView):
@@ -39,65 +41,119 @@ class ConsultationCreateView(generics.CreateAPIView):
             session_price=session_price
         )
 
-
-class ConsultationCancelView(generics.UpdateAPIView):
-    permission_classes = [IsPetOwner]
-    serializer_class = ConsultationSerializer
-
-    queryset = Consultation.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        consultation = self.get_object()
-
-        if consultation.owner != request.user:
-            return Response({"error": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
-
-        consultation.status = "cancelled"
-        consultation.save()
-
-        return Response({"message": "Cancelled", "status": consultation.status}, status=200)
+        self.broadcast_status_change(consultation)
 
 
-class ConsultationVetUpdateView(generics.UpdateAPIView):
-    permission_classes = [IsVet]
+class ConsultationUpdateStatusView(generics.UpdateAPIView):
+    permission_classes = [IsVetOrPetOwner]
     serializer_class = ConsultationSerializer
     queryset = Consultation.objects.all()
 
     def patch(self, request, *args, **kwargs):
-        return self.handle_update(request)
-
-    def post(self, request, *args, **kwargs):
-        return self.handle_update(request)
-
-    def handle_update(self, request):
         consultation = self.get_object()
+        user = request.user
+        new_status = request.data.get("status")
 
-        if consultation.vet != request.user:
-            return Response(
-                {"error": "Not your appointment"},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        if new_status not in ["cancelled", "ended"]:
+            return Response({"error": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
 
-        action = request.data.get("action") or request.data.get("status")
+        if consultation.owner == user:
+            if new_status == "cancelled":
+                if consultation.status != "booked":
+                    return Response({"error": "Can only cancel booked appointments"}, status=status.HTTP_400_BAD_REQUEST)
+                consultation.status = "cancelled"
+            else:
+                return Response({"error": "Pet owners cannot set appointment to ended"}, status=status.HTTP_403_FORBIDDEN)
 
-        if action in ["start", "started"]:
-            consultation.status = "started"
-        elif action in ["end", "ended"]:
-            consultation.status = "ended"
-        elif action in ["cancel", "cancelled"]:
-            consultation.status = "cancelled"
+        elif consultation.vet == user:
+            if new_status in ["cancelled", "ended"]:
+                consultation.status = new_status
         else:
-            return Response(
-                {"error": "Invalid action"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "Not allowed to modify this appointment"}, status=status.HTTP_403_FORBIDDEN)
 
         consultation.save()
+
+        try:
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "appointments",
+                {
+                    "type": "broadcast",
+                    "data": {
+                        "type": "status_updated",
+                        "consultation_id": consultation.id,
+                        "status": consultation.status
+                    }
+                }
+            )
+        except Exception as e:
+            logger.error(f"WS Broadcast Error: {e}")
 
         return Response({
             "message": f"Appointment updated to {consultation.status}",
             "status": consultation.status
         }, status=status.HTTP_200_OK)
+
+
+
+# class ConsultationCancelView(generics.UpdateAPIView):
+#     permission_classes = [IsPetOwner]
+#     serializer_class = ConsultationSerializer
+
+#     queryset = Consultation.objects.all()
+
+#     def post(self, request, *args, **kwargs):
+#         consultation = self.get_object()
+
+#         if consultation.owner != request.user:
+#             return Response({"error": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
+
+#         consultation.status = "cancelled"
+#         consultation.save()
+
+#         return Response({"message": "Cancelled", "status": consultation.status}, status=200)
+
+
+# class ConsultationVetUpdateView(generics.UpdateAPIView):
+#     permission_classes = [IsVet]
+#     serializer_class = ConsultationSerializer
+#     queryset = Consultation.objects.all()
+
+#     def patch(self, request, *args, **kwargs):
+#         return self.handle_update(request)
+
+#     def post(self, request, *args, **kwargs):
+#         return self.handle_update(request)
+
+#     def handle_update(self, request):
+#         consultation = self.get_object()
+
+#         if consultation.vet != request.user:
+#             return Response(
+#                 {"error": "Not your appointment"},
+#                 status=status.HTTP_403_FORBIDDEN
+#             )
+
+#         action = request.data.get("action") or request.data.get("status")
+
+#         if action in ["start", "started"]:
+#             consultation.status = "started"
+#         elif action in ["end", "ended"]:
+#             consultation.status = "ended"
+#         elif action in ["cancel", "cancelled"]:
+#             consultation.status = "cancelled"
+#         else:
+#             return Response(
+#                 {"error": "Invalid action"},
+#                 status=status.HTTP_400_BAD_REQUEST
+#             )
+
+#         consultation.save()
+
+#         return Response({
+#             "message": f"Appointment updated to {consultation.status}",
+#             "status": consultation.status
+#         }, status=status.HTTP_200_OK)
 
 
 class MyAppointmentsView(generics.ListAPIView):
@@ -106,6 +162,7 @@ class MyAppointmentsView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        
 
         if getattr(user, 'role', None) == "vet":
             return Consultation.objects.filter(vet=user).order_by("-created_at")

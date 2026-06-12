@@ -9,6 +9,8 @@ export default function AppointmentsSection({
   role,
   appointments,
   setAppointments,
+  updateStatus,
+  hideAppointmentFromUI,
 }) {
   const [selectedApp, setSelectedApp] = useState(null);
   const [openMedical, setOpenMedical] = useState(false);
@@ -45,13 +47,26 @@ export default function AppointmentsSection({
           ),
         );
       }
+      if (data.type === "status_updated") {
+        setAppointments((prev) =>
+          prev.map((a) =>
+            a.id === data.consultation_id ? { ...a, status: data.status } : a,
+          ),
+        );
+      }
     };
 
     socket.onerror = (err) => console.log("WS Error:", err);
     socket.onclose = () => console.log("WS Closed");
 
     // return () => socket.close();
-  }, []);
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.close();
+        socketRef.current = null;
+      }
+    };
+  }, [setAppointments, envBaseURL]);
 
   // ================= START CALL =================
   const startVideoCall = async (consultationId) => {
@@ -74,10 +89,10 @@ export default function AppointmentsSection({
     }
   };
 
-  // ================= UPDATE STATUS (DONE / CANCEL) =================
+  // ================= VETUPDATE STATUS (DONE / CANCEL) =================
   const handleVetMarkAsDone = async (id) => {
     Swal.fire({
-      title: t("profile.appointments.confirmDoneTitle"),
+      title: t("profile.appointments.confirmDoneTitle", "تأكيد إتمام الجلسة؟"),
       text: t("profile.appointments.confirmActionText"),
       icon: "question",
       showCancelButton: true,
@@ -85,40 +100,32 @@ export default function AppointmentsSection({
       cancelButtonColor: "var(--border)",
       confirmButtonText: t("common.confirm", "تأكيد"),
       cancelButtonText: t("common.cancel", "إلغاء"),
-      customClass: {
-        popup: "custom-swal-font custom-swal-popup",
-      },
+      customClass: { popup: "custom-swal-font custom-swal-popup" },
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await api.patch(`/consultations/${id}/vet-update/`, {
-            status: "ended",
-          });
-
-          setAppointments((prev) =>
-            prev.map((a) => (a.id === id ? { ...a, status: "ended" } : a)),
-          );
-
+          await updateStatus(id, "ended");
           Swal.fire({
             icon: "success",
             title: t("profile.appointments.success"),
             showConfirmButton: false,
             timer: 1500,
-            customClass: {
-              popup: "custom-swal-font custom-swal-popup",
-            },
+            customClass: { popup: "custom-swal-font custom-swal-popup" },
           });
         } catch (err) {
-          console.error("Vet Update Error:", err?.response?.data || err);
+          console.error("Vet Update Error:", err);
         }
       }
     });
   };
 
-  // ================= دالة إلغاء الموعد المخصصة للـ Pet Owner =================
+  // ================= دالة إلغاء الموعد المخصصة للطرفين=================
   const handleCancelAppointment = async (id) => {
     Swal.fire({
-      title: t("profile.appointments.confirmCancel"),
+      title: t(
+        "profile.appointments.confirmCancel",
+        "هل أنت متأكد من إلغاء الموعد؟",
+      ),
       text: t("profile.appointments.confirmActionText"),
       icon: "warning",
       showCancelButton: true,
@@ -130,12 +137,7 @@ export default function AppointmentsSection({
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await api.post(`/consultations/${id}/cancel/`);
-
-          setAppointments((prev) =>
-            prev.map((a) => (a.id === id ? { ...a, status: "cancelled" } : a)),
-          );
-
+          await updateStatus(id, "cancelled");
           Swal.fire({
             icon: "success",
             title: t("profile.appointments.success"),
@@ -144,13 +146,13 @@ export default function AppointmentsSection({
             customClass: { popup: "custom-swal-font custom-swal-popup" },
           });
         } catch (err) {
-          console.error("Cancel Error:", err?.response?.data || err);
+          console.error("Cancel Error:", err);
         }
       }
     });
   };
 
-  // =================  ترتيب المواعيد تلقائياً للطبيب حسب التاريخ والوقت =================
+  // =================  ترتيب المواعيد تلقائيا  =================
   const processedAppointments =
     role === "vet"
       ? [...appointments].sort(
@@ -158,7 +160,6 @@ export default function AppointmentsSection({
         )
       : appointments;
 
-  // تنسيق  التاريخ والوقت
   const formatDateTime = (isoString) => {
     if (!isoString) return "—";
     const date = new Date(isoString);
@@ -169,7 +170,6 @@ export default function AppointmentsSection({
       minute: "2-digit",
     });
   };
-
   return (
     <div
       className="bg-white rounded-2xl p-8 mt-6"
@@ -212,8 +212,8 @@ export default function AppointmentsSection({
                 boxShadow: "0 4px 12px rgba(0,0,0,0.01)",
               }}
             >
-              {/*  زر الحذف والإخفاء من الشاشة (متاح للطبيب فقط إذا لم يكن الموعد منتهياً) */}
-              {role === "vet" && app.status !== "ended" && (
+              {/*  زر الحذف والإخفاء من الشاشة ) */}
+              {(app.status === "cancelled" || app.status === "ended") && (
                 <button
                   className="absolute text-gray-400 hover:text-red-500 transition-colors"
                   style={{
@@ -223,14 +223,17 @@ export default function AppointmentsSection({
                     border: "none",
                     fontSize: "1.1rem",
                     cursor: "pointer",
+                    zIndex: 10,
                   }}
-                  onClick={() => handleVetMarkAsDone(app.id)}
-                  title={t("profile.appointments.hideTooltip")}
+                  onClick={() => hideAppointmentFromUI(app.id)}
+                  title={t(
+                    "profile.appointments.hideTooltip",
+                    "إزالة من الشاشة",
+                  )}
                 >
                   ✖
                 </button>
               )}
-
               {/* الهيكل الداخلي للمعلومات */}
               <div className="space-y-1.5">
                 <h3
@@ -381,7 +384,7 @@ export default function AppointmentsSection({
                 )}
 
                 {/*  زر إتمام الجلسة */}
-                {role === "vet" && app.status !== "ended" && (
+                {role === "vet" && app.status === "booked" && (
                   <button
                     onClick={() => handleVetMarkAsDone(app.id)}
                     style={{
@@ -396,11 +399,31 @@ export default function AppointmentsSection({
                       cursor: "pointer",
                     }}
                   >
-                    ✅ {t("profile.appointments.doneBtn")}
+                    ✅ {t("profile.appointments.doneBtn", "إتمام الجلسة")}
                   </button>
                 )}
 
-                {/*زو الغاء الموعد*/}
+                {/* زر إلغاء الموعد للطبيب (في أي وقت قبل انتهائه) */}
+                {role === "vet" && app.status === "booked" && (
+                  <button
+                    onClick={() => handleCancelAppointment(app.id)}
+                    style={{
+                      padding: "6px 14px",
+                      borderRadius: "8px",
+                      fontSize: "0.85rem",
+                      fontFamily: "Cairo",
+                      backgroundColor: "#fff5f5",
+                      color: "#e53e3e",
+                      border: "1px solid #fed7d7",
+                      fontWeight: "600",
+                      cursor: "pointer",
+                    }}
+                  >
+                    🚫 {t("profile.appointments.cancelBtn", "إلغاء الموعد")}
+                  </button>
+                )}
+
+                {/* زر إلغاء الموعد للمستخدم (صاحب الحيوان) */}
                 {role === "pet_owner" && app.status === "booked" && (
                   <button
                     onClick={() => handleCancelAppointment(app.id)}
