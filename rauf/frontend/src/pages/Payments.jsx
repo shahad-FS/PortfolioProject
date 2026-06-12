@@ -48,11 +48,12 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
         },
         methods: ["creditcard", "mada"],
 
-        callback_url: window.location.origin + "/payment-callback",
-        // callback_url: window.location.href,
+        // callback_url: window.location.origin + "/payment-callback",
+        callback_url: window.location.href,
 
         on_completed: async (payment) => {
           if (payment.status === "paid") {
+            console.log("Moyasar Payment Completed successfully:", payment.id);
             await handleVerification(payment.id);
           } else {
             isInitialized.current = false;
