@@ -1,8 +1,7 @@
 from django.db import models
-
-
-from django.db import models
 from django.conf import settings
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 from pets.models import Pet
 from accounts.models import VetProfile
 # Create your models here.
@@ -44,7 +43,16 @@ class Consultation(models.Model):
     session_price = models.DecimalField(max_digits=10, decimal_places=2)
     is_paid = models.BooleanField(default=False)
 
+    def clean(self):
+        super().clean()
+        
+        if self.scheduled_at and self.scheduled_at < timezone.now():
+            raise ValidationError({
+                'scheduled_at': "The appointment time cannot be in the past."
+            })
+
     def save(self, *args, **kwargs):
+        self.full_clean()
         if not self.id:
             try:
                 from accounts.models import VetProfile 

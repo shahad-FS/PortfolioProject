@@ -3,6 +3,7 @@ import api from "../api/axios";
 
 export const useAppointments = () => {
   const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchAppointments = async () => {
     try {
@@ -22,6 +23,7 @@ export const useAppointments = () => {
       await fetchAppointments();
     } catch (err) {
       console.error("update status error:", err);
+      throw err;
     }
   };
 
@@ -43,5 +45,6 @@ export const useAppointments = () => {
     setAppointments,
     fetchAppointments,
     updateStatus,
+    loading,
   };
 };

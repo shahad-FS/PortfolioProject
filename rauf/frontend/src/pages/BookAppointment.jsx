@@ -110,7 +110,28 @@ export default function BookAppointment() {
       }
     } catch (err) {
       console.error(err);
-      setMessage(t("booking.errors.failed"));
+
+      if (err.response && err.response.data) {
+        const serverErrors = err.response.data;
+
+        if (serverErrors.scheduled_at) {
+          const rawError = Array.isArray(serverErrors.scheduled_at)
+            ? serverErrors.scheduled_at[0]
+            : serverErrors.scheduled_at;
+
+          if (rawError === "The appointment time cannot be in the past.") {
+            setMessage(t("booking.errors.past_date"));
+          } else {
+            setMessage(rawError);
+          }
+        } else if (typeof serverErrors === "string") {
+          setMessage(serverErrors);
+        } else {
+          setMessage(t("booking.errors.failed"));
+        }
+      } else {
+        setMessage(t("booking.errors.failed"));
+      }
     } finally {
       setLoading(false);
     }
@@ -498,11 +519,25 @@ export default function BookAppointment() {
                   showTimeSelect
                   timeFormat="HH:mm"
                   timeIntervals={15}
-                  timeCaption="الوقت"
+                  timeCaption={i18n.language === "ar" ? "الوقت" : "Time"}
                   dateFormat="yyyy-MM-dd h:mm aa"
                   className="form-input"
                   placeholderText={t("booking.step3.label")}
                   required
+                  minDate={new Date()}
+                  filterTime={(time) => {
+                    const currentDate = new Date();
+                    const selectedDate = formData.scheduled_at
+                      ? new Date(formData.scheduled_at)
+                      : null;
+                    if (
+                      selectedDate &&
+                      selectedDate.toDateString() === currentDate.toDateString()
+                    ) {
+                      return time.getTime() > currentDate.getTime();
+                    }
+                    return true;
+                  }}
                 />
               </div>
             </div>

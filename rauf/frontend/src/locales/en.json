@@ -226,7 +226,8 @@
     },
     "step1": {
       "label": "Select Your Pet 🐾",
-      "placeholder": "Choose from your list..."
+      "placeholder": "Choose from your list...",
+      "add_pet_option": "➕ Add a pet (Go to Profile)"
     },
     "step2": {
       "label": "Choose Vet 🩺",
@@ -258,7 +259,8 @@
       "register_link": "Create a new Pet Owner account ✨"
     },
     "errors": {
-      "failed": "Something went wrong during booking ❌. Please try again."
+      "failed": "Something went wrong during booking ❌. Please try again.",
+      "past_date": "Sorry, you cannot choose a date or time in the past ⏰."
     }
   },
   "profile": {

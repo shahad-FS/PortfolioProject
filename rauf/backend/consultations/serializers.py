@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 from rest_framework import serializers
 from .models import Consultation
 from pets.models import Pet
@@ -54,12 +55,17 @@ class ConsultationSerializer(serializers.ModelSerializer):
         user = request.user
         pet = data.get("pet")
         vet = data.get("vet")
+        scheduled_at = data.get("scheduled_at")
 
         if pet.owner != user:
             raise serializers.ValidationError("You can only book consultations for your own pets.")
 
         if vet.role != "vet":
             raise serializers.ValidationError("Selected user is not a vet.")
+        
+        if scheduled_at:
+            if scheduled_at < timezone.now():
+                raise serializers.ValidationError({"scheduled_at": "The appointment time cannot be in the past."})
 
         from accounts.models import VetProfile
         profile = VetProfile.objects.filter(user=vet).first()
