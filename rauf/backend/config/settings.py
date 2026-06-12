@@ -247,7 +247,8 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://rauf.live"
+    "https://www.rauf.live",
+    "https://rauf.live",
     "https://portfolio-project-eight-olive.vercel.app",
     "https://*.ngrok-free.app",
     "https://*.vercel.app",
@@ -258,6 +259,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 ]
 CORS_ALLOWED_ORIGINS = [
+    "https://www.rauf.live",
     "https://rauf.live",
     "https://portfolio-project-eight-olive.vercel.app",
 ]

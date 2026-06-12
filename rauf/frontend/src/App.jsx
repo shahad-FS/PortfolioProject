@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -20,6 +20,7 @@ const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 
 function App() {
   const { i18n } = useTranslation();
+  const location = useLocation();
 
   useEffect(() => {
     const currentLang = i18n.language || "ar";
@@ -32,9 +33,14 @@ function App() {
       document.documentElement.lang = "en";
     }
   }, [i18n.language]);
+
+  const hideLayoutPaths = ["/login", "/register", "/check-email"];
+  const shouldHideLayout =
+    hideLayoutPaths.includes(location.pathname) ||
+    location.pathname.startsWith("/verify-email/");
   return (
     <>
-      <Navbar />
+      {!shouldHideLayout && <Navbar />}
 
       <Suspense fallback={<div>Loading page...</div>}>
         <Routes>
@@ -50,7 +56,7 @@ function App() {
           <Route path="/terms" element={<TermsAndConditions />} />
         </Routes>
       </Suspense>
-      <Footer />
+      {!shouldHideLayout && <Footer />}
     </>
   );
 }
