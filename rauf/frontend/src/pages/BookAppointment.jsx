@@ -32,6 +32,7 @@ export default function BookAppointment() {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+  const [isVerifyingPayment, setIsVerifyingPayment] = useState(false);
 
   useEffect(() => {
     if (userRole === "vet") return;
@@ -49,6 +50,7 @@ export default function BookAppointment() {
       const verifyReturnedPayment = async () => {
         try {
           setLoading(true);
+          setIsVerifyingPayment(true);
           await api.post("payments/verify/", {
             payment_id: paymentId,
           });
@@ -222,6 +224,58 @@ export default function BookAppointment() {
               {t("booking.vet_notice.register_link")}
             </Link>
           </div>
+        </div>
+      </div>
+    );
+  }
+  if (
+    isVerifyingPayment ||
+    (searchParams.get("id") &&
+      searchParams.get("status") === "paid" &&
+      !success &&
+      !message)
+  ) {
+    return (
+      <div
+        className="page"
+        style={{
+          minHeight: "85vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          className="auth-form-panel animate-fadeIn"
+          style={{
+            maxWidth: "450px",
+            width: "100%",
+            padding: "40px",
+            textAlign: "center",
+            backgroundColor: "#fff",
+            borderRadius: "16px",
+            boxShadow: "var(--card-shadow)",
+          }}
+        >
+          <div
+            className="text-5xl mb-4 animate-spin"
+            style={{ display: "inline-block", animationDuration: "2s" }}
+          >
+            ⏳
+          </div>
+          <div
+            className="form-title"
+            style={{
+              marginBottom: "10px",
+              fontSize: "20px",
+              fontWeight: "bold",
+            }}
+          >
+            {t("booking.verifying.title")}
+          </div>
+          <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>
+            {t("booking.verifying.message")}
+          </p>
         </div>
       </div>
     );

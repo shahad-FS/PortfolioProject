@@ -245,6 +245,10 @@
       "booking": "Booking...",
       "confirm": "Proceed to Payment"
     },
+    "verifying": {
+      "title": "Verifying Payment...",
+      "message": "Please do not close or refresh this page. We are confirming your booking and generating your invoice."
+    },
     "success": {
       "badge": "Booking & Paid 🎉",
       "title": "Appointment Confirmed!",
