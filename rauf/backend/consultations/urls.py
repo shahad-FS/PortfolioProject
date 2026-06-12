@@ -2,8 +2,8 @@ from django.urls import path
 from .views import (
     ConsultationCreateView,
     ConsultationUpdateStatusView,
-    ConsultationCancelView,
-    ConsultationVetUpdateView,
+    # ConsultationCancelView,
+    # ConsultationVetUpdateView,
     MyAppointmentsView,
     
 )
