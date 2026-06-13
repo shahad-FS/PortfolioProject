@@ -19,6 +19,11 @@
       "source": "/api-test",
       "destination": "https://google.com",
       "permanent": false
+    },
+    {
+      "source": "/api-docs",
+      "destination": "https://portfolioproject-bdyu.onrender.com/api/docs/",
+      "permanent": false
     }
   ]
 }
