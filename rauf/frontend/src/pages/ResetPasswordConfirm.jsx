@@ -44,7 +44,7 @@ export default function ResetPasswordConfirm() {
 
     try {
       setLoading(true);
-      await api.post("/password_reset/confirm/", {
+      await api.post("password_reset/confirm/", {
         token: token,
         password: password,
       });
@@ -59,11 +59,22 @@ export default function ResetPasswordConfirm() {
         navigate("/login");
       });
     } catch (err) {
-      console.error(err);
+      console.error("Django Error Details:", err.response?.data);
+      let backendErrorMessage = t("resetPassword.alerts.errorText");
+      if (err.response?.data) {
+        if (err.response.data.status === "failed") {
+          backendErrorMessage = isRtl
+            ? "الرابط غير صالح أو انتهت صلاحيته. يرجى طلب رابط جديد."
+            : "The token is invalid or has expired. Please request a new link.";
+        } else if (err.response.data.password) {
+          backendErrorMessage = err.response.data.password.join(" ");
+        }
+      }
+
       Swal.fire({
         icon: "error",
         title: t("resetPassword.alerts.errorTitle"),
-        text: t("resetPassword.alerts.errorText"),
+        text: backendErrorMessage,
         confirmButtonColor: "#e53e3e",
         customClass: { popup: "custom-swal-font custom-swal-popup" },
       });
@@ -113,6 +124,7 @@ export default function ResetPasswordConfirm() {
               <input
                 type="password"
                 required
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-start"
@@ -133,6 +145,7 @@ export default function ResetPasswordConfirm() {
               <input
                 type="password"
                 required
+                autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-start"
