@@ -9,16 +9,11 @@
       "source": "/admin/:match*",
       "destination": "https://portfolioproject-bdyu.onrender.com/admin/:match*",
       "permanent": false
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:match*",
-      "destination": "https://portfolioproject-bdyu.onrender.com/api/:match*"
     },
     {
-      "source": "/static/:match*",
-      "destination": "https://portfolioproject-bdyu.onrender.com/static/:match*"
+      "source": "/api/:match*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/api/:match*",
+      "permanent": false
     }
   ]
 }
