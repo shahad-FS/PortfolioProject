@@ -10,5 +10,19 @@
       "destination": "https://portfolioproject-bdyu.onrender.com/admin/$1",
       "permanent": false
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/api/:match*"
+    },
+    {
+      "source": "/static/:match*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/static/:match*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
