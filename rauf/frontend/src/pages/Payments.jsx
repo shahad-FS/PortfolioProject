@@ -68,7 +68,7 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
 
   const handleVerification = async (paymentId) => {
     if (!consultationId) {
-      console.error("❌ Error: consultationId is missing or undefined!");
+      console.error("Error: consultationId is missing or undefined!");
       setError("Cannot verify payment because Consultation ID is missing.");
       return;
     }

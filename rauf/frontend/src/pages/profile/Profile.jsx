@@ -27,8 +27,6 @@ export default function Profile() {
         <div className="relative flex flex-col items-center">
           <div className="w-16 h-16 rounded-full border-4 border-dashed border-teal-500/20 border-t-teal-500 animate-spin"></div>
 
-          <div className="absolute top-4 text-2xl animate-bounce">🐾</div>
-
           <p
             className="mt-6 text-sm font-bold tracking-wide animate-pulse"
             style={{

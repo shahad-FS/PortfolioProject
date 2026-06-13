@@ -41,7 +41,7 @@ class ConsultationCreateView(generics.CreateAPIView):
             session_price=session_price
         )
 
-        self.broadcast_status_change(consultation)
+        # self.broadcast_status_change(consultation)
 
 
 class ConsultationUpdateStatusView(generics.UpdateAPIView):
