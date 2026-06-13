@@ -1,5 +1,5 @@
 // src/components/Navbar.jsx
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
@@ -12,21 +12,34 @@ import logoImg from "../assets/logoImg.png";
 export default function Navbar() {
   const { tokens, logout, user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
-  const getInitials = () => {
-    if (!user?.full_name) return "U";
-    return user.full_name
-      .split(" ")
-      .slice(0, 2)
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // const getInitials = () => {
+  //   if (!user?.full_name) return "U";
+  //   return user.full_name
+  //     .split(" ")
+  //     .slice(0, 2)
+  //     .map((n) => n[0])
+  //     .join("")
+  //     .toUpperCase();
+  // };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
       <div
         className="navbar-inner"
         style={{ maxWidth: "100%", padding: "0 4%" }}
