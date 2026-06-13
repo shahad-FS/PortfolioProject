@@ -463,5 +463,25 @@
     "amountToPay": "Amount to pay:",
     "loadingPrice": "Loading...",
     "verifying": "Verifying payment, please wait..."
+  },
+  "resetPassword": {
+    "form": {
+      "title": "🔒 Reset New Password",
+      "subtitle": "Please enter your new password and confirm it below.",
+      "passwordLabel": "New Password",
+      "confirmPasswordLabel": "Confirm New Password",
+      "submitBtn": "Update Password",
+      "loadingBtn": "Saving..."
+    },
+    "alerts": {
+      "mismatchTitle": "Input Error",
+      "mismatchText": "Passwords do not match. Please verify and try again.",
+      "weakTitle": "Weak Password",
+      "weakText": "Password must be 8 characters or more.",
+      "successTitle": "Password Changed Successfully!",
+      "successText": "You can now log in using your new password.",
+      "errorTitle": "Operation Failed",
+      "errorText": "The link may be expired or has already been used."
+    }
   }
 }
