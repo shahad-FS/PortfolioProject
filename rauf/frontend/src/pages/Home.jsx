@@ -24,7 +24,10 @@ export default function Home() {
     const fetchVets = async () => {
       try {
         const res = await api.get("accounts/vets/");
-        setVets(res.data);
+
+        const approvedVets = res.data.filter((vet) => vet.is_approved === true);
+
+        setVets(approvedVets);
       } catch (err) {
         console.log(err);
       } finally {
