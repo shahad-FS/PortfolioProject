@@ -166,6 +166,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATIC_URL = '/static/'
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # INTERNAL_IPS = []
 
 AUTH_USER_MODEL = "accounts.User"
