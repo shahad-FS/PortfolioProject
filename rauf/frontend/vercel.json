@@ -25,7 +25,7 @@
       "destination": "/index.html"
     },
     {
-      "source": "/((?!admin|api|static).*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ]
