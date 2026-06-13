@@ -5,6 +5,14 @@
       "destination": "https://portfolioproject-bdyu.onrender.com/api/:path*"
     },
     {
+      "source": "/admin/:path*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/admin/:path*"
+    },
+    {
+      "source": "/static/:path*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/static/:path*"
+    },
+    {
       "source": "/verify-email/:token",
       "destination": "/index.html"
     },
