@@ -34,6 +34,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "*",
     "portfolioproject-bdyu.onrender.com",
+    'rauf.live',
+    'www.rauf.live',
                  ]
 
 
@@ -248,6 +250,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+    'https://portfolioproject-bdyu.onrender.com',
     "https://www.rauf.live",
     "https://rauf.live",
     "https://portfolio-project-eight-olive.vercel.app",
