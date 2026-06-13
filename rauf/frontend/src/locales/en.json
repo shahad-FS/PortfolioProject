@@ -6,8 +6,8 @@
     "language_btn": "العربية",
     "register": "Register",
     "login": "Login",
-    "logout": "🚪 Logout",
-    "profile": "👤 Your Profile"
+    "logout": "Logout",
+    "profile": "Your Profile"
   },
   "footer": {
     "brandDesc": "A specialized clinic providing remote veterinary consultations for pet owners in Saudi Arabia.",
@@ -34,7 +34,7 @@
     "phone": "+966 920-XXX-XXX",
     "email": "support@raouf.sa",
     "hours": "Available 24/7",
-    "copyright": "© 2026 Raouf. All rights reserved 🐾",
+    "copyright": "© 2026 Raouf. All rights reserved",
     "sitemap": "Sitemap"
   },
   "home": {
@@ -44,7 +44,7 @@
     "heroDesc": "Connect with the best veterinarians specializing in pet care. Get an instant consultation via video or chat without leaving your home.",
     "ctaStart": "Start your consultation now",
     "ctaLogin": "Login",
-    "welcomeBack": "Welcome back 👋 You are logged in",
+    "welcomeBack": "Welcome back You are logged in",
     "trust": {
       "video": "Instant Video Consultation",
       "privacy": "Fully Private & Secure",
@@ -135,14 +135,14 @@
   "register": {
     "brand": {
       "title1": "Join the",
-      "title2": "Raouf Family 🐱",
+      "title2": "Raouf Family",
       "desc": "Thousands of pet owners trust us for premium veterinary care.",
       "feat1": "Free first consultation",
       "feat2": "Easy & flexible booking",
       "feat3": "Digital medical prescriptions"
     },
     "form": {
-      "badge": "🐱 New Account",
+      "badge": "New Account",
       "title": "Create Account",
       "subtitle": "Already have an account? ",
       "linkLogin": "Sign in",
@@ -172,7 +172,7 @@
     }
   },
   "confirmEmail": {
-    "badge": "Check Email 📧",
+    "badge": "Check Email",
     "title": "Confirm Account",
     "message": "We’ve sent you a verification link. Please check your inbox and click the link to activate your account and start your journey with us.",
     "spamNote": "Didn’t receive the email? Check your spam folder or try again later."
@@ -185,7 +185,7 @@
     "backHome": "Back to Home"
   },
   "emailVerified": {
-    "badge": "Success 🎉",
+    "badge": "Success",
     "title": "Email Verified!",
     "message": "Congratulations! Your email has been successfully verified. You can now log in and access all features of your account.",
     "goToLogin": "Go to Login",
@@ -194,14 +194,14 @@
   "login": {
     "brand": {
       "title1": "Welcome Back!",
-      "title2": "Your pet missed you 🐾",
+      "title2": "Your pet missed you",
       "desc": "Log in now to follow up on your consultations, book new appointments, and contact your vet directly.",
       "feat1": "Certified Veterinarians",
       "feat2": "Instant consultation in minutes",
       "feat3": "Your privacy is fully guaranteed"
     },
     "form": {
-      "badge": "Welcome 🐱",
+      "badge": "Welcome",
       "title": "Log In",
       "subtitle": "Don't have an account? ",
       "linkRegister": "Create a free account",
@@ -209,12 +209,12 @@
       "forgotPassword": "Forgot password?"
     },
     "forgotPassword": {
-      "modalTitle": "🔒 Reset Password",
+      "modalTitle": "Reset Password",
       "modalText": "Enter your registered email address to receive a reset link:",
       "confirmBtn": "Send Link",
       "cancelBtn": "Cancel",
       "requiredError": "Email address is required!",
-      "successTitle": "Check your email 📩",
+      "successTitle": "Check your email",
       "successText": "We have sent a secure password reset link to your email.",
       "errorTitle": "An error occurred",
       "errorText": "Could not send the link. Please double-check the email address or try again later."
@@ -228,7 +228,7 @@
     }
   },
   "booking": {
-    "badge": "Book Now 📅",
+    "badge": "Book Now",
     "title": "Book Veterinary Consultation",
     "steps": {
       "step1": "Pet",
@@ -237,16 +237,16 @@
       "step4": "Payment"
     },
     "step1": {
-      "label": "Select Your Pet 🐾",
+      "label": "Select Your Pet",
       "placeholder": "Choose from your list...",
-      "add_pet_option": "➕ Add a pet (Go to Profile)"
+      "add_pet_option": " Add a pet (Go to Profile)"
     },
     "step2": {
-      "label": "Choose Vet 🩺",
+      "label": "Choose Vet",
       "placeholder": "Select a certified vet..."
     },
     "step3": {
-      "label": "Pick Date & Confirm 📅",
+      "label": "Pick Date & Confirm",
       "summaryTitle": "Initial Booking Summary:",
       "petId": "Pet ID:",
       "vetId": "Vet ID:"
@@ -262,7 +262,7 @@
       "message": "Please do not close or refresh this page. We are confirming your booking and generating your invoice."
     },
     "success": {
-      "badge": "Booking & Paid 🎉",
+      "badge": "Booking & Paid",
       "title": "Appointment Confirmed!",
       "message": "Congratulations! Your appointment has been successfully created and paid. You can now track your appointment status from your profile.",
       "goToProfile": "Go to My Profile",
@@ -272,11 +272,11 @@
       "badge": "Veterinarian Account",
       "title": "Your current account is for Doctors",
       "message": "The vet dashboard is only for reviewing appointments, writing medical reports, and managing sessions. If you wish to book a new appointment and experience the client role, please create a new account as a pet owner.",
-      "register_link": "Create a new Pet Owner account ✨"
+      "register_link": "Create a new Pet Owner account"
     },
     "errors": {
-      "failed": "Something went wrong during booking ❌. Please try again.",
-      "past_date": "Sorry, you cannot choose a date or time in the past ⏰."
+      "failed": "Something went wrong during booking. Please try again.",
+      "past_date": "Sorry, you cannot choose a date or time in the past."
     }
   },
   "profile": {
@@ -306,12 +306,12 @@
     },
     "pet": {
       "title": "My Pets",
-      "addTooltip": "Add your pet 🐾",
+      "addTooltip": "Add your pet",
       "empty": "No pets added yet",
       "age": "Age",
       "medicalReport": "Medical Report",
       "confirmDelete": "Are you sure you want to delete this pet?",
-      "noAppointmentsAlert": "No appointments found for this pet 🐾"
+      "noAppointmentsAlert": "No appointments found for this pet"
     },
     "appointments": {
       "title": "Current Appointments",
@@ -382,8 +382,8 @@
     "placeholders": {
       "name": "e.g. Max, Bella",
       "selectType": "Select animal type",
-      "breed": "e.g. Persian, Husky, Siamese (Optional)",
-      "birthYear": "e.g. 2022 (Optional)"
+      "breed": "e.g. Persian, Husky, Siamese",
+      "birthYear": "e.g. 2022"
     },
     "types": {
       "cat": "Cat",
@@ -459,14 +459,14 @@
     }
   },
   "payment": {
-    "title": "Complete Your Payment 💳",
+    "title": "Complete Your Payment",
     "amountToPay": "Amount to pay:",
     "loadingPrice": "Loading...",
     "verifying": "Verifying payment, please wait..."
   },
   "resetPassword": {
     "form": {
-      "title": "🔒 Reset New Password",
+      "title": "Reset New Password",
       "subtitle": "Please enter your new password and confirm it below.",
       "passwordLabel": "New Password",
       "confirmPasswordLabel": "Confirm New Password",

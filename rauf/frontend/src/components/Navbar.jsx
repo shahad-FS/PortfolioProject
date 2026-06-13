@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import LanguageSwitcherBtn from "./LanguageSwitcherBtn";
+import { LogoutIcon, UserIcon } from "./Icons";
 
 import "../styles/navbar.css";
 import logoImg from "../assets/logoImg.png";
@@ -125,7 +126,7 @@ export default function Navbar() {
                   cursor: "pointer",
                 }}
               >
-                👤
+                <UserIcon />
               </button>
 
               <AnimatePresence>
@@ -151,7 +152,9 @@ export default function Navbar() {
                       className="dropdown-item-btn"
                       style={{
                         color: "var(--text)",
-                        display: "block",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                         width: "100%",
                         padding: "10px 12px",
                         background: "transparent",
@@ -159,11 +162,13 @@ export default function Navbar() {
                         borderRadius: "8px",
                         cursor: "pointer",
                         fontFamily: "Cairo",
-                        textAlign: i18n.language === "ar" ? "right" : "left",
+                        flexDirection:
+                          i18n.language === "ar" ? "row" : "row-reverse",
                         transition: "background 0.2s ease, color 0.2s ease",
                       }}
                     >
-                      {t("navbar.profile")}
+                      <span>{t("navbar.profile")}</span>
+                      <UserIcon size={18} style={{ flexShrink: 0 }} />
                     </button>
 
                     {/* زر تسجيل الخروج */}
@@ -175,7 +180,9 @@ export default function Navbar() {
                       className="dropdown-item-btn"
                       style={{
                         color: "var(--text)",
-                        display: "block",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                         width: "100%",
                         padding: "10px 12px",
                         background: "transparent",
@@ -183,12 +190,14 @@ export default function Navbar() {
                         borderRadius: "8px",
                         cursor: "pointer",
                         fontFamily: "Cairo",
-                        textAlign: i18n.language === "ar" ? "right" : "left",
+                        flexDirection:
+                          i18n.language === "ar" ? "row" : "row-reverse",
                         transition: "background 0.2s ease, color 0.2s ease",
                         marginTop: "4px",
                       }}
                     >
-                      {t("navbar.logout")}
+                      <span>{t("navbar.logout")}</span>
+                      <LogoutIcon size={18} style={{ flexShrink: 0 }} />
                     </button>
                   </motion.div>
                 )}

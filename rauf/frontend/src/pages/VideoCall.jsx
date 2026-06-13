@@ -303,7 +303,7 @@ export default function VideoCall({ sessionIdOverride }) {
         direction: isRtl ? "rtl" : "ltr",
       }}
     >
-      {/* 📺 الكاميرا  */}
+      {/* الكاميرا  */}
       <div className="absolute top-28 bottom-32 inset-x-4 max-w-4xl mx-auto z-0 bg-neutral-900 rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center">
         <video
           ref={remoteVideoRef}
@@ -317,9 +317,6 @@ export default function VideoCall({ sessionIdOverride }) {
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-neutral-950/90 z-10 p-6 text-center animate-fadeIn">
             <div className="relative mb-6">
               <div className="w-20 h-20 rounded-full border-4 border-dashed border-teal-500/30 border-t-teal-400 animate-spin flex items-center justify-center"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-3xl">
-                🩺
-              </div>
             </div>
             <h3 className="text-xl font-bold text-white mb-2">
               {t("video.status.waitingTitle")}
@@ -405,7 +402,7 @@ export default function VideoCall({ sessionIdOverride }) {
               isMuted ? t("video.controls.unmute") : t("video.controls.mute")
             }
           >
-            <span className="text-xl">{isMuted ? "🔇" : "🎙️"}</span>
+            <span className="text-xl">{isMuted ? "Unmute" : "Mute"}</span>
           </button>
 
           {/* إنهاء المكالمة     */}
@@ -431,7 +428,9 @@ export default function VideoCall({ sessionIdOverride }) {
                 : t("video.controls.cameraOff")
             }
           >
-            <span className="text-xl">{isCameraOff ? "🙈" : "📷"}</span>
+            <span className="text-xl">
+              {isCameraOff ? "CameraOn" : "CameraOff"}
+            </span>
           </button>
         </div>
       </div>

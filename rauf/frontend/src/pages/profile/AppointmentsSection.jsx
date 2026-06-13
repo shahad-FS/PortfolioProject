@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import {
+  ErrorIcon,
+  MedicalReportIcon,
+  VideoIcon,
+  CheckIcon,
+} from "../../components/Icons";
 
 export default function AppointmentsSection({
   role,
@@ -182,7 +188,7 @@ export default function AppointmentsSection({
       }}
     >
       <h2 className="text-xl font-bold mb-6" style={{ color: "var(--text)" }}>
-        🗓️{" "}
+        {" "}
         {role === "vet"
           ? t("profile.appointments.vetTitle")
           : t("profile.appointments.title")}
@@ -251,17 +257,17 @@ export default function AppointmentsSection({
                   className="font-bold text-lg"
                   style={{ color: "var(--text)" }}
                 >
-                  🐾 {app.pet_name || t("profile.appointments.unknownPet")}’s{" "}
+                  {app.pet_name || t("profile.appointments.unknownPet")}’s{" "}
                   {t("profile.appointments.keyword", "Appointment")}
                 </h3>
 
                 <p style={{ color: "var(--text-light)", fontSize: "0.85rem" }}>
-                  ⏰ {formatDateTime(app.scheduled_at)}
+                  {formatDateTime(app.scheduled_at)}
                 </p>
 
                 {role === "vet" && (
                   <p style={{ color: "var(--text)", fontSize: "0.85rem" }}>
-                    🎂 {t("profile.pet.age")}:{" "}
+                    {t("profile.pet.age")}:{" "}
                     {(() => {
                       const age = app.pet_age;
 
@@ -288,7 +294,7 @@ export default function AppointmentsSection({
 
                 {/* الحالات   */}
                 <p style={{ color: "var(--text-light)", fontSize: "0.85rem" }}>
-                  ✨ {t("profile.appointments.status", "الحالة")}:{" "}
+                  {t("profile.appointments.status", "الحالة")}:{" "}
                   <span
                     style={{
                       backgroundColor:
@@ -340,7 +346,7 @@ export default function AppointmentsSection({
                         cursor: "pointer",
                       }}
                     >
-                      📹 {t("profile.appointments.startCall")}
+                      <VideoIcon /> {t("profile.appointments.startCall")}
                     </button>
                   )}
 
@@ -364,7 +370,7 @@ export default function AppointmentsSection({
                       cursor: "pointer",
                     }}
                   >
-                    🤙 {t("profile.appointments.joinCall")}
+                    {t("profile.appointments.joinCall")}
                   </button>
                 )}
 
@@ -387,7 +393,7 @@ export default function AppointmentsSection({
                       fontWeight: "600",
                     }}
                   >
-                    📝{" "}
+                    <MedicalReportIcon />{" "}
                     {app.medical_record
                       ? t("profile.appointments.updateReport")
                       : t("profile.appointments.addReport")}
@@ -410,7 +416,8 @@ export default function AppointmentsSection({
                       cursor: "pointer",
                     }}
                   >
-                    ✅ {t("profile.appointments.doneBtn", "إتمام الجلسة")}
+                    <CheckIcon />{" "}
+                    {t("profile.appointments.doneBtn", "إتمام الجلسة")}
                   </button>
                 )}
 
@@ -430,7 +437,7 @@ export default function AppointmentsSection({
                       cursor: "pointer",
                     }}
                   >
-                    🚫 {t("profile.appointments.cancelBtn", "إلغاء الموعد")}
+                    <ErrorIcon /> {t("profile.appointments.cancelBtn")}
                   </button>
                 )}
 
@@ -450,7 +457,7 @@ export default function AppointmentsSection({
                       cursor: "pointer",
                     }}
                   >
-                    🚫 {t("profile.appointments.cancelBtn")}
+                    <ErrorIcon /> {t("profile.appointments.cancelBtn")}
                   </button>
                 )}
               </div>

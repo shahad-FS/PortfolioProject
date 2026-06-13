@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { LanguageIcon } from "./Icons";
 
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
@@ -36,8 +37,10 @@ export default function LanguageSwitcher() {
         cursor: "pointer",
       }}
     >
-      <span>🌐</span>
       <span>{t("navbar.language_btn")}</span>
+      <span>
+        <LanguageIcon size={14} />
+      </span>
     </motion.button>
   );
 }

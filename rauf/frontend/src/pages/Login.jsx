@@ -6,6 +6,14 @@ import { AuthContext } from "../context/AuthContext";
 import "../styles/auth.css";
 import logoImg from "../assets/logoImg.png";
 import Swal from "sweetalert2";
+import {
+  LockIcon,
+  CatIcon,
+  EmailIcon,
+  VarifiedIcon,
+  ErrorIcon,
+  QuickIcon,
+} from "../components/Icons";
 
 const Login = () => {
   const { t, i18next } = useTranslation();
@@ -143,30 +151,39 @@ const Login = () => {
             <div className="brand-title">
               {t("login.brand.title1")}
               <br />
+
               {t("login.brand.title2")}
             </div>
             <div className="brand-desc">{t("login.brand.desc")}</div>
             <div className="brand-features">
               <div className="brand-feature">
-                <div className="brand-feature-icon">✅</div>
+                <div className="brand-feature-icon">
+                  <VarifiedIcon size={18} />
+                </div>
                 <span>{t("login.brand.feat1")}</span>
               </div>
               <div className="brand-feature">
-                <div className="brand-feature-icon">⚡</div>
+                <div className="brand-feature-icon">
+                  <QuickIcon size={18} />
+                </div>
                 <span>{t("login.brand.feat2")}</span>
               </div>
               <div className="brand-feature">
-                <div className="brand-feature-icon">🔒</div>
+                <div className="brand-feature-icon">
+                  <LockIcon size={18} />
+                </div>
                 <span>{t("login.brand.feat3")}</span>
               </div>
             </div>
-            <div className="brand-paws">🐾 🐾 🐾</div>
           </div>
 
           {/* Form panel (الجانب الأيسر لتسجيل الدخول) */}
           <div className="auth-form-panel">
             <div className="form-header">
-              <div className="tag-badge">{t("login.form.badge")}</div>
+              <div className="tag-badge">
+                {t("login.form.badge")}
+                <CatIcon size={14} />
+              </div>
               <div className="form-title">{t("login.form.title")}</div>
               <div className="form-subtitle">
                 {t("login.form.subtitle")}
@@ -188,7 +205,7 @@ const Login = () => {
                     textAlign: isRtl ? "right" : "left",
                   }}
                 >
-                  ⚠️ {error}
+                  <ErrorIcon size={14} /> {error}
                 </div>
               )}
 
@@ -199,7 +216,9 @@ const Login = () => {
                   <span className="required">*</span>
                 </label>
                 <div className="input-wrap">
-                  <span className="input-icon">📧</span>
+                  <span className="input-icon">
+                    <EmailIcon size={18} />
+                  </span>
                   <input
                     type="email"
                     name="email"
@@ -243,7 +262,9 @@ const Login = () => {
                 </div>
 
                 <div className="input-wrap">
-                  <span className="input-icon">🔒</span>
+                  <span className="input-icon">
+                    <LockIcon size={18} />
+                  </span>
                   <input
                     type="password"
                     name="password"

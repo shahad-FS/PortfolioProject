@@ -74,7 +74,7 @@ export default function EditProfileModal({
         {/* الهيدر */}
         <div className="mb-6">
           <h2 className="text-xl font-bold" style={{ color: "var(--text)" }}>
-            📝 {t("profile.edit.title")}
+            {t("profile.edit.title")}
           </h2>
           <p className="text-xs mt-1" style={{ color: "var(--text-light)" }}>
             {t("profile.edit.subtitle")}
@@ -222,7 +222,7 @@ export default function EditProfileModal({
               color: "var(--white)",
             }}
           >
-            ✨ {t("profile.edit.saveBtn")}
+            {t("profile.edit.saveBtn")}
           </button>
         </div>
       </div>

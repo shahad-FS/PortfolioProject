@@ -469,7 +469,6 @@ export default function BookAppointment() {
                 {t("booking.step1.label")} <span className="required">*</span>
               </label>
               <div className="input-wrap">
-                <span className="input-icon">🐶</span>
                 <select
                   id="pet-select"
                   name="pet"
@@ -486,7 +485,7 @@ export default function BookAppointment() {
                       value="ADD_PET_REDIRECT"
                       style={{ color: "var(--primary)", fontWeight: "bold" }}
                     >
-                      ➕{" "}
+                      +{" "}
                       {t(
                         "booking.step1.add_pet_option",
                         "أضف حيوان أليف (اذهب للملف الشخصي)",
@@ -518,11 +517,9 @@ export default function BookAppointment() {
           <div className="animate-fadeIn">
             <div className="form-group">
               <label className="form-label">
-                {t("booking.step2.label", "اختر الطبيب البيطري 🩺")}{" "}
-                <span className="required">*</span>
+                {t("booking.step2.label")} <span className="required">*</span>
               </label>
               <div className="input-wrap">
-                <span className="input-icon">👨‍⚕️</span>
                 <select
                   name="vet"
                   value={formData.vet}
@@ -630,7 +627,7 @@ export default function BookAppointment() {
                   fontWeight: "800",
                 }}
               >
-                📝 {t("booking.step3.summaryTitle")}
+                {t("booking.step3.summaryTitle")}
               </h4>
               <div
                 style={{
@@ -642,13 +639,13 @@ export default function BookAppointment() {
                 }}
               >
                 <div>
-                  🐾 {t("booking.step3.petId")}{" "}
+                  {t("booking.step3.petId")}{" "}
                   <strong style={{ color: "var(--text)" }}>
                     {formData.pet}
                   </strong>
                 </div>
                 <div>
-                  🩺 {t("booking.step3.vetId")}{" "}
+                  {t("booking.step3.vetId")}{" "}
                   <strong style={{ color: "var(--text)" }}>
                     {formData.vet}
                   </strong>
