@@ -1,9 +1,14 @@
 {
   "redirects": [
     {
+      "source": "/admin",
+      "destination": "https://portfolioproject-bdyu.onrender.com/admin/",
+      "permanent": false
+    },
+    {
       "source": "/admin/:path*",
       "destination": "https://portfolioproject-bdyu.onrender.com/admin/:path*",
-      "permanent": true
+      "permanent": false
     }
   ],
   "rewrites": [
