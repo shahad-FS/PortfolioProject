@@ -6,8 +6,8 @@
       "permanent": false
     },
     {
-      "source": "/admin/(.*)",
-      "destination": "https://portfolioproject-bdyu.onrender.com/admin/$1",
+      "source": "/admin/:match*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/admin/:match*",
       "permanent": false
     }
   ],
@@ -19,10 +19,6 @@
     {
       "source": "/static/:match*",
       "destination": "https://portfolioproject-bdyu.onrender.com/static/:match*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ]
 }
