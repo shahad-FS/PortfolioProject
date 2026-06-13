@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import api from "../../api/axios";
+import api from "../api/axios";
 import Swal from "sweetalert2";
 
 export default function ResetPasswordConfirm() {
