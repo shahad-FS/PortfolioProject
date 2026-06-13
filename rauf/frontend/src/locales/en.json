@@ -207,6 +207,17 @@
       "linkRegister": "Create a free account",
       "submitBtn": "Log In"
     },
+    "forgotPassword": {
+      "modalTitle": "🔒 Reset Password",
+      "modalText": "Enter your registered email address to receive a reset link:",
+      "confirmBtn": "Send Link",
+      "cancelBtn": "Cancel",
+      "requiredError": "Email address is required!",
+      "successTitle": "Check your email 📩",
+      "successText": "We have sent a secure password reset link to your email.",
+      "errorTitle": "An error occurred",
+      "errorText": "Could not send the link. Please double-check the email address or try again later."
+    },
     "errors": {
       "emailNotVerified": "Please verify your email address before logging in.",
       "invalidCredentials": "Incorrect email or password.",
@@ -323,7 +334,8 @@
       "hideTooltip": "Hide from screen",
       "hideTitle": "Hide Appointment",
       "hideText": "Do you want to hide this appointment from your active list?",
-      "hideBtn": "Hide"
+      "hideBtn": "Hide",
+      "loading": "Loading appointments..."
     }
   },
 

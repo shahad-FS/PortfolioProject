@@ -5,6 +5,7 @@ import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/auth.css";
 import logoImg from "../assets/logoImg.png";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { t, i18next } = useTranslation();
@@ -22,12 +23,11 @@ const Login = () => {
   const [mounted, setMounted] = useState(true);
   const isRtl = i18next?.language === "ar";
 
-  // Cleanup when component unmounts
   useEffect(() => {
     return () => setMounted(false);
   }, []);
 
-  // Loading animation
+  // Loading dots
   useEffect(() => {
     if (!loading || !mounted) return;
 
@@ -37,6 +37,53 @@ const Login = () => {
 
     return () => clearInterval(interval);
   }, [loading, mounted]);
+
+  const handleRequestReset = async (email) => {
+    try {
+      await api.post("password_reset/", { email });
+
+      Swal.fire({
+        icon: "success",
+        title: t("login.forgotPassword.successTitle"),
+        text: t("login.forgotPassword.successText"),
+        confirmButtonColor: "var(--primary)",
+        customClass: { popup: "custom-swal-font" },
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: t("login.forgotPassword.errorTitle"),
+        text: t("login.forgotPassword.errorText"),
+        confirmButtonColor: "#e53e3e",
+        customClass: { popup: "custom-swal-font" },
+      });
+    }
+  };
+
+  const showForgotPasswordModal = () => {
+    Swal.fire({
+      title: t("login.forgotPassword.modalTitle"),
+      text: t("login.forgotPassword.modalText"),
+      input: "email",
+      inputPlaceholder: "example@email.com",
+      showCancelButton: true,
+      confirmButtonText: t("login.forgotPassword.confirmBtn"),
+      cancelButtonText: t("login.forgotPassword.cancelBtn"),
+      confirmButtonColor: "var(--primary)",
+      cancelButtonColor: "#718096",
+      customClass: { popup: "custom-swal-font" },
+      inputValidator: (value) => {
+        if (!value) {
+          return t("login.forgotPassword.requiredError");
+        }
+      },
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        handleRequestReset(result.value);
+      }
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -169,10 +216,32 @@ const Login = () => {
 
               {/* PASSWORD FIELD */}
               <div className="form-group mb-6">
-                <label className="form-label">
-                  {t("register.form.passwordLabel")}{" "}
-                  <span className="required">*</span>
-                </label>
+                <div className="flex justify-between items-center mb-1">
+                  <label className="form-label style={{ margin: 0 }}">
+                    {t("register.form.passwordLabel")}{" "}
+                    <span className="required">*</span>
+                  </label>
+
+                  {/* زر نسيت كلمة المرور ي */}
+                  <button
+                    type="button"
+                    onClick={showForgotPasswordModal}
+                    className="forgot-password-link"
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: 0,
+                      cursor: "pointer",
+                      fontSize: "0.85rem",
+                      color: "var(--primary)",
+                      fontWeight: "600",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    {t("login.form.forgotPassword")}
+                  </button>
+                </div>
+
                 <div className="input-wrap">
                   <span className="input-icon">🔒</span>
                   <input

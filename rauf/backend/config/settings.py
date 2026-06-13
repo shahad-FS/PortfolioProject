@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'django_rest_passwordreset',
 
     'accounts.apps.AccountsConfig',
     'pets',

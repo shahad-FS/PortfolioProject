@@ -66,6 +66,7 @@ export default function Profile() {
           <AppointmentsSection
             role={role}
             appointments={appointments}
+            loading={loading}
             updateStatus={updateStatus}
             hideAppointmentFromUI={hideAppointmentFromUI}
             setAppointments={setAppointments}

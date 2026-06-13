@@ -39,7 +39,7 @@ class EmailService:
 
 
 
-        subject = "Welcome to Rauf App 🎉 - Verify your email"
+        subject = "Welcome to Rauf App - Verify your email"
 
         text_content = f"""
         Hi {user.email},
@@ -58,7 +58,7 @@ class EmailService:
                 <table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:10px;padding:20px;">
                     <tr>
                     <td style="font-size:20px;font-weight:bold;padding-bottom:10px;">
-                        🎉 Welcome to Rauf App
+                        Welcome to Rauf App
                     </td>
                     </tr>
 
@@ -231,3 +231,76 @@ class EmailService:
 
         EmailService.send_html_email(
             subject, vet.email, html_content, html_content)
+
+    @staticmethod
+    def send_password_reset_email(user, token):
+        
+        frontend_url = getattr(settings, 'FRONTEND_URL', 'https://rauf.live')
+        link = f"{frontend_url}/reset-password?token={token}"
+
+        subject = "Reset Your Password - Rauf App"
+
+        text_content = f"""
+        Hi,
+
+        You requested to reset your password for your Rauf App account.
+        Please click the link below to set a new password:
+        {link}
+
+        If you didn't request this, please ignore this email.
+        """
+
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:20px 0;">
+            <tr>
+                <td align="center">
+                <table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:10px;padding:20px;">
+                    <tr>
+                    <td style="font-size:20px;font-weight:bold;padding-bottom:10px;">
+                        Reset Your Password
+                    </td>
+                    </tr>
+
+                    <tr>
+                    <td style="font-size:14px;padding-bottom:10px;">
+                        Hi <b>{user.profile.full_name if hasattr(user, "profile") and user.profile.full_name else user.email}</b>,
+                    </td>
+                    </tr>
+
+                    <tr>
+                    <td style="font-size:14px;padding-bottom:20px;">
+                        We received a request to reset the password for your account on <b>Rauf App</b>. Click the button below to choose a new password:
+                    </td>
+                    </tr>
+
+                    <tr>
+                    <td align="center">
+                        <a href="{link}" 
+                        style="display:inline-block;padding:12px 24px;background:#4CAF50;color:#ffffff;
+                                text-decoration:none;border-radius:5px;font-size:16px;font-weight:bold;">
+                        Reset Password
+                        </a>
+                    </td>
+                    </tr>
+
+                    <tr>
+                    <td style="font-size:12px;color:#777;padding-top:20px;line-height:1.5;">
+                        This link will expire shortly. If you did not make this request, you can safely ignore this email; your password will remain unchanged.<br><br>
+                        If the button doesn't work, copy and paste this link into your browser:<br>
+                        <span style="color:#4CAF50; word-break:break-all;">{link}</span>
+                    </td>
+                    </tr>
+
+                </table>
+                </td>
+            </tr>
+            </table>
+        </body>
+        </html>
+        """
+
+        EmailService.send_html_email(
+            subject, user.email, text_content, html_content)

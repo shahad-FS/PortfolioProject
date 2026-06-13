@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 export default function AppointmentsSection({
   role,
   appointments,
+  loading,
   setAppointments,
   updateStatus,
   hideAppointmentFromUI,
@@ -187,7 +188,17 @@ export default function AppointmentsSection({
           : t("profile.appointments.title")}
       </h2>
 
-      {processedAppointments?.length === 0 ? (
+      {loading ? (
+        <div
+          className="text-center py-8 bg-gray-50/50 rounded-xl border border-dashed"
+          style={{ borderColor: "var(--border)" }}
+        >
+          <div className="w-8 h-8 rounded-full border-4 border-dashed border-teal-500 border-t-transparent animate-spin mx-auto mb-3"></div>
+          <p style={{ color: "var(--text-light)" }}>
+            {t("profile.appointments.loading")}
+          </p>
+        </div>
+      ) : processedAppointments?.length === 0 ? (
         <div
           className="text-center py-8 bg-gray-50/50 rounded-xl border border-dashed"
           style={{ borderColor: "var(--border)" }}
