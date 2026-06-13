@@ -205,7 +205,8 @@
       "title": "تسجيل الدخول",
       "subtitle": "ليس لديك حساب؟ ",
       "linkRegister": "أنشئ حساباً مجانياً",
-      "submitBtn": "تسجيل الدخول"
+      "submitBtn": "تسجيل الدخول",
+      "forgotPassword": "نسيت كلمة المرور؟"
     },
     "forgotPassword": {
       "modalTitle": "🔒 استعادة كلمة المرور",

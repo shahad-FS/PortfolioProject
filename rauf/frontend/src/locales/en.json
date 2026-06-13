@@ -205,7 +205,8 @@
       "title": "Log In",
       "subtitle": "Don't have an account? ",
       "linkRegister": "Create a free account",
-      "submitBtn": "Log In"
+      "submitBtn": "Log In",
+      "forgotPassword": "Forgot password?"
     },
     "forgotPassword": {
       "modalTitle": "🔒 Reset Password",
