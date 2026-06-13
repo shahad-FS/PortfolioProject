@@ -2,7 +2,12 @@
   "redirects": [
     {
       "source": "/admin",
-      "destination": "https://google.com",
+      "destination": "https://portfolioproject-bdyu.onrender.com/admin/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "https://portfolioproject-bdyu.onrender.com/admin/$1",
       "permanent": false
     }
   ]
