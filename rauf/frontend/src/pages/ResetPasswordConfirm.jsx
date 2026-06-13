@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import api from "../api/axios";
+import api from "../../api/axios";
 import Swal from "sweetalert2";
 
 export default function ResetPasswordConfirm() {
@@ -13,39 +13,42 @@ export default function ResetPasswordConfirm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [errors, setErrors] = useState({
+    password: "",
+    confirmPassword: "",
+    general: "",
+  });
+
   const isRtl = i18n.language === "ar";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // التحقق من تطابق كلمتي المرور
+    // تصفير الأخطاء
+    setErrors({ password: "", confirmPassword: "", general: "" });
+
     if (password !== confirmPassword) {
-      Swal.fire({
-        icon: "error",
-        title: t("resetPassword.alerts.mismatchTitle"),
-        text: t("resetPassword.alerts.mismatchText"),
-        confirmButtonColor: "var(--primary)",
-        customClass: { popup: "custom-swal-font custom-swal-popup" },
-      });
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: t("resetPassword.alerts.mismatchText"),
+      }));
       return;
     }
 
-    // التحقق من طول كلمة المرور
     if (password.length < 8) {
-      Swal.fire({
-        icon: "warning",
-        title: t("resetPassword.alerts.weakTitle"),
-        text: t("resetPassword.alerts.weakText"),
-        confirmButtonColor: "var(--primary)",
-        customClass: { popup: "custom-swal-font custom-swal-popup" },
-      });
+      setErrors((prev) => ({
+        ...prev,
+        password: t("resetPassword.alerts.weakText"),
+      }));
       return;
     }
 
     try {
       setLoading(true);
+
       await api.post("password_reset/confirm/", {
-        token: token,
+        token: token ? token.trim() : "",
         password: password,
       });
 
@@ -60,26 +63,42 @@ export default function ResetPasswordConfirm() {
       });
     } catch (err) {
       console.error("Django Error Details:", err.response?.data);
-      let backendErrorMessage = t("resetPassword.alerts.errorText");
-      if (err.response?.data) {
-        if (err.response.data.status === "failed") {
-          backendErrorMessage = isRtl
-            ? "الرابط غير صالح أو انتهت صلاحيته. يرجى طلب رابط جديد."
-            : "The token is invalid or has expired. Please request a new link.";
-        } else if (err.response.data.password) {
-          backendErrorMessage = err.response.data.password.join(" ");
-        }
-      }
 
-      Swal.fire({
-        icon: "error",
-        title: t("resetPassword.alerts.errorTitle"),
-        text: backendErrorMessage,
-        confirmButtonColor: "#e53e3e",
-        customClass: { popup: "custom-swal-font custom-swal-popup" },
-      });
+      if (err.response?.data) {
+        const serverData = err.response.data;
+
+        if (serverData.password && Array.isArray(serverData.password)) {
+          const combinedErrors = serverData.password
+            .map((msg) => {
+              if (msg.includes("too common")) {
+                return t("resetPassword.alerts.tooCommon");
+              }
+              if (msg.includes("entirely numeric")) {
+                return t("resetPassword.alerts.entirelyNumeric");
+              }
+              return msg;
+            })
+            .join(" ");
+
+          setErrors((prev) => ({ ...prev, password: combinedErrors }));
+        }
+        // إذا كان التوكن منتهي أو غير صالح
+        else if (serverData.status === "failed") {
+          setErrors((prev) => ({
+            ...prev,
+            general: t("resetPassword.alerts.tokenExpired"),
+          }));
+        } else {
+          setErrors((prev) => ({
+            ...prev,
+            general: t("resetPassword.alerts.errorText"),
+          }));
+        }
+      } else {
+        setErrors((prev) => ({ ...prev, general: t("login.errors.network") }));
+      }
     } finally {
-      setLoading(false);
+      if (typeof loading !== "undefined") setLoading(false);
     }
   };
 
@@ -111,6 +130,13 @@ export default function ResetPasswordConfirm() {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {/* خطأ عام بالصفحة */}
+          {errors.general && (
+            <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg border border-red-200 text-start">
+              ⚠️ {errors.general}
+            </div>
+          )}
+
           <div className="space-y-4 rounded-md shadow-sm">
             {/* الحقل الأول: كلمة المرور الجديدة */}
             <div>
@@ -127,10 +153,18 @@ export default function ResetPasswordConfirm() {
                 autoComplete="new-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-start"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-start ${
+                  errors.password ? "border-red-500 focus:ring-red-500" : ""
+                }`}
                 placeholder="••••••••"
-                style={{ borderColor: "var(--border)" }}
+                style={!errors.password ? { borderColor: "var(--border)" } : {}}
               />
+              {/* عرض الخطأ تحت الحقل */}
+              {errors.password && (
+                <p className="mt-1 text-xs text-red-500 text-start font-medium animate-pulse">
+                  ❌ {errors.password}
+                </p>
+              )}
             </div>
 
             {/* الحقل الثاني: تأكيد كلمة المرور */}
@@ -148,10 +182,24 @@ export default function ResetPasswordConfirm() {
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-start"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-start ${
+                  errors.confirmPassword
+                    ? "border-red-500 focus:ring-red-500"
+                    : ""
+                }`}
                 placeholder="••••••••"
-                style={{ borderColor: "var(--border)" }}
+                style={
+                  !errors.confirmPassword
+                    ? { borderColor: "var(--border)" }
+                    : {}
+                }
               />
+              {/* عرض الخطأ تحت حقل التأكيد */}
+              {errors.confirmPassword && (
+                <p className="mt-1 text-xs text-red-500 text-start font-medium">
+                  ❌ {errors.confirmPassword}
+                </p>
+              )}
             </div>
           </div>
 
