@@ -24,6 +24,11 @@
       "source": "/api-docs",
       "destination": "https://portfolioproject-bdyu.onrender.com/api/docs/",
       "permanent": false
+    },
+    {
+      "source": "/api-redocs",
+      "destination": "https://portfolioproject-bdyu.onrender.com/api/redoc/",
+      "permanent": false
     }
   ]
 }
