@@ -156,7 +156,7 @@ export default function MedicalModal({ app, setOpen, setAppointments }) {
         {/* الهيدر */}
         <div className="mb-6">
           <h2 className="text-xl font-bold" style={{ color: "var(--text)" }}>
-            {t("medical.modal.title")}
+            🩺 {t("medical.modal.title")}
           </h2>
           <p className="text-xs mt-1" style={{ color: "var(--text-light)" }}>
             {t("medical.modal.subtitle")}
@@ -209,7 +209,7 @@ export default function MedicalModal({ app, setOpen, setAppointments }) {
             style={{ borderColor: "var(--border)" }}
           >
             <span className="text-xs font-bold text-[var(--primary)] uppercase tracking-wider block mb-3">
-              {t("medical.sections.prescription")}
+              💊 {t("medical.sections.prescription")}
             </span>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -302,7 +302,7 @@ export default function MedicalModal({ app, setOpen, setAppointments }) {
               </>
             ) : (
               <>
-                {" "}
+                ✨{" "}
                 {hasRecord
                   ? t("medical.buttons.update")
                   : t("medical.buttons.add")}

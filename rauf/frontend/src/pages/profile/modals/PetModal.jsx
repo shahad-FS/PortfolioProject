@@ -62,6 +62,7 @@ export default function PetModal({ editing, setOpen, createPet, updatePet }) {
 
         {/* الهيدر */}
         <div className="mb-6 text-center">
+          <span className="text-3xl mb-2 block">🐾</span>
           <h2 className="text-xl font-bold" style={{ color: "var(--text)" }}>
             {editing ? t("pets.modal.titleEdit") : t("pets.modal.titleAdd")}
           </h2>
@@ -125,7 +126,6 @@ export default function PetModal({ editing, setOpen, createPet, updatePet }) {
               style={{ color: "var(--text)" }}
             >
               {t("pets.fields.breed")}
-              <span className="text-red-500">*</span>
             </label>
             <input
               name="breed"
@@ -145,7 +145,6 @@ export default function PetModal({ editing, setOpen, createPet, updatePet }) {
               style={{ color: "var(--text)" }}
             >
               {t("pets.fields.birthYear")}
-              <span className="text-red-500">*</span>
             </label>
             <input
               name="birth_year"
@@ -179,7 +178,7 @@ export default function PetModal({ editing, setOpen, createPet, updatePet }) {
               color: "var(--white)",
             }}
           >
-            {editing ? t("pets.buttons.update") : t("pets.buttons.add")}
+            ✨ {editing ? t("pets.buttons.update") : t("pets.buttons.add")}
           </button>
         </div>
       </div>

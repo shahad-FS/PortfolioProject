@@ -3,7 +3,6 @@ import PetModal from "./modals/PetModal";
 import ViewMedicalModal from "./modals/ViewMedicalModal";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
-import { PencilIcon, DeleteIcon, CatIcon } from "../../components/Icons";
 
 export default function PetsSection({
   role,
@@ -36,29 +35,21 @@ export default function PetsSection({
     });
 
     if (petAppointments.length === 0) {
-      Swal.fire({
-        title: i18n.language === "ar" ? "لا توجد مواعيد" : "No Appointments",
-        text:
-          i18n.language === "ar"
-            ? "لم يتم العثور على أي مواعيد سابقة لهذا الأليف"
-            : "No appointments found for this pet",
-        icon: "info",
-        confirmButtonColor: "var(--primary)",
-        borderRadius: "16px",
-        customClass: {
-          popup: "custom-swal-font",
-        },
-      });
+      alert("No appointments found for this pet 🐾");
       return;
     }
 
     const sortedAppointments = petAppointments.sort((a, b) => b.id - a.id);
     const latestAppointment = sortedAppointments[0];
 
+    console.log(
+      "🎯 Selected Consultation ID for Medical Record:",
+      latestAppointment.id,
+    );
+
     setSelectedConsultationId(latestAppointment.id);
     setShowMedical(true);
   };
-
   const handleDeleteClick = (petId) => {
     Swal.fire({
       title: t("profile.pet.confirmDeleteTitle"),
@@ -79,6 +70,7 @@ export default function PetsSection({
       if (result.isConfirmed) {
         deletePet(petId);
 
+        // رسالة نجاح
         Swal.fire({
           title: t("profile.pet.deletedTitle"),
           text: t("profile.pet.deletedText"),
@@ -89,7 +81,6 @@ export default function PetsSection({
       }
     });
   };
-
   return (
     <>
       {role === "pet_owner" && (
@@ -102,10 +93,10 @@ export default function PetsSection({
             direction: i18n.language === "ar" ? "rtl" : "ltr",
           }}
         >
-          {/* الهيدر العلوي لـ قسم الأليفين */}
+          {/*الهيدر العلوي*/}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold" style={{ color: "var(--text)" }}>
-              {t("profile.pet.title")}
+              🐾 {t("profile.pet.title")}
             </h2>
 
             <button
@@ -136,13 +127,13 @@ export default function PetsSection({
 
           {/* عرض الحيوانات الأليفة */}
           {pets.length === 0 ? (
-            <div className="text-center py-8 bg-gray-50/50 rounded-xl border border-dashed border-[var(--border)]">
+            <div className="text-center py-8 bg-gray-50/50 rounded-xl border border-dashed style={{ borderColor: 'var(--border)' }}">
               <p style={{ color: "var(--text-light)" }}>
-                {t("profile.pet.empty")}
+                🐾 {t("profile.pet.empty")}
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {pets.map((pet) => (
                 <div
                   key={pet.id}
@@ -151,7 +142,6 @@ export default function PetsSection({
                     border: "1px solid var(--border)",
                     backgroundColor: "var(--white)",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.01)",
-                    position: "relative",
                   }}
                   onMouseOver={(e) =>
                     (e.currentTarget.style.borderColor = "var(--primary)")
@@ -160,93 +150,64 @@ export default function PetsSection({
                     (e.currentTarget.style.borderColor = "var(--border)")
                   }
                 >
-                  {/* القسم العلوي: الصورة، البيانات وزر الحذف */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center text-lg shrink-0"
-                        style={{ backgroundColor: "var(--primary-pale)" }}
-                      >
-                        <CatIcon />
-                      </div>
-                      <div>
-                        <h3
-                          className="font-bold text-lg leading-tight mb-1"
-                          style={{ color: "var(--text)" }}
-                        >
-                          {pet.name}
-                        </h3>
-                        <p
-                          style={{
-                            color: "var(--text-light)",
-                            fontSize: "0.85rem",
-                          }}
-                        >
-                          {t("profile.pet.age")}:{" "}
-                          {pet.age
-                            ? i18n.language === "ar"
-                              ? Number(pet.age) === 1
-                                ? "سنة"
-                                : Number(pet.age) === 2
-                                  ? "سنتين"
-                                  : `${pet.age} سنوات`
-                              : Number(pet.age) === 1
-                                ? "1 Year"
-                                : `${pet.age} Years`
-                            : "—"}
-                        </p>
-                        <p
-                          style={{
-                            color: "var(--text-light)",
-                            fontSize: "0.85rem",
-                            opacity: 0.8,
-                          }}
-                        >
-                          ID: #{pet.id}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* زر الحذف*/}
-                    <button
-                      onClick={() => handleDeleteClick(pet.id)}
-                      aria-label={t("common.delete")}
-                      className="flex items-center justify-center shrink-0 transition-colors"
-                      style={{
-                        width: "32px",
-                        height: "32px",
-                        borderRadius: "8px",
-                        backgroundColor: "#ffebee",
-                        color: "#c62828",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                      title={t("common.delete")}
-                      onMouseOver={(e) =>
-                        (e.currentTarget.style.backgroundColor = "#ffcdd2")
-                      }
-                      onMouseOut={(e) =>
-                        (e.currentTarget.style.backgroundColor = "#ffebee")
-                      }
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
+                      style={{ backgroundColor: "var(--primary-pale)" }}
                     >
-                      <DeleteIcon size={14} />
-                    </button>
+                      🐶{" "}
+                    </div>
+                    <div>
+                      <h3
+                        className="font-bold text-lg"
+                        style={{ color: "var(--text)" }}
+                      >
+                        {pet.name}
+                      </h3>
+                      <p
+                        style={{
+                          color: "var(--text-light)",
+                          fontSize: "0.85rem",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                        }}
+                      >
+                        🎂 {t("profile.pet.age")}:{" "}
+                        {pet.age
+                          ? i18n.language === "ar"
+                            ? Number(pet.age) === 1
+                              ? "سنة"
+                              : Number(pet.age) === 2
+                                ? "سنتين"
+                                : `${pet.age} سنوات`
+                            : Number(pet.age) === 1
+                              ? "1 Year"
+                              : `${pet.age} Years`
+                          : "—"}
+                      </p>
+                      <p
+                        style={{
+                          color: "var(--text-light)",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        ID: #{pet.id}
+                      </p>
+                    </div>
                   </div>
 
-                  {/* فاصل ناعم */}
+                  {/* أزرار التحكم السفلية د */}
                   <div
-                    className="border-t my-2"
-                    style={{ borderColor: "var(--border)", opacity: 0.6 }}
-                  />
-
-                  {/* أزرار التحكم السفلية مرتبة عمودياً لمنع الخروج عن الإطار */}
-                  <div className="flex flex-col gap-2 mt-2 w-full">
-                    {/* زر التعديل يأخذ كامل العرض */}
+                    className="flex flex-wrap gap-2 mt-2 pt-3 border-t"
+                    style={{ borderColor: "var(--border)" }}
+                  >
+                    {/* زر التعديل */}
                     <button
-                      className="btn-outline flex items-center justify-center gap-1.5 w-full"
+                      className="btn-outline flex-1 min-w-[70px]"
                       onClick={() => openEdit(pet)}
                       style={{
-                        height: "38px",
+                        padding: "6px 12px",
                         borderRadius: "8px",
                         fontSize: "0.85rem",
                         fontFamily: "Cairo",
@@ -254,20 +215,16 @@ export default function PetsSection({
                         color: "var(--primary)",
                         background: "transparent",
                         cursor: "pointer",
-                        flexDirection:
-                          i18n.language === "ar" ? "row" : "row-reverse",
                       }}
                     >
-                      <PencilIcon size={14} style={{ flexShrink: 0 }} />
-                      <span>{t("common.edit")}</span>
+                      ✏️ {t("common.edit")}
                     </button>
 
-                    {/* زر الملف الطبي يأخذ كامل العرض */}
                     <button
-                      className="flex items-center justify-center w-full"
+                      className="flex-1 min-w-[110px]"
                       onClick={() => openMedical(pet.id)}
                       style={{
-                        height: "38px",
+                        padding: "6px 12px",
                         borderRadius: "8px",
                         fontSize: "0.85rem",
                         fontFamily: "Cairo",
@@ -278,7 +235,25 @@ export default function PetsSection({
                         cursor: "pointer",
                       }}
                     >
-                      {t("profile.pet.medicalReport")}
+                      📋 {t("profile.pet.medicalReport")}
+                    </button>
+
+                    {/* زر الحذفف */}
+                    <button
+                      onClick={() => handleDeleteClick(pet.id)}
+                      aria-label={t("common.delete")}
+                      style={{
+                        padding: "6px 10px",
+                        borderRadius: "8px",
+                        fontSize: "0.85rem",
+                        backgroundColor: "#ffebee",
+                        color: "#c62828",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                      title={t("common.delete")}
+                    >
+                      🗑️
                     </button>
                   </div>
                 </div>
@@ -287,7 +262,6 @@ export default function PetsSection({
           )}
         </div>
       )}
-
       {showPetModal && (
         <PetModal
           editing={editingPet}

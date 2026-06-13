@@ -15,7 +15,6 @@ export default function useProfile() {
     try {
       const res = await api.get("accounts/profile/");
 
-      console.log("Raw API Response:", res.data);
       setRole(res.data.role);
 
       const userProfile = {
@@ -27,11 +26,10 @@ export default function useProfile() {
 
         license_number: res.data.vet?.license_number || "",
         specialization: res.data.vet?.specialization || "",
-        bio: res.data.vet?.bio || "",
         is_approved: res.data.vet?.is_approved ?? null,
         session_price: res.data.vet?.session_price || "100.00",
       };
-      console.log("Raw API Response:", res.data.vet);
+
       setProfile(userProfile);
 
       // حساب هل يحتاج يكمل بياناته
@@ -58,15 +56,14 @@ export default function useProfile() {
     }
   };
 
-  const completeProfile = async (nestedData) => {
-    console.log("Data being sent to API directly from Modal:", nestedData);
+  const completeProfile = async (data) => {
     setLoading(true);
     try {
-      await api.patch("accounts/profile/", nestedData);
+      await api.patch("accounts/profile/", data);
       await fetchProfile();
+      setNeedsCompletion(false);
     } catch (err) {
-      console.error("Error updating profile:", err.response?.data || err);
-      setLoading(false);
+      console.error(err);
     }
   };
 

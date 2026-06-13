@@ -15,8 +15,7 @@ export default function Profile() {
 
   const { pets, deletePet, createPet, updatePet } = usePets();
 
-  const { appointments, updateStatus, setAppointments, hideAppointmentFromUI } =
-    useAppointments();
+  const { appointments, updateStatus, setAppointments } = useAppointments();
 
   const location = useLocation();
   const isVideoPage = location.pathname.startsWith("/video-call");
@@ -26,6 +25,8 @@ export default function Profile() {
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-[#0b0f19] transition-colors duration-300">
         <div className="relative flex flex-col items-center">
           <div className="w-16 h-16 rounded-full border-4 border-dashed border-teal-500/20 border-t-teal-500 animate-spin"></div>
+
+          <div className="absolute top-4 text-2xl animate-bounce">🐾</div>
 
           <p
             className="mt-6 text-sm font-bold tracking-wide animate-pulse"
@@ -64,9 +65,7 @@ export default function Profile() {
           <AppointmentsSection
             role={role}
             appointments={appointments}
-            loading={loading}
             updateStatus={updateStatus}
-            hideAppointmentFromUI={hideAppointmentFromUI}
             setAppointments={setAppointments}
           />
         </>

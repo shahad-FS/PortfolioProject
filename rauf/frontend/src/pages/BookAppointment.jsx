@@ -32,7 +32,6 @@ export default function BookAppointment() {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  const [isVerifyingPayment, setIsVerifyingPayment] = useState(false);
 
   useEffect(() => {
     if (userRole === "vet") return;
@@ -47,26 +46,8 @@ export default function BookAppointment() {
     const paymentId = searchParams.get("id");
     const paymentStatus = searchParams.get("status");
     if (paymentId && paymentStatus === "paid") {
-      const verifyReturnedPayment = async () => {
-        try {
-          setLoading(true);
-          setIsVerifyingPayment(true);
-          await api.post("payments/verify/", {
-            payment_id: paymentId,
-          });
-          setSuccess(true);
-        } catch (err) {
-          console.error("Verification failed after redirect:", err);
-          setMessage(
-            "Payment succeeded but failed to update database. Please contact support.",
-          );
-        } finally {
-          setLoading(false);
-          setIsVerifyingPayment(false);
-        }
-      };
-
-      verifyReturnedPayment();
+      setSuccess(true);
+      navigate("/profile");
     }
   }, [searchParams]);
 
@@ -89,14 +70,7 @@ export default function BookAppointment() {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "pet" && value === "ADD_PET_REDIRECT") {
-      navigate("/profile");
-      return;
-    }
-
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const nextStep = () => setStep((s) => s + 1);
@@ -129,28 +103,7 @@ export default function BookAppointment() {
       }
     } catch (err) {
       console.error(err);
-
-      if (err.response && err.response.data) {
-        const serverErrors = err.response.data;
-
-        if (serverErrors.scheduled_at) {
-          const rawError = Array.isArray(serverErrors.scheduled_at)
-            ? serverErrors.scheduled_at[0]
-            : serverErrors.scheduled_at;
-
-          if (rawError === "The appointment time cannot be in the past.") {
-            setMessage(t("booking.errors.past_date"));
-          } else {
-            setMessage(rawError);
-          }
-        } else if (typeof serverErrors === "string") {
-          setMessage(serverErrors);
-        } else {
-          setMessage(t("booking.errors.failed"));
-        }
-      } else {
-        setMessage(t("booking.errors.failed"));
-      }
+      setMessage(t("booking.errors.failed"));
     } finally {
       setLoading(false);
     }
@@ -225,58 +178,6 @@ export default function BookAppointment() {
               {t("booking.vet_notice.register_link")}
             </Link>
           </div>
-        </div>
-      </div>
-    );
-  }
-  if (
-    isVerifyingPayment ||
-    (searchParams.get("id") &&
-      searchParams.get("status") === "paid" &&
-      !success &&
-      !message)
-  ) {
-    return (
-      <div
-        className="page"
-        style={{
-          minHeight: "85vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          className="auth-form-panel animate-fadeIn"
-          style={{
-            maxWidth: "450px",
-            width: "100%",
-            padding: "40px",
-            textAlign: "center",
-            backgroundColor: "#fff",
-            borderRadius: "16px",
-            boxShadow: "var(--card-shadow)",
-          }}
-        >
-          <div
-            className="text-5xl mb-4 animate-spin"
-            style={{ display: "inline-block", animationDuration: "2s" }}
-          >
-            ⏳
-          </div>
-          <div
-            className="form-title"
-            style={{
-              marginBottom: "10px",
-              fontSize: "20px",
-              fontWeight: "bold",
-            }}
-          >
-            {t("booking.verifying.title")}
-          </div>
-          <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>
-            {t("booking.verifying.message")}
-          </p>
         </div>
       </div>
     );
@@ -382,7 +283,7 @@ export default function BookAppointment() {
           <div className="form-title">{t("booking.title")}</div>
         </div>
 
-        {/* مؤشر الخطوات  */}
+        {/* مؤشر الخطوات المرن */}
         <div
           style={{
             display: "flex",
@@ -469,6 +370,7 @@ export default function BookAppointment() {
                 {t("booking.step1.label")} <span className="required">*</span>
               </label>
               <div className="input-wrap">
+                <span className="input-icon">🐶</span>
                 <select
                   id="pet-select"
                   name="pet"
@@ -478,32 +380,17 @@ export default function BookAppointment() {
                   style={{ appearance: "none", cursor: "pointer" }}
                 >
                   <option value="">{t("booking.step1.placeholder")}</option>
-
-                  {/* التحقق الشرطي: إذا لم يضف أي حيوان يظهر خيار التوجيه */}
-                  {pets.length === 0 ? (
-                    <option
-                      value="ADD_PET_REDIRECT"
-                      style={{ color: "var(--primary)", fontWeight: "bold" }}
-                    >
-                      +{" "}
-                      {t(
-                        "booking.step1.add_pet_option",
-                        "أضف حيوان أليف (اذهب للملف الشخصي)",
-                      )}
+                  {pets.map((pet) => (
+                    <option key={pet.id} value={pet.id}>
+                      {pet.name}
                     </option>
-                  ) : (
-                    pets.map((pet) => (
-                      <option key={pet.id} value={pet.id}>
-                        {pet.name}
-                      </option>
-                    ))
-                  )}
+                  ))}
                 </select>
               </div>
             </div>
             <button
               onClick={nextStep}
-              disabled={!formData.pet || formData.pet === "ADD_PET_REDIRECT"}
+              disabled={!formData.pet}
               className="btn-fill"
               style={{ marginTop: "25px" }}
             >
@@ -517,9 +404,11 @@ export default function BookAppointment() {
           <div className="animate-fadeIn">
             <div className="form-group">
               <label className="form-label">
-                {t("booking.step2.label")} <span className="required">*</span>
+                {t("booking.step2.label", "اختر الطبيب البيطري 🩺")}{" "}
+                <span className="required">*</span>
               </label>
               <div className="input-wrap">
+                <span className="input-icon">👨‍⚕️</span>
                 <select
                   name="vet"
                   value={formData.vet}
@@ -587,25 +476,11 @@ export default function BookAppointment() {
                   showTimeSelect
                   timeFormat="HH:mm"
                   timeIntervals={15}
-                  timeCaption={i18n.language === "ar" ? "الوقت" : "Time"}
+                  timeCaption="الوقت"
                   dateFormat="yyyy-MM-dd h:mm aa"
                   className="form-input"
                   placeholderText={t("booking.step3.label")}
                   required
-                  minDate={new Date()}
-                  filterTime={(time) => {
-                    const currentDate = new Date();
-                    const selectedDate = formData.scheduled_at
-                      ? new Date(formData.scheduled_at)
-                      : null;
-                    if (
-                      selectedDate &&
-                      selectedDate.toDateString() === currentDate.toDateString()
-                    ) {
-                      return time.getTime() > currentDate.getTime();
-                    }
-                    return true;
-                  }}
                 />
               </div>
             </div>
@@ -627,7 +502,7 @@ export default function BookAppointment() {
                   fontWeight: "800",
                 }}
               >
-                {t("booking.step3.summaryTitle")}
+                📝 {t("booking.step3.summaryTitle")}
               </h4>
               <div
                 style={{
@@ -639,13 +514,13 @@ export default function BookAppointment() {
                 }}
               >
                 <div>
-                  {t("booking.step3.petId")}{" "}
+                  🐾 {t("booking.step3.petId")}{" "}
                   <strong style={{ color: "var(--text)" }}>
                     {formData.pet}
                   </strong>
                 </div>
                 <div>
-                  {t("booking.step3.vetId")}{" "}
+                  🩺 {t("booking.step3.vetId")}{" "}
                   <strong style={{ color: "var(--text)" }}>
                     {formData.vet}
                   </strong>

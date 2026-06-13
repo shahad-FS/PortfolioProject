@@ -12,15 +12,12 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
   const containerRef = useRef(null);
   const [loadingVerify, setLoadingVerify] = useState(false);
   const [error, setError] = useState("");
-  const isInitialized = useRef(false);
 
   useEffect(() => {
     if (!consultationId || !amount || Number(amount) === 0) {
       console.log("Waiting for real amount...", { consultationId, amount });
       return;
     }
-
-    if (isInitialized.current) return;
 
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
@@ -34,7 +31,6 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
 
     //Moyasar
     if (typeof Moyasar !== "undefined") {
-      isInitialized.current = true;
       Moyasar.init({
         element: containerRef.current,
         publishable_api_key: "pk_test_waK9Y8Eg3pSCqVT8gGJSwCXHvXhZ77KzH1jgb9TC",
@@ -48,15 +44,12 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
         },
         methods: ["creditcard", "mada"],
 
-        // callback_url: window.location.origin + "/payment-callback",
         callback_url: window.location.href,
 
         on_completed: async (payment) => {
           if (payment.status === "paid") {
-            console.log("Moyasar Payment Completed successfully:", payment.id);
             await handleVerification(payment.id);
           } else {
-            isInitialized.current = false;
             setError(`Payment status is ${payment.status}. Please try again.`);
           }
         },
@@ -67,41 +60,27 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
   }, [consultationId, amount]);
 
   const handleVerification = async (paymentId) => {
-    if (!consultationId) {
-      console.error("Error: consultationId is missing or undefined!");
-      setError("Cannot verify payment because Consultation ID is missing.");
-      return;
-    }
     setLoadingVerify(true);
     setError("");
     try {
-      const intentRes = await api.post("payments/create-intent/", {
+      const intentRes = await api.post("/payments/create-intent/", {
         consultation_id: consultationId,
       });
       const transactionId = intentRes.data.transaction_id;
-      console.log("Intent Created, Transaction ID:", transactionId);
 
-      const verifyRes = await api.post("payments/verify/", {
+      const verifyRes = await api.post("/payments/verify/", {
         payment_id: paymentId,
         transaction_id: transactionId,
       });
 
       if (verifyRes.data.status === "success") {
-        console.log("Payment verified successfully on backend!");
         onPaymentSuccess();
       } else {
         setError("Payment verification failed on server.");
-        isInitialized.current = false;
       }
     } catch (err) {
       console.error(err);
-      console.error("Detailed Error in handleVerification:", err);
-      if (err.response) {
-        console.error("Server Response Data:", err.response.data);
-        console.error("Server Response Status:", err.response.status);
-      }
-      setError("Something went wrong while verifying your payment");
-      isInitialized.current = false;
+      setError("Something went wrong while verifying your payment ❌");
     } finally {
       setLoadingVerify(false);
     }

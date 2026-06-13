@@ -5,18 +5,9 @@ import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/auth.css";
 import logoImg from "../assets/logoImg.png";
-import Swal from "sweetalert2";
-import {
-  LockIcon,
-  CatIcon,
-  EmailIcon,
-  VarifiedIcon,
-  ErrorIcon,
-  QuickIcon,
-} from "../components/Icons";
 
 const Login = () => {
-  const { t, i18next } = useTranslation();
+  const { t } = useTranslation();
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -29,13 +20,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [dots, setDots] = useState("");
   const [mounted, setMounted] = useState(true);
-  const isRtl = i18next?.language === "ar";
 
+  // Cleanup when component unmounts
   useEffect(() => {
     return () => setMounted(false);
   }, []);
 
-  // Loading dots
+  // Loading animation
   useEffect(() => {
     if (!loading || !mounted) return;
 
@@ -45,53 +36,6 @@ const Login = () => {
 
     return () => clearInterval(interval);
   }, [loading, mounted]);
-
-  const handleRequestReset = async (email) => {
-    try {
-      await api.post("password_reset/", { email });
-
-      Swal.fire({
-        icon: "success",
-        title: t("login.forgotPassword.successTitle"),
-        text: t("login.forgotPassword.successText"),
-        confirmButtonColor: "var(--primary)",
-        customClass: { popup: "custom-swal-font" },
-      });
-    } catch (err) {
-      console.error(err);
-      Swal.fire({
-        icon: "error",
-        title: t("login.forgotPassword.errorTitle"),
-        text: t("login.forgotPassword.errorText"),
-        confirmButtonColor: "#e53e3e",
-        customClass: { popup: "custom-swal-font" },
-      });
-    }
-  };
-
-  const showForgotPasswordModal = () => {
-    Swal.fire({
-      title: t("login.forgotPassword.modalTitle"),
-      text: t("login.forgotPassword.modalText"),
-      input: "email",
-      inputPlaceholder: "example@email.com",
-      showCancelButton: true,
-      confirmButtonText: t("login.forgotPassword.confirmBtn"),
-      cancelButtonText: t("login.forgotPassword.cancelBtn"),
-      confirmButtonColor: "var(--primary)",
-      cancelButtonColor: "#718096",
-      customClass: { popup: "custom-swal-font" },
-      inputValidator: (value) => {
-        if (!value) {
-          return t("login.forgotPassword.requiredError");
-        }
-      },
-    }).then((result) => {
-      if (result.isConfirmed && result.value) {
-        handleRequestReset(result.value);
-      }
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,19 +54,15 @@ const Login = () => {
 
       if (err.response) {
         const data = err.response.data;
-        const serverMessage = data.detail || data.error;
 
-        if (
-          serverMessage ===
-          "Please verify your email address before logging in."
-        ) {
+        if (data.detail === "Email not verified") {
           setError(t("login.errors.emailNotVerified"));
-        } else if (serverMessage === "Incorrect email or password.") {
+        } else if (data.detail === "Invalid credentials") {
           setError(t("login.errors.invalidCredentials"));
-        } else if (serverMessage === "Account does not exist.") {
+        } else if (data.detail === "User not found") {
           setError(t("login.errors.userNotFound"));
         } else {
-          setError(serverMessage || t("login.errors.failed"));
+          setError(data.detail || t("login.errors.failed"));
         }
       } else {
         setError(t("login.errors.network"));
@@ -151,39 +91,30 @@ const Login = () => {
             <div className="brand-title">
               {t("login.brand.title1")}
               <br />
-
               {t("login.brand.title2")}
             </div>
             <div className="brand-desc">{t("login.brand.desc")}</div>
             <div className="brand-features">
               <div className="brand-feature">
-                <div className="brand-feature-icon">
-                  <VarifiedIcon size={18} />
-                </div>
+                <div className="brand-feature-icon">✅</div>
                 <span>{t("login.brand.feat1")}</span>
               </div>
               <div className="brand-feature">
-                <div className="brand-feature-icon">
-                  <QuickIcon size={18} />
-                </div>
+                <div className="brand-feature-icon">⚡</div>
                 <span>{t("login.brand.feat2")}</span>
               </div>
               <div className="brand-feature">
-                <div className="brand-feature-icon">
-                  <LockIcon size={18} />
-                </div>
+                <div className="brand-feature-icon">🔒</div>
                 <span>{t("login.brand.feat3")}</span>
               </div>
             </div>
+            <div className="brand-paws">🐾 🐾 🐾</div>
           </div>
 
           {/* Form panel (الجانب الأيسر لتسجيل الدخول) */}
           <div className="auth-form-panel">
             <div className="form-header">
-              <div className="tag-badge">
-                {t("login.form.badge")}
-                <CatIcon size={14} />
-              </div>
+              <div className="tag-badge">{t("login.form.badge")}</div>
               <div className="form-title">{t("login.form.title")}</div>
               <div className="form-subtitle">
                 {t("login.form.subtitle")}
@@ -202,10 +133,9 @@ const Login = () => {
                     backgroundColor: "#fff5f5",
                     borderRadius: "8px",
                     border: "1px solid var(--error)",
-                    textAlign: isRtl ? "right" : "left",
                   }}
                 >
-                  <ErrorIcon size={14} /> {error}
+                  ⚠️ {error}
                 </div>
               )}
 
@@ -216,9 +146,7 @@ const Login = () => {
                   <span className="required">*</span>
                 </label>
                 <div className="input-wrap">
-                  <span className="input-icon">
-                    <EmailIcon size={18} />
-                  </span>
+                  <span className="input-icon">📧</span>
                   <input
                     type="email"
                     name="email"
@@ -235,36 +163,12 @@ const Login = () => {
 
               {/* PASSWORD FIELD */}
               <div className="form-group mb-6">
-                <div className="flex justify-between items-center mb-1">
-                  <label className="form-label style={{ margin: 0 }}">
-                    {t("register.form.passwordLabel")}{" "}
-                    <span className="required">*</span>
-                  </label>
-
-                  {/* زر نسيت كلمة المرور ي */}
-                  <button
-                    type="button"
-                    onClick={showForgotPasswordModal}
-                    className="forgot-password-link"
-                    style={{
-                      background: "none",
-                      border: "none",
-                      padding: 0,
-                      cursor: "pointer",
-                      fontSize: "0.85rem",
-                      color: "var(--primary)",
-                      fontWeight: "600",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    {t("login.form.forgotPassword")}
-                  </button>
-                </div>
-
+                <label className="form-label">
+                  {t("register.form.passwordLabel")}{" "}
+                  <span className="required">*</span>
+                </label>
                 <div className="input-wrap">
-                  <span className="input-icon">
-                    <LockIcon size={18} />
-                  </span>
+                  <span className="input-icon">🔒</span>
                   <input
                     type="password"
                     name="password"

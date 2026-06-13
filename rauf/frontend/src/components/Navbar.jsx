@@ -1,11 +1,10 @@
 // src/components/Navbar.jsx
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import LanguageSwitcherBtn from "./LanguageSwitcherBtn";
-import { LogoutIcon, UserIcon } from "./Icons";
 
 import "../styles/navbar.css";
 import logoImg from "../assets/logoImg.png";
@@ -13,34 +12,21 @@ import logoImg from "../assets/logoImg.png";
 export default function Navbar() {
   const { tokens, logout, user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // const getInitials = () => {
-  //   if (!user?.full_name) return "U";
-  //   return user.full_name
-  //     .split(" ")
-  //     .slice(0, 2)
-  //     .map((n) => n[0])
-  //     .join("")
-  //     .toUpperCase();
-  // };
+  const getInitials = () => {
+    if (!user?.full_name) return "U";
+    return user.full_name
+      .split(" ")
+      .slice(0, 2)
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
 
   return (
-    <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
+    <nav className="navbar">
       <div
         className="navbar-inner"
         style={{ maxWidth: "100%", padding: "0 4%" }}
@@ -69,6 +55,9 @@ export default function Navbar() {
             <Link to={tokens ? "/book-appointment" : "/login"}>
               {t("navbar.book")}
             </Link>
+          </li>
+          <li>
+            <Link to="/our-story">{t("navbar.ourStory")}</Link>
           </li>
         </ul>
 
@@ -126,7 +115,7 @@ export default function Navbar() {
                   cursor: "pointer",
                 }}
               >
-                <UserIcon />
+                👤
               </button>
 
               <AnimatePresence>
@@ -152,9 +141,7 @@ export default function Navbar() {
                       className="dropdown-item-btn"
                       style={{
                         color: "var(--text)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        display: "block",
                         width: "100%",
                         padding: "10px 12px",
                         background: "transparent",
@@ -162,13 +149,11 @@ export default function Navbar() {
                         borderRadius: "8px",
                         cursor: "pointer",
                         fontFamily: "Cairo",
-                        flexDirection:
-                          i18n.language === "ar" ? "row" : "row-reverse",
+                        textAlign: i18n.language === "ar" ? "right" : "left",
                         transition: "background 0.2s ease, color 0.2s ease",
                       }}
                     >
-                      <span>{t("navbar.profile")}</span>
-                      <UserIcon size={18} style={{ flexShrink: 0 }} />
+                      {t("navbar.profile")}
                     </button>
 
                     {/* زر تسجيل الخروج */}
@@ -180,9 +165,7 @@ export default function Navbar() {
                       className="dropdown-item-btn"
                       style={{
                         color: "var(--text)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        display: "block",
                         width: "100%",
                         padding: "10px 12px",
                         background: "transparent",
@@ -190,14 +173,12 @@ export default function Navbar() {
                         borderRadius: "8px",
                         cursor: "pointer",
                         fontFamily: "Cairo",
-                        flexDirection:
-                          i18n.language === "ar" ? "row" : "row-reverse",
+                        textAlign: i18n.language === "ar" ? "right" : "left",
                         transition: "background 0.2s ease, color 0.2s ease",
                         marginTop: "4px",
                       }}
                     >
-                      <span>{t("navbar.logout")}</span>
-                      <LogoutIcon size={18} style={{ flexShrink: 0 }} />
+                      {t("navbar.logout")}
                     </button>
                   </motion.div>
                 )}

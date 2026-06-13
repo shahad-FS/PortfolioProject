@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -16,12 +16,10 @@ const BookAppointment = lazy(() => import("./pages/BookAppointment"));
 const VideoCall = lazy(() => import("./pages/VideoCall"));
 const EmailConfirmation = lazy(() => import("./pages/EmailConfirmation"));
 const VerifyHandler = lazy(() => import("./pages/VerifyHandler"));
-const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
-const ResetPasswordConfirm = lazy(() => import("./pages/ResetPasswordConfirm"));
+const OurStory = lazy(() => import("./pages/OurStory"));
 
 function App() {
   const { i18n } = useTranslation();
-  const location = useLocation();
 
   useEffect(() => {
     const currentLang = i18n.language || "ar";
@@ -34,23 +32,14 @@ function App() {
       document.documentElement.lang = "en";
     }
   }, [i18n.language]);
-
-  const hideLayoutPaths = [
-    "/login",
-    "/register",
-    "/check-email",
-    "/reset-password",
-  ];
-  const shouldHideLayout =
-    hideLayoutPaths.includes(location.pathname) ||
-    location.pathname.startsWith("/verify-email/");
   return (
     <>
-      {!shouldHideLayout && <Navbar />}
+      <Navbar />
 
       <Suspense fallback={<div>Loading page...</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/our-story" element={<OurStory />} />
           <Route path="/register" element={<Register />} />
           <Route path="/check-email" element={<EmailConfirmation />} />
           <Route path="/verify-email/:token" element={<VerifyHandler />} />
@@ -59,11 +48,9 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/book-appointment" element={<BookAppointment />} />
           <Route path="/video-call/:sessionId" element={<VideoCall />} />
-          <Route path="/terms" element={<TermsAndConditions />} />
-          <Route path="/reset-password" element={<ResetPasswordConfirm />} />
         </Routes>
       </Suspense>
-      {!shouldHideLayout && <Footer />}
+      <Footer />
     </>
   );
 }

@@ -4,16 +4,6 @@ import { useTranslation } from "react-i18next";
 import api from "../api/axios";
 import "../styles/auth.css";
 import logoImg from "../assets/logoImg.png";
-import {
-  CalendarIcon,
-  PillIcon,
-  ErrorIcon,
-  LockIcon,
-  EmailIcon,
-  GiftIcon,
-  VetIcon,
-  CatIcon,
-} from "../components/Icons";
 
 const Register = () => {
   const { t } = useTranslation();
@@ -54,30 +44,6 @@ const Register = () => {
       ...errors,
       [e.target.name]: "",
     });
-  };
-
-  const renderError = (fieldError) => {
-    if (!fieldError) return null;
-
-    const rawError = Array.isArray(fieldError) ? fieldError[0] : fieldError;
-
-    const backendErrorMap = {
-      "Email already exists": "email_already_exists",
-      "Invalid email format.": "invalid_email_format",
-      "Please provide a valid official email address.":
-        "invalid_official_email",
-      "Ensure this field has at least 8 characters.": "passwordTooShort",
-    };
-
-    if (rawError.includes("extensions are not allowed")) {
-      return t("register.errors.extension_not_allowed");
-    }
-
-    if (backendErrorMap[rawError]) {
-      return t(`register.errors.${backendErrorMap[rawError]}`);
-    }
-
-    return rawError;
   };
 
   const handleSubmit = async (e) => {
@@ -121,39 +87,29 @@ const Register = () => {
             <div className="brand-title">
               {t("register.brand.title1")}
               <br />
-
               {t("register.brand.title2")}
             </div>
-
             <div className="brand-desc">{t("register.brand.desc")}</div>
             <div className="brand-features">
               <div className="brand-feature">
-                <div className="brand-feature-icon">
-                  <GiftIcon size={18} />
-                </div>
+                <div className="brand-feature-icon">🎁</div>
                 <span>{t("register.brand.feat1")}</span>
               </div>
               <div className="brand-feature">
-                <div className="brand-feature-icon">
-                  <CalendarIcon size={18} />
-                </div>
+                <div className="brand-feature-icon">📅</div>
                 <span>{t("register.brand.feat2")}</span>
               </div>
               <div className="brand-feature">
-                <div className="brand-feature-icon">
-                  <PillIcon size={18} />
-                </div>
+                <div className="brand-feature-icon">💊</div>
                 <span>{t("register.brand.feat3")}</span>
               </div>
             </div>
+            <div className="brand-paws">🐾 🐾 🐾</div>
           </div>
           {/* لوحة الفورم والجانب الأيسر */}
           <div className="auth-form-panel">
             <div className="form-header">
-              <div className="tag-badge">
-                {t("register.form.badge")}
-                <CatIcon size={14} />
-              </div>
+              <div className="tag-badge">{t("register.form.badge")}</div>
               <div className="form-title">{t("register.form.title")}</div>
               <div className="form-subtitle">
                 {t("register.form.subtitle")}
@@ -169,9 +125,7 @@ const Register = () => {
                   <span className="required">*</span>
                 </label>
                 <div className="input-wrap">
-                  <span className="input-icon">
-                    <EmailIcon size={18} />
-                  </span>
+                  <span className="input-icon">📧</span>
                   <input
                     name="email"
                     data-testid="email-input"
@@ -182,19 +136,10 @@ const Register = () => {
                 </div>
                 {errors.email && (
                   <p
-                    className="text-red-500 text-xs dynamic-error"
-                    style={{
-                      color: "#ef4444",
-                      fontSize: "12px",
-                      marginTop: "6px",
-                      textAlign: "start",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
+                    className="text-red-500 text-sm mb-4 dynamic-error"
+                    style={{ marginTop: "1px", fontSize: "12px" }}
                   >
-                    <ErrorIcon size={14} style={{ flexShrink: 0 }} />
-                    <span>{renderError(errors.email)}</span>
+                    ⚠️{errors.email}
                   </p>
                 )}
               </div>
@@ -206,32 +151,22 @@ const Register = () => {
                   <span className="required">*</span>
                 </label>
                 <div className="input-wrap">
-                  <span className="input-icon">
-                    <LockIcon size={18} />
-                  </span>
+                  <span className="input-icon">🔒</span>
                   <input
                     type="password"
                     name="password"
                     data-testid="password-input"
                     placeholder={t("register.form.passwordLabel")}
                     onChange={handleChange}
-                    className="form-input"
+                    className="form-input has-left-icon"
                   />
                 </div>
                 {errors.password && (
                   <p
                     className="text-red-500 text-sm mb-4 dynamic-error"
-                    style={{
-                      marginTop: "6px",
-                      fontSize: "12px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      textAlign: "start",
-                    }}
+                    style={{ marginTop: "1px", fontSize: "12px" }}
                   >
-                    <ErrorIcon size={14} style={{ flexShrink: 0 }} />
-                    <span>{renderError(errors.password)}</span>
+                    ⚠️{errors.password}
                   </p>
                 )}
               </div>
@@ -258,16 +193,7 @@ const Register = () => {
             : "border-gray-200 bg-white hover:border-gray-300"
         }`}
                   >
-                    <div
-                      className="text-3xl mb-2"
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <CatIcon size={36} />
-                    </div>
+                    <div className="text-3xl mb-2">🐱</div>
                     <div className="text-sm font-semibold text-gray-800">
                       {t("register.form.rolePetOwner")}
                     </div>
@@ -288,16 +214,7 @@ const Register = () => {
             : "border-gray-200 bg-white hover:border-gray-300"
         }`}
                   >
-                    <div
-                      className="text-3xl mb-2"
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <VetIcon size={36} />
-                    </div>
+                    <div className="text-3xl mb-2">🩺</div>
                     <div className="text-sm font-semibold text-gray-800">
                       {t("register.form.roleVet")}
                     </div>
@@ -341,19 +258,14 @@ const Register = () => {
 
               {errors.terms && (
                 <p
-                  className="text-red-500 text-sm mb-4 dynamic-error"
+                  className="text-red-500 text-sm mb-4  dynamic-error"
                   style={{
                     marginBottom: "18px",
-                    marginTop: "-10px",
+                    marginTop: "-20px",
                     fontSize: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    textAlign: "start",
                   }}
                 >
-                  <ErrorIcon size={14} style={{ flexShrink: 0 }} />
-                  <span>{renderError(errors.terms)}</span>
+                  ⚠️ {errors.terms}
                 </p>
               )}
               {/* SUBMIT BUTTON */}

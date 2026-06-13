@@ -12,21 +12,6 @@ import "../styles/doctors.css";
 import "../styles/testimonials.css";
 import "../styles/ctaSection.css";
 import petImg from "../assets/petImg.png";
-import {
-  CatIcon,
-  VideoIcon,
-  LockIcon,
-  StethoscopeIcon,
-  CreditCardIcon,
-  CalendarIcon,
-  PillIcon,
-  MedicalReportIcon,
-  PrizeIcon,
-  BellIcon,
-  FollowUpIcon,
-  PawIcon,
-  StarIcon,
-} from "../components/Icons";
 export default function Home() {
   const { t } = useTranslation();
   const { tokens } = useContext(AuthContext);
@@ -39,10 +24,7 @@ export default function Home() {
     const fetchVets = async () => {
       try {
         const res = await api.get("accounts/vets/");
-
-        const approvedVets = res.data.filter((vet) => vet.is_approved === true);
-
-        setVets(approvedVets);
+        setVets(res.data);
       } catch (err) {
         console.log(err);
       } finally {
@@ -83,9 +65,7 @@ export default function Home() {
         <div className="hero-inner">
           <div className="hero-content">
             <div className="hero-badge">
-              <span>
-                <CatIcon size={18} />
-              </span>
+              <span>🐾</span>
               <span>{t("home.heroBadge")}</span>
             </div>
             <h1 className="hero-title">
@@ -126,20 +106,11 @@ export default function Home() {
       <div className="features-bar">
         <div className="features-bar-inner">
           {[
-            { icon: <VideoIcon size={20} />, text: t("home.trust.video") },
-            { icon: <LockIcon size={20} />, text: t("home.trust.privacy") },
-            {
-              icon: <StethoscopeIcon size={20} />,
-              text: t("home.trust.doctors"),
-            },
-            {
-              icon: <CreditCardIcon size={20} />,
-              text: t("home.trust.payment"),
-            },
-            {
-              icon: <CalendarIcon size={20} />,
-              text: t("home.trust.available"),
-            },
+            { icon: "⚡", text: t("home.trust.video") },
+            { icon: "🔒", text: t("home.trust.privacy") },
+            { icon: "🩺", text: t("home.trust.doctors") },
+            { icon: "💳", text: t("home.trust.payment") },
+            { icon: "📅", text: t("home.trust.available") },
           ].map((f, i, arr) => (
             <div
               key={i}
@@ -201,8 +172,6 @@ export default function Home() {
                       {vet.specialization || t("home.vets.defaultSpecialty")}
                     </p>
 
-                    <p className="doctor-specialty">{vet.bio}</p>
-
                     <button
                       onClick={() => handleBook(vet.id)}
                       className="btn-book"
@@ -230,18 +199,14 @@ export default function Home() {
 
           <div className="services-grid">
             <div className="service-card">
-              <div className="service-icon">
-                <VideoIcon size={20} />
-              </div>
+              <div className="service-icon">📹</div>
               <div className="service-title">
                 {t("home.services.cardVideoTitle")}
               </div>
               <p className="service-desc">{t("home.services.cardVideoDesc")}</p>
             </div>
             <div className="service-card">
-              <div className="service-icon">
-                <MedicalReportIcon size={20} />
-              </div>
+              <div className="service-icon">📋</div>
               <div className="service-title">
                 {t("home.services.cardRecordTitle")}
               </div>
@@ -250,18 +215,14 @@ export default function Home() {
               </p>
             </div>
             <div className="service-card">
-              <div className="service-icon">
-                <PillIcon size={20} />
-              </div>
+              <div className="service-icon">💊</div>
               <div className="service-title">
                 {t("home.services.cardRxTitle")}
               </div>
               <p className="service-desc">{t("home.services.cardRxDesc")}</p>
             </div>
             <div className="service-card">
-              <div className="service-icon">
-                <BellIcon size={20} />
-              </div>
+              <div className="service-icon">🔔</div>
               <div className="service-title">
                 {t("home.services.cardNotifyTitle")}
               </div>
@@ -270,9 +231,7 @@ export default function Home() {
               </p>
             </div>
             <div className="service-card">
-              <div className="service-icon">
-                <FollowUpIcon size={20} />
-              </div>
+              <div className="service-icon">🔄</div>
               <div className="service-title">
                 {t("home.services.cardFollowTitle")}
               </div>
@@ -281,9 +240,7 @@ export default function Home() {
               </p>
             </div>
             <div className="service-card">
-              <div className="service-icon">
-                <PrizeIcon size={20} />
-              </div>
+              <div className="service-icon">🏆</div>
               <div className="service-title">
                 {t("home.services.cardLoyaltyTitle")}
               </div>
@@ -347,19 +304,12 @@ export default function Home() {
           <div className="testimonials-grid">
             {/* التقييم الأول */}
             <div className="testimonial-card">
-              <div className="testimonial-stars">
-                <span style={{ display: "inline-flex", gap: "2px" }}>
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                </span>
-              </div>
+              <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
               <p className="testimonial-text">
                 {t("home.testimonials.user1Text")}
               </p>
               <div className="testimonial-author">
+                <div className="author-avatar">😊</div>
                 <div>
                   <div className="author-name">
                     {t("home.testimonials.user1Name")}
@@ -373,19 +323,12 @@ export default function Home() {
 
             {/* التقييم الثاني */}
             <div className="testimonial-card">
-              <div className="testimonial-stars">
-                <span style={{ display: "inline-flex", gap: "2px" }}>
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                </span>
-              </div>
+              <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
               <p className="testimonial-text">
                 {t("home.testimonials.user2Text")}
               </p>
               <div className="testimonial-author">
+                <div className="author-avatar">😄</div>
                 <div>
                   <div className="author-name">
                     {t("home.testimonials.user2Name")}
@@ -399,19 +342,12 @@ export default function Home() {
 
             {/* التقييم الثالث */}
             <div className="testimonial-card">
-              <div className="testimonial-stars">
-                <span style={{ display: "inline-flex", gap: "2px" }}>
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                  <StarIcon size={18} fill="#FBBF24" />
-                </span>
-              </div>
+              <div className="testimonial-stars">⭐⭐⭐⭐⭐</div>
               <p className="testimonial-text">
                 {t("home.testimonials.user3Text")}
               </p>
               <div className="testimonial-author">
+                <div className="author-avatar">🙂</div>
                 <div>
                   <div className="author-name">
                     {t("home.testimonials.user3Name")}
@@ -428,16 +364,7 @@ export default function Home() {
       {/* ================= FINAL CTA ================= */}
       <section className="section-cta">
         <div className="cta-inner">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: "16px",
-            }}
-          >
-            <PawIcon size={48} color="rgb(0, 0, 0)" />
-          </div>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>🐾</div>
           <h2 className="cta-title">{t("home.cta.title")}</h2>
           <p className="cta-desc">{t("home.cta.desc")}</p>
 

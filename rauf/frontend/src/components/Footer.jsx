@@ -2,16 +2,6 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import "../styles/footer.css";
 import logoImg from "../assets/logoImg.png";
-import {
-  SnapchatIcon,
-  XIcon,
-  YouTubeIcon,
-  InstagramIcon,
-  LocationIcon,
-  PhoneIcon,
-  EmailIcon,
-  CalendarClockIcon,
-} from "./Icons";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -29,16 +19,16 @@ export default function Footer() {
             <p className="footer-brand-desc">{t("footer.brandDesc")}</p>
             <div className="social-row">
               <div className="social-btn" title={t("footer.twitter")}>
-                <XIcon />
+                𝕏
               </div>
               <div className="social-btn" title={t("footer.instagram")}>
-                <InstagramIcon />
+                📸
               </div>
               <div className="social-btn" title={t("footer.snapchat")}>
-                <SnapchatIcon size={22} />
+                👻
               </div>
               <div className="social-btn" title={t("footer.youtube")}>
-                <YouTubeIcon size={25} />
+                ▶
               </div>
             </div>
           </div>
@@ -63,7 +53,7 @@ export default function Footer() {
                 <Link to="/blog">{t("footer.blog")}</Link>
               </li>
               <li>
-                <Link to="/about">{t("footer.about")}</Link>
+                <Link to="/our-story">{t("navbar.ourStory")}</Link>
               </li>
             </ul>
           </div>
@@ -98,27 +88,19 @@ export default function Footer() {
             <div className="footer-col-title">{t("footer.contactTitle")}</div>
             <div className="footer-contact">
               <div className="contact-row">
-                <div className="contact-row-icon">
-                  <LocationIcon size={18} />
-                </div>
+                <div className="contact-row-icon">📍</div>
                 <span>{t("footer.address")}</span>
               </div>
               <div className="contact-row">
-                <div className="contact-row-icon">
-                  <PhoneIcon size={18} />
-                </div>
+                <div className="contact-row-icon">📞</div>
                 <span dir="ltr">{t("footer.phone")}</span>
               </div>
               <div className="contact-row">
-                <div className="contact-row-icon">
-                  <EmailIcon size={18} />
-                </div>
+                <div className="contact-row-icon">📧</div>
                 <span>{t("footer.email")}</span>
               </div>
               <div className="contact-row">
-                <div className="contact-row-icon">
-                  <CalendarClockIcon size={18} />
-                </div>
+                <div className="contact-row-icon">🕐</div>
                 <span>{t("footer.hours")}</span>
               </div>
             </div>

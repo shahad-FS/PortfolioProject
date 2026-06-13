@@ -167,13 +167,3 @@
 .footer-bottom-links a:hover {
   color: #fff;
 }
-
-/* .social-btn svg {
-  width: 20px;
-  height: 20px;
-  display: block;
-} */
-
-.social-row .social-btn:nth-child(3) svg {
-  transform: translateY(1px);
-}
