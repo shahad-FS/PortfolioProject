@@ -14,6 +14,11 @@
       "source": "/api/:match*",
       "destination": "https://portfolioproject-bdyu.onrender.com/api/:match*",
       "permanent": false
+    },
+    {
+      "source": "/api-test",
+      "destination": "https://google.com",
+      "permanent": false
     }
   ]
 }
