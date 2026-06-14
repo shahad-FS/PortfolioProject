@@ -40,6 +40,7 @@ function App() {
     "/register",
     "/check-email",
     "/reset-password",
+    "/video-call/:sessionId",
   ];
   const shouldHideLayout =
     hideLayoutPaths.includes(location.pathname) ||

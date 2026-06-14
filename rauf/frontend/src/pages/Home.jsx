@@ -26,6 +26,7 @@ import {
   FollowUpIcon,
   PawIcon,
   StarIcon,
+  VetIcon,
 } from "../components/Icons";
 export default function Home() {
   const { t } = useTranslation();
@@ -178,7 +179,9 @@ export default function Home() {
                     key={vet.id}
                     data-testid="vet-card"
                   >
-                    <div className="doctor-avatar">👩‍⚕️</div>
+                    <div className="doctor-avatar">
+                      <VetIcon />
+                    </div>
 
                     <h3 className="doctor-name">{vet.full_name}</h3>
                     <h3

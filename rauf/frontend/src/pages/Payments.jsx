@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 // ملفات ميسر
 import "moyasar-payment-form/dist/moyasar.css";
 import Moyasar from "moyasar-payment-form";
+import "../styles/payments.css";
 
 export default function Payments({ consultationId, amount, onPaymentSuccess }) {
   const { t } = useTranslation();
@@ -32,7 +33,7 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
       containerRef.current.innerHTML = "";
     }
 
-    //Moyasar
+    // Moyasar
     if (typeof Moyasar !== "undefined") {
       isInitialized.current = true;
       Moyasar.init({
@@ -47,14 +48,19 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
           },
         },
         methods: ["creditcard", "mada"],
-
-        // callback_url: window.location.origin + "/payment-callback",
         callback_url: window.location.href,
 
         on_completed: async (payment) => {
-          if (payment.status === "paid") {
+          console.log("Moyasar status received:", payment.status);
+
+          if (payment.status === "paid" || payment.status === "authorized") {
             console.log("Moyasar Payment Completed successfully:", payment.id);
             await handleVerification(payment.id);
+          } else if (
+            payment.status === "initiated" ||
+            payment.status === "capturing"
+          ) {
+            console.log("Payment is processing (initiated/capturing)...");
           } else {
             isInitialized.current = false;
             setError(`Payment status is ${payment.status}. Please try again.`);
@@ -94,12 +100,7 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
         isInitialized.current = false;
       }
     } catch (err) {
-      console.error(err);
       console.error("Detailed Error in handleVerification:", err);
-      if (err.response) {
-        console.error("Server Response Data:", err.response.data);
-        console.error("Server Response Status:", err.response.status);
-      }
       setError("Something went wrong while verifying your payment");
       isInitialized.current = false;
     } finally {
@@ -108,8 +109,8 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
   };
 
   return (
-    <div className="mt-4">
-      <h3 className="text-lg font-semibold text-center mb-4">
+    <div className="mt-4 light bg-white p-4 rounded-xl text-left" dir="rtl">
+      <h3 className="text-lg font-semibold text-center mb-4 text-gray-800">
         {t("payment.title")}
       </h3>
       <p className="text-center text-gray-500 mb-4">
@@ -131,7 +132,10 @@ export default function Payments({ consultationId, amount, onPaymentSuccess }) {
         </div>
       )}
 
-      <div ref={containerRef}></div>
+      <div
+        ref={containerRef}
+        className="moyasar-custom-container bg-white text-gray-900"
+      ></div>
     </div>
   );
 }
