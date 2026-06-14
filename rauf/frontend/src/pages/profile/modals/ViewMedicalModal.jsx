@@ -13,6 +13,10 @@ export default function ViewMedicalModal({ consultationId, setOpen }) {
   useEffect(() => {
     if (consultationId) {
       fetchMedical();
+    } else {
+      setExists(false);
+      setRecord(null);
+      setLoading(false);
     }
   }, [consultationId]);
 
