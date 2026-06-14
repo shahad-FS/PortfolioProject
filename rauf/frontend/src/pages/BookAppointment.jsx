@@ -88,7 +88,7 @@ export default function BookAppointment() {
           vet.vet?.is_approved === true ||
           vet.vetprofile?.is_approved === true,
       );
-      setVets(res.data);
+      setVets(approvedVets);
     } catch (err) {
       console.log(err);
     }
