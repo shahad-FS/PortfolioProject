@@ -101,9 +101,6 @@ export default function ViewMedicalModal({ consultationId, setOpen }) {
           {/* حالة عدم وجود سجل طبي  */}
           {!exists || !record ? (
             <div className="text-center py-10 my-auto">
-              <div className="text-5xl mb-4">
-                <MedicalReportIcon />
-              </div>
               <h3 className="text-base font-bold text-gray-700">
                 {t("medical.view.noRecordTitle")}
               </h3>

@@ -350,7 +350,7 @@ export default function AppointmentsSection({
                     </button>
                   )}
 
-                {/*  انضمام للمكالمة (متاح للطرفين فور بدئها) */}
+                {/*  انضمام للمكالمة (متاح للطرفين) */}
                 {app.video_started && app.status !== "done" && (
                   <button
                     onClick={() => {

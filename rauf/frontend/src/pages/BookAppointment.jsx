@@ -7,7 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { CelebrationIcon, HourglassIcon, VetIcon } from "../components/Icons";
+import { VetIcon } from "../components/Icons";
 
 export default function BookAppointment() {
   const { t, i18n } = useTranslation();
@@ -270,12 +270,6 @@ export default function BookAppointment() {
           }}
         >
           <div
-            className="text-5xl mb-4 animate-spin"
-            style={{ display: "inline-block", animationDuration: "2s" }}
-          >
-            <HourglassIcon />
-          </div>
-          <div
             className="form-title"
             style={{
               marginBottom: "10px",
@@ -316,9 +310,6 @@ export default function BookAppointment() {
           }}
         >
           <div className="form-header" style={{ textAlign: "center" }}>
-            <div className="text-5xl mb-4 animate-bounce">
-              <CelebrationIcon />
-            </div>
             <div
               className="tag-badge"
               style={{
