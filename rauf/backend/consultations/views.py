@@ -10,6 +10,8 @@ from core.permissions.roles import IsPetOwner, IsVet, IsVetOrPetOwner
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from rest_framework.exceptions import ValidationError
+from django.db import transaction
 
 logger = logging.getLogger(__name__)
 class ConsultationCreateView(generics.CreateAPIView):
@@ -26,6 +28,7 @@ class ConsultationCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         vet_user = serializer.validated_data.get('vet')
+        scheduled_at = serializer.validated_data.get('scheduled_at')
         
         if hasattr(vet_user, 'vetprofile'):
             session_price = vet_user.vetprofile.session_price
@@ -35,7 +38,19 @@ class ConsultationCreateView(generics.CreateAPIView):
             session_price = vet_user.vet.session_price
         else:
             session_price = 100.00
+        
+        with transaction.atomic():
+            if scheduled_at:
+                existing_consultation = Consultation.objects.select_for_update().filter(
+                    vet=vet_user,
+                    scheduled_at=scheduled_at,
+                    status="booked"
+                ).exists()
 
+                if existing_consultation:
+                    raise ValidationError({
+                        "error": "This appointment slot has already been booked by another user."
+                    })
         consultation = serializer.save(
             owner=self.request.user,
             session_price=session_price
