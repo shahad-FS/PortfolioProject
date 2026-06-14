@@ -3,7 +3,7 @@ import api from "../api/axios";
 
 export const useAppointments = () => {
   const [appointments, setAppointments] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [hiddenIds, setHiddenIds] = useState(() => {
     const storedHidden = localStorage.getItem("hidden_appointments");
     return storedHidden ? JSON.parse(storedHidden) : [];

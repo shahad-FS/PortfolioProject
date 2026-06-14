@@ -25,6 +25,7 @@ export default function AppointmentsSection({
   const navigate = useNavigate();
   const socketRef = useRef(null);
   const envBaseURL = import.meta.env.VITE_WSS_BASE_URL;
+
   // ================= SOCKET =================
   useEffect(() => {
     if (socketRef.current) return;
