@@ -133,7 +133,16 @@ export default function ResetPasswordConfirm() {
           {/* خطأ عام بالصفحة */}
           {errors.general && (
             <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg border border-red-200 text-start">
-              <ErrorIcon /> {errors.general}
+              <span
+                style={{
+                  display: "inline-flex",
+                  width: "16px",
+                  height: "16px",
+                }}
+              >
+                <ErrorIcon />
+              </span>
+              <span>{errors.general}</span>
             </div>
           )}
 
@@ -162,7 +171,16 @@ export default function ResetPasswordConfirm() {
               {/* عرض الخطأ تحت الحقل */}
               {errors.password && (
                 <p className="mt-1 text-xs text-red-500 text-start font-medium animate-pulse">
-                  <ErrorIcon /> {errors.password}
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      width: "14px",
+                      height: "14px",
+                    }}
+                  >
+                    <ErrorIcon />
+                  </span>
+                  <span>{errors.password}</span>
                 </p>
               )}
             </div>
@@ -197,7 +215,16 @@ export default function ResetPasswordConfirm() {
               {/* عرض الخطأ تحت حقل التأكيد */}
               {errors.confirmPassword && (
                 <p className="mt-1 text-xs text-red-500 text-start font-medium">
-                  <ErrorIcon /> {errors.confirmPassword}
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      width: "14px",
+                      height: "14px",
+                    }}
+                  >
+                    <ErrorIcon />
+                  </span>
+                  <span>{errors.confirmPassword}</span>
                 </p>
               )}
             </div>

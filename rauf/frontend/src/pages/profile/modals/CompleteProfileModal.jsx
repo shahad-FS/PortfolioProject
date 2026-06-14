@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { PawIcon, VetIcon } from "../../../components/Icons";
 export default function CompleteProfileModal({
   role,
   onSubmit,
@@ -58,7 +59,7 @@ export default function CompleteProfileModal({
         {/* الهيدر */}
         <div className="text-center mb-6">
           <span className="text-3xl mb-2 block">
-            {role === "vet" ? "🩺" : "🐾"}
+            {role === "vet" ? <VetIcon /> : <PawIcon />}
           </span>
           <h2 className="text-2xl font-bold" style={{ color: "var(--text)" }}>
             {role === "vet"
@@ -213,7 +214,7 @@ export default function CompleteProfileModal({
             fontFamily: "Cairo",
           }}
         >
-          ✨ {t("common.save")}
+          {t("common.save")}
         </button>
       </div>
     </div>

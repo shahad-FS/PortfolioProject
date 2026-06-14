@@ -34,7 +34,7 @@ const EmailConfirmation = () => {
           <div className="auth-form-panel">
             <div className="form-header" style={{ textAlign: "center" }}>
               <div className="tag-badge" style={{ margin: "0 auto 12px" }}>
-                <EmailIcon /> {t("confirmEmail.badge")}
+                <EmailIcon size={14} /> {t("confirmEmail.badge")}
               </div>
               <div className="form-title" data-testid="confirmation-title">
                 {t("confirmEmail.title")}

@@ -33,7 +33,14 @@ const EmailVerified = () => {
           {/* لوحة النجاح والجانب الأيسر */}
           <div className="auth-form-panel">
             <div className="form-header" style={{ textAlign: "center" }}>
-              <div className="text-5xl mb-4 animate-bounce">
+              <div
+                className="text-5xl mb-4 animate-bounce"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <CelebrationIcon />
               </div>
               <div

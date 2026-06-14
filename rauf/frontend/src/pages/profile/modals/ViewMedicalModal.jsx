@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../../api/axios";
 import { useTranslation } from "react-i18next";
+import { MedicalReportIcon } from "../../../components/Icons";
 export default function ViewMedicalModal({ consultationId, setOpen }) {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
@@ -95,7 +96,9 @@ export default function ViewMedicalModal({ consultationId, setOpen }) {
           {/* حالة عدم وجود سجل طبي  */}
           {!exists || !record ? (
             <div className="text-center py-10 my-auto">
-              <div className="text-5xl mb-4">📋</div>
+              <div className="text-5xl mb-4">
+                <MedicalReportIcon />
+              </div>
               <h3 className="text-base font-bold text-gray-700">
                 {t("medical.view.noRecordTitle")}
               </h3>
@@ -119,7 +122,7 @@ export default function ViewMedicalModal({ consultationId, setOpen }) {
                 style={{ borderColor: "var(--border)" }}
               >
                 <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5 text-gray-700">
-                  📌 {t("medical.fields.notes")}
+                  {t("medical.fields.notes")}
                 </h4>
                 <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line bg-white border p-3 rounded-lg">
                   {record.notes || t("medical.view.emptyNotes")}
@@ -129,7 +132,7 @@ export default function ViewMedicalModal({ consultationId, setOpen }) {
               {/* التشخيص الطبي */}
               <div className="p-4 rounded-xl border border-blue-100 bg-blue-50/20">
                 <h4 className="text-sm font-bold mb-2 flex items-center gap-1.5 text-blue-900">
-                  🔍 {t("medical.fields.diagnosis")}
+                  {t("medical.fields.diagnosis")}
                 </h4>
                 {record.diagnoses && record.diagnoses.length > 0 ? (
                   record.diagnoses.map((diag) => (
@@ -150,7 +153,7 @@ export default function ViewMedicalModal({ consultationId, setOpen }) {
               {/* الوصفة الطبية  */}
               <div className="p-4 rounded-xl border border-emerald-100 bg-emerald-50/20">
                 <h4 className="text-sm font-bold mb-3 flex items-center gap-1.5 text-emerald-900 border-b border-dashed border-emerald-200/60 pb-2">
-                  💊 {t("medical.sections.prescription")}
+                  {t("medical.sections.prescription")}
                 </h4>
                 {record.prescriptions && record.prescriptions.length > 0 ? (
                   <div className="space-y-3">
