@@ -30,5 +30,6 @@
       "destination": "https://portfolioproject-bdyu.onrender.com/api/redoc/",
       "permanent": false
     }
-  ]
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
