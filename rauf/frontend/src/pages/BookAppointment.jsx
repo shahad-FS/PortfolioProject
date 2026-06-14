@@ -82,6 +82,12 @@ export default function BookAppointment() {
   const fetchVets = async () => {
     try {
       const res = await api.get("accounts/vets/");
+      const approvedVets = res.data.filter(
+        (vet) =>
+          vet.is_approved === true ||
+          vet.vet?.is_approved === true ||
+          vet.vetprofile?.is_approved === true,
+      );
       setVets(res.data);
     } catch (err) {
       console.log(err);
@@ -145,6 +151,8 @@ export default function BookAppointment() {
           }
         } else if (typeof serverErrors === "string") {
           setMessage(serverErrors);
+        } else if (serverErrors.error) {
+          setMessage(serverErrors.error);
         } else {
           setMessage(t("booking.errors.failed"));
         }

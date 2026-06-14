@@ -442,8 +442,8 @@
     "status": {
       "stable": "Connection stable",
       "connecting": "Connecting...",
-      "waitingTitle": "Waiting for the vet to join...",
-      "waitingDesc": "Please stay in the room, the veterinarian will join the session momentarily."
+      "waitingTitle": "Waiting for the other to participant...",
+      "waitingDesc": "Please stay in the room, The other participant will join shortly."
     },
     "labels": {
       "you": "You"
