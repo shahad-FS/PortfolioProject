@@ -1,0 +1,37 @@
+/* MONYASAR LIGHT FIX */
+
+.moyasar-custom-container,
+.moyasar-form,
+.moyasar-form * {
+  color-scheme: light !important;
+  forced-color-adjust: none !important;
+}
+
+.moyasar-form,
+.moyasar-form input,
+.moyasar-form select,
+.moyasar-form .credit-card-inputs,
+.moyasar-form .credit-card-inputs > div,
+.moyasar-form input[name="name"],
+.moyasar-form input[name="number"],
+.moyasar-form input[name="cvc"] {
+  background-color: #fdfdfd !important;
+  background: #fdfdfd !important;
+  color: #1a202c !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.moyasar-form label,
+.moyasar-form .moyasar-label {
+  color: #4a5568 !important;
+}
+
+.moyasar-form button.submit-button,
+.moyasar-form .moyasar-submit-btn {
+  background-color: #e0824c !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border-radius: 25px !important;
+  font-weight: 700 !important;
+  border: none !important;
+}

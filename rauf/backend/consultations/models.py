@@ -1,0 +1,71 @@
+from django.db import models
+from django.conf import settings
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from pets.models import Pet
+from accounts.models import VetProfile
+# Create your models here.
+
+
+class Consultation(models.Model):
+
+    """
+    هذا يمثل جلسة بين Pet Owner و Vet
+    """
+
+    STATUS_CHOICES = (
+        ("booked", "Booked"),
+        ("cancelled", "Cancelled"),
+        ("started", "Started"),
+        ("ended", "Ended"),
+    )
+
+    pet = models.ForeignKey(Pet, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="pet_consultations"
+    )
+
+    vet = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="vet_consultations"
+    )
+
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="booked")
+
+    scheduled_at = models.DateTimeField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    session_price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+
+    def clean(self):
+        super().clean()
+        
+        if self.scheduled_at and self.scheduled_at < timezone.now():
+            raise ValidationError({
+                'scheduled_at': "The appointment time cannot be in the past."
+            })
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        if not self.id:
+            try:
+                from accounts.models import VetProfile 
+                profile = VetProfile.objects.filter(user=self.vet).first()
+                
+                if profile and profile.session_price and profile.session_price > 0:
+                    self.session_price = profile.session_price
+                else:
+                    self.session_price = 100.00  
+            except Exception:
+                self.session_price = 100.00  
+                
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Consultation {self.id} - Owner: {self.owner.email} with Vet: {self.vet.email}"

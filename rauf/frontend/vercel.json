@@ -1,0 +1,35 @@
+{
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "https://portfolioproject-bdyu.onrender.com/admin/",
+      "permanent": false
+    },
+    {
+      "source": "/admin/:match*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/admin/:match*",
+      "permanent": false
+    },
+    {
+      "source": "/api/:match*",
+      "destination": "https://portfolioproject-bdyu.onrender.com/api/:match*",
+      "permanent": false
+    },
+    {
+      "source": "/api-test",
+      "destination": "https://google.com",
+      "permanent": false
+    },
+    {
+      "source": "/api-docs",
+      "destination": "https://portfolioproject-bdyu.onrender.com/api/docs/",
+      "permanent": false
+    },
+    {
+      "source": "/api-redocs",
+      "destination": "https://portfolioproject-bdyu.onrender.com/api/redoc/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

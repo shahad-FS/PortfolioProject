@@ -1,0 +1,506 @@
+{
+  "brandName": "Rauf",
+  "navbar": {
+    "home": "Home",
+    "book": "Book Appointment",
+    "language_btn": "العربية",
+    "register": "Register",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Your Profile",
+    "ourStory": "Our Story"
+  },
+  "footer": {
+    "brandDesc": "A specialized clinic providing remote veterinary consultations for pet owners in Saudi Arabia.",
+    "twitter": "Twitter",
+    "instagram": "Instagram",
+    "snapchat": "Snapchat",
+    "youtube": "YouTube",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "doctors": "Browse Doctors",
+    "services": "Our Services",
+    "howItWorks": "How Raouf Works",
+    "blog": "Blog",
+    "about": "About Raouf",
+    "supportTitle": "Support & Help",
+    "helpCenter": "Help Center",
+    "faqs": "FAQs",
+    "refundPolicy": "Refund Policy",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "contactUs": "Contact Us",
+    "contactTitle": "Contact Us",
+    "address": "Riyadh, Saudi Arabia, Al Olaya Dist.",
+    "phone": "+966 920-XXX-XXX",
+    "email": "support@raouf.sa",
+    "hours": "Available 24/7",
+    "copyright": "© 2026 Raouf. All rights reserved",
+    "sitemap": "Sitemap"
+  },
+  "home": {
+    "heroBadge": "Veterinary clinic specializing in pet care",
+    "heroTitle1": "Veterinary consultations",
+    "heroTitle2": "for your pet at home",
+    "heroDesc": "Connect with the best veterinarians specializing in pet care. Get an instant consultation via video or chat without leaving your home.",
+    "ctaStart": "Start your consultation now",
+    "ctaLogin": "Login",
+    "welcomeBack": "Welcome back You are logged in",
+    "trust": {
+      "video": "Instant Video Consultation",
+      "privacy": "Fully Private & Secure",
+      "doctors": "Certified Veterinarians",
+      "payment": "Safe & Secure Payment",
+      "available": "Available 24/7"
+    },
+    "vets": {
+      "tag": "Our Specialized Vets",
+      "title1": "Meet Our ",
+      "titleSpan": "Best Doctors",
+      "desc": "A select group of certified veterinarians specialized in caring for and treating pets",
+      "priceLabel": "Consultation Fee:",
+      "currency": " SAR",
+      "bookBtn": "Book Consultation",
+      "defaultSpecialty": "Veterinarian"
+    },
+    "services": {
+      "tag": "Our Services",
+      "title1": "Everything You Need ",
+      "titleSpan": "for Your Pet's Care",
+      "desc": "We provide a comprehensive range of remote veterinary services to ensure the health and happiness of your pet.",
+
+      "cardVideoTitle": "Instant Video Consultation",
+      "cardVideoDesc": "Connect with a specialized veterinarian via a clear and secure video call anytime you need.",
+
+      "cardRecordTitle": "Digital Medical Record",
+      "cardRecordDesc": "Keep all your pet's health history, vaccinations, and prescriptions in one safe and accessible place.",
+
+      "cardRxTitle": "E-Prescription",
+      "cardRxDesc": "Receive a digital prescription, signed and certified by the vet, immediately after your consultation ends.",
+
+      "cardNotifyTitle": "Vaccination Reminders",
+      "cardNotifyDesc": "A smart system that reminds you of your pet's vaccination schedules and routine medications on time.",
+
+      "cardFollowTitle": "Free Follow-up",
+      "cardFollowDesc": "Free follow-up consultation within 48 hours of any paid consultation to ensure your pet's recovery.",
+
+      "cardLoyaltyTitle": "Loyalty Points Program",
+      "cardLoyaltyDesc": "Earn points with every consultation and redeem them for discounts and free services for your pampered pet."
+    },
+    "how": {
+      "tag": "How Rauf Works",
+      "title1": "Four Simple ",
+      "titleSpan": "Steps",
+      "desc": "Get a specialized medical consultation for your pet in just a few minutes",
+
+      "step1Num": "1",
+      "step1Title": "Create Your Account",
+      "step1Desc": "Sign up quickly and add your pet's medical profile with all key health details.",
+
+      "step2Num": "2",
+      "step2Title": "Choose Your Vet",
+      "step2Desc": "Browse the vets' list, read reviews, and select the right specialist for your pet's condition.",
+
+      "step3Num": "3",
+      "step3Title": "Pay Securely",
+      "step3Desc": "Complete your secure online payment and confirm the consultation appointment at your convenience.",
+
+      "step4Num": "4",
+      "step4Title": "Start Consultation",
+      "step4Desc": "Join the video call and get your diagnosis and medical prescription instantly."
+    },
+    "testimonials": {
+      "tag": "Testimonials",
+      "title1": "What ",
+      "titleSpan": "Pet Owners Say",
+      "desc": "Real stories and experiences from the growing Raouf community",
+
+      "user1Text": "\"Wonderful experience! My cat, Mremah, had a skin issue. After a 20-minute consultation with Dr. Nouf, we got the diagnosis and treatment. Unmatched service!\"",
+      "user1Name": "Reem Al-Shammari",
+      "user1Label": "Riyadh • Member since 2024",
+
+      "user2Text": "\"Raouf saved my cat, Brutus, late at night! I didn't know what was hurting him. The doctor diagnosed the condition instantly and guided me to the nearest pharmacy. Thank you from the bottom of my heart!\"",
+      "user2Name": "Fahad Al-Anazi",
+      "user2Label": "Jeddah • Member since 2023",
+
+      "user3Text": "\"The free follow-up is an amazing feature. I consulted the vet, and two days later he checked back on us for free. It's clear the platform truly cares about our cats' health, not just money.\"",
+      "user3Name": "Noura Al-Qahtani",
+      "user3Label": "Dammam • Member since 2024"
+    },
+    "cta": {
+      "title": "Your Pet Deserves the Best",
+      "desc": "Join thousands of pet owners who trust Raouf for high-quality veterinary care from the comfort of their homes.",
+      "btn": "Book Now"
+    }
+  },
+  "register": {
+    "brand": {
+      "title1": "Join the",
+      "title2": "Raouf Family",
+      "desc": "Thousands of pet owners trust us for premium veterinary care.",
+      "feat1": "Free first consultation",
+      "feat2": "Easy & flexible booking",
+      "feat3": "Digital medical prescriptions"
+    },
+    "form": {
+      "badge": "New Account",
+      "title": "Create Account",
+      "subtitle": "Already have an account? ",
+      "linkLogin": "Sign in",
+      "emailLabel": "Email Address",
+      "passwordLabel": "Password",
+      "roleLabel": "Select Account Type",
+      "rolePetOwner": "Pet Owner",
+      "rolePetOwnerDesc": "Seek Pet care",
+      "roleVet": "Veterinarian",
+      "roleVetDesc": "I am a certified vet",
+      "agreeText": "I agree to the ",
+      "termsLink": "Terms & Conditions",
+      "and": " and ",
+      "privacyLink": "Privacy Policy",
+      "submitBtn": "Create Account",
+      "loadingBtn": "Creating account..."
+    },
+    "errors": {
+      "emailRequired": "Email is required",
+      "passwordRequired": "Password is required",
+      "termsRequired": "You must agree to the Terms & Conditions and Privacy Policy",
+      "email_already_exists": "This email already exists",
+      "invalid_email_format": "Invalid email format.",
+      "invalid_official_email": "Please provide a valid official email address.",
+      "extension_not_allowed": "This email extension is not allowed.",
+      "passwordTooShort": "Ensure this field has at least 8 characters."
+    }
+  },
+  "confirmEmail": {
+    "badge": "Check Email",
+    "title": "Confirm Account",
+    "message": "We’ve sent you a verification link. Please check your inbox and click the link to activate your account and start your journey with us.",
+    "spamNote": "Didn’t receive the email? Check your spam folder or try again later."
+  },
+  "vierifyHandler": {
+    "activating": "Activating your account...",
+    "pleaseWait": "Please wait, we are verifying your activation link.",
+    "errorTitle": "An error occurred",
+    "errorDesc": "Sorry, the link is invalid or expired. Please request a new one.",
+    "backHome": "Back to Home"
+  },
+  "emailVerified": {
+    "badge": "Success",
+    "title": "Email Verified!",
+    "message": "Congratulations! Your email has been successfully verified. You can now log in and access all features of your account.",
+    "goToLogin": "Go to Login",
+    "goToHome": "Go to Home"
+  },
+  "login": {
+    "brand": {
+      "title1": "Welcome Back!",
+      "title2": "Your pet missed you",
+      "desc": "Log in now to follow up on your consultations, book new appointments, and contact your vet directly.",
+      "feat1": "Certified Veterinarians",
+      "feat2": "Instant consultation in minutes",
+      "feat3": "Your privacy is fully guaranteed"
+    },
+    "form": {
+      "badge": "Welcome",
+      "title": "Log In",
+      "subtitle": "Don't have an account? ",
+      "linkRegister": "Create a free account",
+      "submitBtn": "Log In",
+      "forgotPassword": "Forgot password?"
+    },
+    "forgotPassword": {
+      "modalTitle": "Reset Password",
+      "modalText": "Enter your registered email address to receive a reset link:",
+      "confirmBtn": "Send Link",
+      "cancelBtn": "Cancel",
+      "requiredError": "Email address is required!",
+      "successTitle": "Check your email",
+      "successText": "We have sent a secure password reset link to your email.",
+      "errorTitle": "An error occurred",
+      "errorText": "Could not send the link. Please double-check the email address or try again later."
+    },
+    "errors": {
+      "emailNotVerified": "Please verify your email address before logging in.",
+      "invalidCredentials": "Incorrect email or password.",
+      "userNotFound": "Account does not exist. Check your details or sign up.",
+      "failed": "Login failed. Please try again.",
+      "network": "Network error. Please check your internet connection."
+    }
+  },
+  "booking": {
+    "badge": "Book Now",
+    "title": "Book Veterinary Consultation",
+    "steps": {
+      "step1": "Pet",
+      "step2": "Vet",
+      "step3": "Confirm",
+      "step4": "Payment"
+    },
+    "step1": {
+      "label": "Select Your Pet",
+      "placeholder": "Choose from your list...",
+      "add_pet_option": " Add a pet (Go to Profile)"
+    },
+    "step2": {
+      "label": "Choose Vet",
+      "placeholder": "Select a certified vet..."
+    },
+    "step3": {
+      "label": "Pick Date & Confirm",
+      "summaryTitle": "Initial Booking Summary:",
+      "petId": "Pet ID:",
+      "vetId": "Vet ID:"
+    },
+    "buttons": {
+      "back": "Back",
+      "next": "Next",
+      "booking": "Booking...",
+      "confirm": "Proceed to Payment"
+    },
+    "verifying": {
+      "title": "Verifying Payment...",
+      "message": "Please do not close or refresh this page. We are confirming your booking and generating your invoice."
+    },
+    "success": {
+      "badge": "Booking & Paid",
+      "title": "Appointment Confirmed!",
+      "message": "Congratulations! Your appointment has been successfully created and paid. You can now track your appointment status from your profile.",
+      "goToProfile": "Go to My Profile",
+      "goToHome": "Go Home"
+    },
+    "vet_notice": {
+      "badge": "Veterinarian Account",
+      "title": "Your current account is for Doctors",
+      "message": "The vet dashboard is only for reviewing appointments, writing medical reports, and managing sessions. If you wish to book a new appointment and experience the client role, please create a new account as a pet owner.",
+      "register_link": "Create a new Pet Owner account"
+    },
+    "errors": {
+      "failed": "Something went wrong during booking. Please try again.",
+      "past_date": "Sorry, you cannot choose a date or time in the past."
+    }
+  },
+  "profile": {
+    "loadingMessage": "Preparing your profile...",
+    "edit": {
+      "title": "Edit Profile Information",
+      "subtitle": "Update and modify your registered account details",
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "license": "Medical License Number",
+      "specialization": "Medical Specialization",
+      "sessionPrice": "Consultation Session Price",
+      "saveBtn": "Save Updates"
+    },
+
+    "header": {
+      "phone": "Phone",
+      "role": "Account Type",
+      "vet": "Vet",
+      "client": "Pet Owner",
+      "petOwner": "Pet Owner",
+      "license": "License Number",
+      "specialization": "Specility",
+      "status": " Account Status",
+      "approved": "Approved",
+      "pending": "Pending "
+    },
+    "pet": {
+      "title": "My Pets",
+      "addTooltip": "Add your pet",
+      "empty": "No pets added yet",
+      "age": "Age",
+      "medicalReport": "Medical Report",
+      "confirmDelete": "Are you sure you want to delete this pet?",
+      "noAppointmentsAlert": "No appointments found for this pet"
+    },
+    "appointments": {
+      "title": "Current Appointments",
+      "empty": "No scheduled appointments currently",
+      "unknownPet": "Unknown Pet",
+      "status": "Appointment Status",
+      "confirmCancel": "Are you sure you want to cancel this appointment?",
+      "cancel": "Cancel Appointment",
+      "startCall": "Start Video Call",
+      "joinCall": "Join Video Call",
+      "updateReport": "Update Medical Report",
+      "addReport": "Add Medical Report",
+      "keyword": "Appointment",
+      "vetTitle": "Clinic Dashboard & Appointments",
+      "notSpecified": "Not Specified",
+      "doneBtn": "Mark as Done",
+      "confirmDoneTitle": "Confirm Session Completed",
+      "confirmActionText": "Are you sure that session is completed?",
+      "success": "Success",
+      "cancelBtn": "Cancel Appointment",
+      "hideTooltip": "Hide from screen",
+      "hideTitle": "Hide Appointment",
+      "hideText": "Do you want to hide this appointment from your active list?",
+      "hideBtn": "Hide",
+      "loading": "Loading appointments..."
+    }
+  },
+
+  "common": {
+    "save": "Save & Continue",
+    "cancel": "Cancel",
+    "sar": "SAR",
+    "edit": "Edit",
+    "delete": "Delete",
+    "saving": "Saving changes...",
+    "close": "Close Report",
+    "confirm": "Confirm"
+  },
+  "auth": {
+    "completeProfile": {
+      "vetTitle": "Complete Vet Profile",
+      "ownerTitle": "Complete Pet Owner Profile",
+      "subtitle": "Please provide the required details to set up your account",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name as official",
+      "phone": "Phone Number",
+      "license": "Medical License Number",
+      "specialization": "Medical Specialization",
+      "specializationPlaceholder": "e.g. Felines & Canines, Birds, General",
+      "sessionPrice": "Consultation Session Price",
+      "bio": "Short Bio",
+      "bioPlaceholder": "A brief description of your experience and expertise (Optional)"
+    }
+  },
+  "pets": {
+    "modal": {
+      "titleAdd": "Add New Pet",
+      "titleEdit": "Edit Pet Details",
+      "subtitleAdd": "Enter your pet's information to link them with your account for easier consultations",
+      "subtitleEdit": "Update your pet's registered information"
+    },
+    "fields": {
+      "name": "Pet Name",
+      "type": "Pet Type",
+      "breed": "Breed",
+      "birthYear": "Birth Year"
+    },
+    "placeholders": {
+      "name": "e.g. Max, Bella",
+      "selectType": "Select animal type",
+      "breed": "e.g. Persian, Husky, Siamese",
+      "birthYear": "e.g. 2022"
+    },
+    "types": {
+      "cat": "Cat",
+      "dog": "Dog",
+      "bird": "Bird",
+      "other": "Other Animal"
+    },
+    "buttons": {
+      "add": "Add Pet",
+      "update": "Update Details"
+    }
+  },
+  "medical": {
+    "modal": {
+      "title": "Consultation Medical Record",
+      "subtitle": "Add or update diagnostic notes, prescriptions, and pet healthcare logs"
+    },
+    "sections": {
+      "prescription": "Medical Prescription"
+    },
+    "fields": {
+      "notes": "General Notes",
+      "diagnosis": "Medical Diagnosis",
+      "medication": "Medication Name",
+      "dosage": "Required Dosage",
+      "instructions": "Usage Instructions"
+    },
+    "placeholders": {
+      "notes": "Enter initial checkup notes or behavioral symptoms...",
+      "diagnosis": "What is the final dynamic or systemic diagnosis?",
+      "medication": "e.g. Antibiotics, Vitamin Supplement syrup",
+      "dosage": "e.g. 5ml twice daily after meals",
+      "instructions": "e.g. Store in a cool place, shake well, and blend with clear water"
+    },
+    "buttons": {
+      "add": "Save Medical Record",
+      "update": "Update Medical Record"
+    },
+    "view": {
+      "title": "Official Medical Report",
+      "subtitle": "Clinical summary, final diagnosis, and medical prescription for your pet",
+      "loading": "Fetching medical record details...",
+      "noRecordTitle": "Report Not Issued Yet",
+      "noRecordDesc": "No medical record has been submitted for this consultation. The veterinarian usually finalizes and approves the report right after the session ends.",
+      "emptyNotes": "No supplementary general notes recorded by the vet.",
+      "emptyDiagnosis": "No specific diagnosis registered.",
+      "emptyPrescription": "No medications prescribed for this session.",
+      "standardInstructions": "Follow standard criteria and structural dosage mentioned above."
+    }
+  },
+  "video": {
+    "role": {
+      "petOwner": "Pet Owner",
+      "doctor": "Consultant Vet"
+    },
+    "status": {
+      "stable": "Connection stable",
+      "connecting": "Connecting...",
+      "waitingTitle": "Waiting for the other to participant...",
+      "waitingDesc": "Please stay in the room, The other participant will join shortly."
+    },
+    "labels": {
+      "you": "You"
+    },
+    "controls": {
+      "mute": "Mute Microphone",
+      "unmute": "Unmute Microphone",
+      "cameraOff": "Turn Camera Off",
+      "cameraOn": "Turn Camera On",
+      "cameraOffState": "Camera Closed",
+      "endCall": "Leave Session",
+      "endBtn": "End"
+    }
+  },
+  "payment": {
+    "title": "Complete Your Payment",
+    "amountToPay": "Amount to pay:",
+    "loadingPrice": "Loading...",
+    "verifying": "Verifying payment, please wait..."
+  },
+  "resetPassword": {
+    "form": {
+      "title": "Reset New Password",
+      "subtitle": "Please enter your new password and confirm it below.",
+      "passwordLabel": "New Password",
+      "confirmPasswordLabel": "Confirm New Password",
+      "submitBtn": "Update Password",
+      "loadingBtn": "Saving..."
+    },
+    "alerts": {
+      "mismatchTitle": "Input Error",
+      "mismatchText": "Passwords do not match. Please verify and try again.",
+      "weakTitle": "Weak Password",
+      "weakText": "Password must be 8 characters or more.",
+      "tooCommon": "This password is too common and easy to guess.",
+      "entirelyNumeric": "The password cannot be entirely numeric.",
+      "tokenExpired": "The link is invalid or has expired. Please request a new reset link.",
+      "successTitle": "Password Changed Successfully!",
+      "successText": "You can now log in using your new password.",
+      "errorTitle": "Operation Failed",
+      "errorText": "The link may be expired or has already been used."
+    }
+  },
+  "ourStory": {
+    "badge": "Our Story",
+    "title1": "Every Story",
+    "title2": "Begins with Love",
+    "subtitle": "Learn about the journey that led us to provide veterinary care for every pet",
+    "heading": "From Loss... A Mission Was Born",
+    "paragraph1": "Our story began when one of our founders owned a beloved cat. Her cat suffered from severe fear and anxiety whenever leaving home for any vet visit, and she wished she could provide comfortable medical care from home.",
+    "paragraph2": "On a sad day, her cat passed away during the way back from the clinic. This loss didn't break her — it ignited in her heart and in the hearts of our other founders a deeper, stronger desire to help every animal.",
+    "mission": "Our mission goes beyond service — it is a duty and a trust. If a man was forgiven for giving water to a dog, a sinful woman entered Paradise for the same act, and another entered Hell for tormenting a cat, what then of those who dedicate all they have to caring for and protecting animals at the highest level? This project was born to serve every kind soul who cares for the voiceless",
+    "cta": {
+      "title": "Be Part of Our Story",
+      "desc": "Book an appointment with a veterinarian now and provide the best care for your pet",
+      "btn": "Get Started"
+    }
+  }
+}
