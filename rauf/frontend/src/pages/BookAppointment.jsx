@@ -7,6 +7,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { HourglassIcon } from "../components/Icons";
 
 export default function BookAppointment() {
   const { t, i18n } = useTranslation();
@@ -270,7 +271,7 @@ export default function BookAppointment() {
             className="text-5xl mb-4 animate-spin"
             style={{ display: "inline-block", animationDuration: "2s" }}
           >
-            ⏳
+            <HourglassIcon />
           </div>
           <div
             className="form-title"

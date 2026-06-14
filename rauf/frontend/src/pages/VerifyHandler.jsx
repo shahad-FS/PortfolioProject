@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../api/axios";
 import EmailVerified from "./EmailVerified";
+import { ErrorIcon } from "../components/Icons";
 
 const VerifyHandler = () => {
   const { t } = useTranslation();
@@ -37,7 +38,9 @@ const VerifyHandler = () => {
   if (error)
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--bg)] text-center p-6">
-        <div className="text-6xl mb-4">⚠️</div>
+        <div className="text-6xl mb-4">
+          <ErrorIcon />
+        </div>
         <h2 className="text-2xl font-bold text-red-600">
           {t("vierifyHandler.errorTitle")}
         </h2>

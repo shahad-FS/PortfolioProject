@@ -277,3 +277,65 @@ export const LanguageIcon = (props) => (
     <circle cx="12" cy="12" r="10" />
   </IconWrapper>
 );
+
+export const CelebrationIcon = (props) => (
+  <IconWrapper {...props}>
+    <path d="M5.8 11.3 2 22l10.7-3.79" />
+    <path d="M4 3h.01" />
+    <path d="M22 8h.01" />
+    <path d="M15 2h.01" />
+    <path d="M22 20h.01" />
+    <path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10" />
+    <path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17" />
+    <path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7" />
+    <path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z" />
+  </IconWrapper>
+);
+
+export const HourglassIcon = (props) => (
+  <IconWrapper {...props}>
+    <path d="M5 22h14" />
+    <path d="M5 2h14" />
+    <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+    <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
+  </IconWrapper>
+);
+
+export const MuteIcon = (props) => (
+  <IconWrapper {...props}>
+    <path d="M16 9a5 5 0 0 1 .95 2.293" />
+    <path d="M19.364 5.636a9 9 0 0 1 1.889 9.96" />
+    <path d="m2 2 20 20" />
+    <path d="m7 7-.587.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298V11" />
+    <path d="M9.828 4.172A.686.686 0 0 1 11 4.657v.686" />
+  </IconWrapper>
+);
+
+export const UnMuteIcon = (props) => (
+  <IconWrapper {...props}>
+    <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" />
+    <path d="M16 9a5 5 0 0 1 0 6" />
+    <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
+  </IconWrapper>
+);
+
+export const CameraOffIcon = (props) => (
+  <IconWrapper {...props}>
+    <path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196" />
+    <path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2" />
+    <path d="m2 2 20 20" />
+  </IconWrapper>
+);
+
+export const CameraOnIcon = (props) => (
+  <IconWrapper {...props}>
+    <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
+    <rect x="2" y="6" width="14" height="12" rx="2" />
+  </IconWrapper>
+);
+
+export const RecordingIcon = (props) => (
+  <IconWrapper {...props}>
+    <circle cx="12" cy="12" r="10" />
+  </IconWrapper>
+);

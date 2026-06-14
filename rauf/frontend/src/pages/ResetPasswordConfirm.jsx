@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../api/axios";
 import Swal from "sweetalert2";
-
+import { ErrorIcon } from "../components/Icons";
 export default function ResetPasswordConfirm() {
   const { t, i18n } = useTranslation();
   const [searchParams] = useSearchParams();
@@ -133,7 +133,7 @@ export default function ResetPasswordConfirm() {
           {/* خطأ عام بالصفحة */}
           {errors.general && (
             <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg border border-red-200 text-start">
-              ⚠️ {errors.general}
+              <ErrorIcon /> {errors.general}
             </div>
           )}
 
@@ -162,7 +162,7 @@ export default function ResetPasswordConfirm() {
               {/* عرض الخطأ تحت الحقل */}
               {errors.password && (
                 <p className="mt-1 text-xs text-red-500 text-start font-medium animate-pulse">
-                  ❌ {errors.password}
+                  <ErrorIcon /> {errors.password}
                 </p>
               )}
             </div>
@@ -197,7 +197,7 @@ export default function ResetPasswordConfirm() {
               {/* عرض الخطأ تحت حقل التأكيد */}
               {errors.confirmPassword && (
                 <p className="mt-1 text-xs text-red-500 text-start font-medium">
-                  ❌ {errors.confirmPassword}
+                  <ErrorIcon /> {errors.confirmPassword}
                 </p>
               )}
             </div>

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "../styles/auth.css";
 import logoImg from "../assets/logoImg.png";
+import { CelebrationIcon } from "../components/Icons";
 
 const EmailVerified = () => {
   const { t } = useTranslation();
@@ -27,13 +28,14 @@ const EmailVerified = () => {
               {t("register.brand.title2")}
             </div>
             <div className="brand-desc">{t("register.brand.desc")}</div>
-            <div className="brand-paws">🐾 🐾 🐾</div>
           </div>
 
           {/* لوحة النجاح والجانب الأيسر */}
           <div className="auth-form-panel">
             <div className="form-header" style={{ textAlign: "center" }}>
-              <div className="text-5xl mb-4 animate-bounce">🎉</div>
+              <div className="text-5xl mb-4 animate-bounce">
+                <CelebrationIcon />
+              </div>
               <div
                 className="tag-badge"
                 style={{

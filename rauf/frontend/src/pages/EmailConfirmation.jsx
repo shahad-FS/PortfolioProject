@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import "../styles/auth.css";
 import logoImg from "../assets/logoImg.png";
+import { EmailIcon } from "../components/Icons";
 
 const EmailConfirmation = () => {
   const { t } = useTranslation();
@@ -27,14 +28,13 @@ const EmailConfirmation = () => {
               {t("register.brand.title2")}
             </div>
             <div className="brand-desc">{t("register.brand.desc")}</div>
-            <div className="brand-paws">🐾 🐾 🐾</div>
           </div>
 
           {/* لوحة الرسالة والجانب الأيسر */}
           <div className="auth-form-panel">
             <div className="form-header" style={{ textAlign: "center" }}>
               <div className="tag-badge" style={{ margin: "0 auto 12px" }}>
-                📧 {t("confirmEmail.badge")}
+                <EmailIcon /> {t("confirmEmail.badge")}
               </div>
               <div className="form-title" data-testid="confirmation-title">
                 {t("confirmEmail.title")}

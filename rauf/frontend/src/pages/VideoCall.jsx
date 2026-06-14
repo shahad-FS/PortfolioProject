@@ -2,6 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import {
+  CameraOffIcon,
+  CameraOnIcon,
+  ErrorIcon,
+  MuteIcon,
+  RecordingIcon,
+  UnMuteIcon,
+} from "../components/Icons";
 export default function VideoCall({ sessionIdOverride }) {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
@@ -101,7 +109,7 @@ export default function VideoCall({ sessionIdOverride }) {
 
       window.myPeerConnection = pc;
       pc.ontrack = (e) => {
-        console.log("🎬 🔥 الـ Track البعيد وصل للـ متصفح بنجاح!!", e.streams);
+        console.log("Track البعيد وصل للـ متصفح بنجا", e.streams);
         if (remoteVideoRef.current && e.streams[0]) {
           remoteVideoRef.current.srcObject = e.streams[0];
           setConnectionStatus("connected");
@@ -113,7 +121,7 @@ export default function VideoCall({ sessionIdOverride }) {
 
       // المسارات القادمة من الطرف الآخر
       pc.ontrack = (e) => {
-        console.log("🎬 Remote track received!");
+        console.log("Remote track received!");
         if (remoteVideoRef.current && e.streams[0]) {
           remoteVideoRef.current.srcObject = e.streams[0];
         }
@@ -150,7 +158,7 @@ export default function VideoCall({ sessionIdOverride }) {
       socketRef.current = socket;
 
       socket.onopen = () => {
-        console.log("🚀 WebSocket Connected");
+        console.log("WebSocket Connected");
       };
 
       socket.onmessage = async (event) => {
@@ -167,14 +175,14 @@ export default function VideoCall({ sessionIdOverride }) {
         }
 
         if (data.type === "peer_joined" && window.currentRole === "caller") {
-          console.log("🔔 الطرف الآخر دخل الغرفة الآن!");
+          console.log("الطرف الآخر دخل الغرفة الآن!");
 
           if (window.myRole === "caller" || data.role === "caller") {
             // role
           }
 
           console.log(
-            "🚀 الطرف الثاني متصل وجاهز.. يتم إنشاء الـ Offer وإرساله...",
+            "الطرف الثاني متصل وجاهز.. يتم إنشاء الـ Offer وإرساله...",
           );
           const offer = await currentPc.createOffer();
           await currentPc.setLocalDescription(offer);
@@ -184,7 +192,7 @@ export default function VideoCall({ sessionIdOverride }) {
 
         // 3. RECEIVE OFFER
         if (data.type === "offer") {
-          console.log("📩 Offer received, creating answer...");
+          console.log("Offer received, creating answer...");
           await currentPc.setRemoteDescription(
             new RTCSessionDescription(data.offer),
           );
@@ -206,7 +214,7 @@ export default function VideoCall({ sessionIdOverride }) {
 
         // 4. RECEIVE ANSWER
         if (data.type === "answer") {
-          console.log("📩 Answer received, setting remote description...");
+          console.log("Answer received, setting remote description...");
           await currentPc.setRemoteDescription(
             new RTCSessionDescription(data.answer),
           );
@@ -271,7 +279,7 @@ export default function VideoCall({ sessionIdOverride }) {
   };
 
   const endCall = () => {
-    console.log("❌ Ending call...");
+    console.log("Ending call...");
     console.log("pcRef.current exists?", !!pcRef.current);
 
     // نسكرWebSocket
@@ -376,7 +384,9 @@ export default function VideoCall({ sessionIdOverride }) {
         />
         {isCameraOff && (
           <div className="absolute inset-0 bg-neutral-900 flex flex-col items-center justify-center text-center p-2">
-            <span className="text-xl mb-1">🚫</span>
+            <span className="text-xl mb-1">
+              <ErrorIcon />
+            </span>
             <span className="text-[10px] text-neutral-400 font-medium">
               {t("video.controls.cameraOffState")}
             </span>
@@ -402,7 +412,9 @@ export default function VideoCall({ sessionIdOverride }) {
               isMuted ? t("video.controls.unmute") : t("video.controls.mute")
             }
           >
-            <span className="text-xl">{isMuted ? "Unmute" : "Mute"}</span>
+            <span className="text-xl">
+              {isMuted ? <UnMuteIcon /> : <MuteIcon />}
+            </span>
           </button>
 
           {/* إنهاء المكالمة     */}
@@ -411,7 +423,10 @@ export default function VideoCall({ sessionIdOverride }) {
             className="h-14 px-6 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-95 transition-all text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-600/30 border-none cursor-pointer text-sm"
             title={t("video.controls.endCall")}
           >
-            <span className="text-xl">🛑</span> {t("video.controls.endBtn")}
+            <span className="text-xl">
+              <RecordingIcon />
+            </span>{" "}
+            {t("video.controls.endBtn")}
           </button>
 
           {/* إيقاف / تشغيل الكاميرا */}
@@ -429,7 +444,7 @@ export default function VideoCall({ sessionIdOverride }) {
             }
           >
             <span className="text-xl">
-              {isCameraOff ? "CameraOn" : "CameraOff"}
+              {isCameraOff ? <CameraOnIcon /> : <CameraOffIcon />}
             </span>
           </button>
         </div>
