@@ -59,7 +59,17 @@ export default function CompleteProfileModal({
         {/* الهيدر */}
         <div className="text-center mb-6">
           <span className="text-3xl mb-2 block">
-            {role === "vet" ? <VetIcon /> : <PawIcon />}
+            <span
+              className="mb-3 block"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "2.5rem",
+              }}
+            >
+              {role === "vet" ? <VetIcon /> : <PawIcon />}
+            </span>
           </span>
           <h2 className="text-2xl font-bold" style={{ color: "var(--text)" }}>
             {role === "vet"

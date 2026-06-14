@@ -36,19 +36,8 @@ export default function PetsSection({
     });
 
     if (petAppointments.length === 0) {
-      Swal.fire({
-        title: i18n.language === "ar" ? "لا توجد مواعيد" : "No Appointments",
-        text:
-          i18n.language === "ar"
-            ? "لم يتم العثور على أي مواعيد سابقة لهذا الأليف"
-            : "No appointments found for this pet",
-        icon: "info",
-        confirmButtonColor: "var(--primary)",
-        borderRadius: "16px",
-        customClass: {
-          popup: "custom-swal-font",
-        },
-      });
+      setSelectedConsultationId(null);
+      setShowMedical(true);
       return;
     }
 

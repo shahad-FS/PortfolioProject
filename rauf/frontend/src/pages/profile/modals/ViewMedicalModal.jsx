@@ -84,7 +84,8 @@ export default function ViewMedicalModal({ consultationId, setOpen }) {
             className="text-xl font-bold flex items-center gap-2"
             style={{ color: "var(--text)" }}
           >
-            📄 {t("medical.view.title", "التقرير الطبي المعتمد")}
+            <MedicalReportIcon />{" "}
+            {t("medical.view.title", "التقرير الطبي المعتمد")}
           </h2>
           <p className="text-xs mt-1" style={{ color: "var(--text-light)" }}>
             {t("medical.view.subtitle")}
