@@ -3,10 +3,6 @@ import { Link } from "react-router-dom";
 import "../styles/footer.css";
 import logoImg from "../assets/logoImg.png";
 import {
-  SnapchatIcon,
-  XIcon,
-  YouTubeIcon,
-  InstagramIcon,
   LocationIcon,
   PhoneIcon,
   EmailIcon,
@@ -18,32 +14,15 @@ export default function Footer() {
 
   return (
     <>
-      {" "}
       <footer className="footer">
         <div className="footer-inner">
-          {/* الهوية والشعار */}
           <div className="footer-brand">
             <div className="logo">
               <img src={logoImg} alt="Raouf Clinic" />
             </div>
             <p className="footer-brand-desc">{t("footer.brandDesc")}</p>
-            <div className="social-row">
-              <div className="social-btn" title={t("footer.twitter")}>
-                <XIcon />
-              </div>
-              <div className="social-btn" title={t("footer.instagram")}>
-                <InstagramIcon />
-              </div>
-              <div className="social-btn" title={t("footer.snapchat")}>
-                <SnapchatIcon size={22} />
-              </div>
-              <div className="social-btn" title={t("footer.youtube")}>
-                <YouTubeIcon size={25} />
-              </div>
-            </div>
           </div>
 
-          {/* روابط سريعة */}
           <div>
             <div className="footer-col-title">{t("footer.quickLinks")}</div>
             <ul className="footer-links">
@@ -68,7 +47,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* الدعم والمساعدة */}
           <div>
             <div className="footer-col-title">{t("footer.supportTitle")}</div>
             <ul className="footer-links">
@@ -93,7 +71,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* بيانات التواصل */}
           <div>
             <div className="footer-col-title">{t("footer.contactTitle")}</div>
             <div className="footer-contact">
@@ -124,7 +101,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-      </footer>{" "}
+      </footer>
       <div className="footer-bottom-bar">
         <div className="footer-bottom-container">
           <span>{t("footer.copyright")}</span>
